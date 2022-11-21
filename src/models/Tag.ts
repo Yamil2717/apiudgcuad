@@ -1,8 +1,10 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../database/database';
 
-
-sequelize.define('tags', {
+export const Tags = sequelize.define('tags', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     hashtag: { type: DataTypes.STRING },
+    idCategory: { type: DataTypes.INTEGER }
+}, {
+    timestamps: false
 });

@@ -2,11 +2,12 @@ import { Request, Response } from 'express';
 import { Response as response } from '../lib/tools';
 import UserService from '../services/UserServices';
 const resAPI = new response();
+import JWT from 'jsonwebtoken';
 
 async function createUser(req: Request, res: Response) {
     try {
-        let { name, email, password, phone, postalCode, userType, tagsIds, interestIds, location, dateBirth } = req.body;
-        let user: any = await UserService.userRegister(name, email, password, phone, postalCode, userType, tagsIds, interestIds, location, dateBirth);
+        let { name, email, password, phone, postalCode, userType, tagsIds, interestIds, location, dateBirth, avatar } = req.body;
+        let user: any = await UserService.userRegister(name, email, password, phone, postalCode, userType, tagsIds, interestIds, location, dateBirth, avatar);
         console.info(`USER CREATED, UUID: ${user.id}`)
         resAPI.success(res, { message: 'Se ha registrado correctamente.' });
     } catch (error) {
@@ -28,9 +29,33 @@ async function loginUser(req: Request, res: Response) {
     }
 }
 
-async function getUserById(req: Request, res: Response) {
-    console.log(req.body);
-    res.send('Create user');
+async function getTypesUser(req: Request, res: Response) {
+    try {
+        let typesUser = await UserService.userTypes();
+        console.info('SOMEONE GOT THE LIST OF USER TYPES');
+        resAPI.success(res, { ...typesUser })
+    } catch (error) {
+        console.error((error as Error)?.message);
+        return resAPI.error(res, (error as Error)?.message, 500);
+    }
 }
 
-export { createUser, loginUser, getUserById }
+async function getUserById(req: Request, res: Response) {
+    try {
+        let authorization: any = req.headers.authorization;
+        let token = authorization.split(' ');
+        let payloadToken: any = JWT.decode(token[1])
+        if (!payloadToken.id) {
+            resAPI.error(res, 'No se ha podido obtener el id del usuario.');
+        }
+        let dataUser = await UserService.userGetById(payloadToken.id);
+        resAPI.success(res, { message: `Ha obtenido la información de ${payloadToken.name} correctamente.`, ...dataUser })
+    } catch (error) {
+        console.error((error as Error)?.message);
+        return resAPI.error(res, (error as Error)?.message, 500);
+    }
+}
+
+
+
+export { createUser, loginUser, getTypesUser, getUserById }

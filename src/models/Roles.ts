@@ -9,7 +9,7 @@ export const Roles = sequelize.define('userRoles', {
     timestamps: false
 });
 
-/*Roles.hasMany(User, {
+Roles.hasMany(User, {
     foreignKey: 'userType',
     sourceKey: 'id'
-});*/
+});

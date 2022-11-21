@@ -8,9 +8,11 @@ const env_1 = __importDefault(require("./src/utils/env"));
 const database_1 = require("./src/database/database");
 require("./src/models/User");
 require("./src/models/Roles");
+const migrations_1 = __importDefault(require("./src/migrations"));
 (async () => {
     try {
         await database_1.sequelize.sync({ alter: true });
+        (0, migrations_1.default)();
         console.info('Se ha conectado correctamente a la base de datos.');
         app_1.default.listen(env_1.default.api.port);
         console.info(`Se ha iniciado la API correctamente en el puerto ${env_1.default.api.port}`);
