@@ -44,7 +44,7 @@ const Storage = multer.diskStorage({
     },
 });
 
-let upload = multer({ storage: Storage, limits: { fileSize: 2097152 } })
+let upload = multer({ storage: Storage, limits: { fileSize: 6291456 } })
 
 router.post('/user/upload', upload.single('avatar'), (req, res) => {
     if (!req.file) {

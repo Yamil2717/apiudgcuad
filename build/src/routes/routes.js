@@ -38,7 +38,7 @@ const Storage = multer_1.default.diskStorage({
         callback(null, `${file.fieldname}_${(0, uuid_1.v4)()}_${Date.now()}.${file.mimetype.split('/')[1]}`);
     },
 });
-let upload = (0, multer_1.default)({ storage: Storage, limits: { fileSize: 2097152 } });
+let upload = (0, multer_1.default)({ storage: Storage, limits: { fileSize: 6291456 } });
 router.post('/user/upload', upload.single('avatar'), (req, res) => {
     if (!req.file) {
         return response.error(res, 'No se envió la fotografía');
