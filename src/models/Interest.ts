@@ -16,7 +16,7 @@ Interest.hasMany(Tags, {
     sourceKey: 'id'
 });
 
-Interest.hasMany(Groups, {
+/*Interest.hasMany(Groups, {
     foreignKey: 'idCategory',
     sourceKey: 'id'
-});
+});*/
