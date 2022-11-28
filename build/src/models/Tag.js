@@ -5,7 +5,7 @@ const sequelize_1 = require("sequelize");
 const database_1 = require("../database/database");
 exports.Tags = database_1.sequelize.define('tags', {
     id: { type: sequelize_1.DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    hashtag: { type: sequelize_1.DataTypes.STRING },
+    hashtag: { type: sequelize_1.DataTypes.STRING, unique: true },
     idCategory: { type: sequelize_1.DataTypes.INTEGER }
 }, {
     timestamps: false

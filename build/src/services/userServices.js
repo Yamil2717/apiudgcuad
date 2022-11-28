@@ -23,7 +23,8 @@ class userService {
             userType,
             tagsIds: JSON.stringify(tagsIds),
             interestIds: JSON.stringify(interestIds),
-            avatar,
+            avatar: avatar || 'http://192.168.20.20:4000/images/default.jpeg',
+            //avatar: avatar || 'https://habitandolametropoli.com/api/images/default.jpeg',
             location: JSON.stringify(location),
             dateBirth,
             blocking: JSON.stringify({ enable: false })

@@ -4,7 +4,7 @@ import { User } from './User';
 
 export const Roles = sequelize.define('userRoles', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    name: { type: DataTypes.STRING }
+    name: { type: DataTypes.STRING, unique: true }
 }, {
     timestamps: false
 });

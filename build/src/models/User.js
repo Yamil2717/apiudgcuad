@@ -4,9 +4,9 @@ exports.User = void 0;
 const sequelize_1 = require("sequelize");
 const database_1 = require("../database/database");
 exports.User = database_1.sequelize.define('users', {
-    id: { type: sequelize_1.DataTypes.UUID, primaryKey: true, defaultValue: sequelize_1.DataTypes.UUIDV4, allowNull: false },
+    id: { type: sequelize_1.DataTypes.UUID, primaryKey: true, defaultValue: sequelize_1.DataTypes.UUIDV4 },
     name: { type: sequelize_1.DataTypes.STRING },
-    email: { type: sequelize_1.DataTypes.STRING },
+    email: { type: sequelize_1.DataTypes.STRING, unique: true },
     password: { type: sequelize_1.DataTypes.STRING },
     phone: { type: sequelize_1.DataTypes.STRING },
     postalCode: { type: sequelize_1.DataTypes.STRING(10) },

@@ -13,7 +13,7 @@ export const createUserValidation = object({
         interestIds: array().required('Debe seleccionar al menos un interés').typeError('Debe seleccionar al menos un interés'),
         location: object().required('Ha ocurrido un error, no pudimos obtener su ubicación').typeError('Ha ocurrido un error, no pudimos obtener su ubicación'),
         dateBirth: date().required('Debe ingresar su fecha de nacimiento').typeError('Debe ingresar su fecha de nacimiento'),
-        avatar: string().required('Debe ingresar un avatar').typeError('Debe ingresar un avatar')
+        avatar: string().typeError('La fotografía no es válida.')
     })
 })
 

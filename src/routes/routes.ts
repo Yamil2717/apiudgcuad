@@ -6,9 +6,8 @@ import { createUser, loginUser, getTypesUser, getUserById } from '../controllers
 import { createUserValidation, userLoginValidation } from '../Validations/User';
 import { getAllInterest } from '../controllers/interestController';
 import { Response } from '../lib/tools';
-import multer from 'multer';
-import { v4 as uuidv4 } from 'uuid';
 import { getAllTags } from '../controllers/tagsController';
+import { uploadUser, uploadGroups, uploadDist, getImage, uploadImage } from '../controllers/imagesController';
 const path = require('node:path');
 
 const response = new Response();
@@ -35,25 +34,10 @@ router.get('/tags', getAllTags);
 
 /* Images routes */
 
-const Storage = multer.diskStorage({
-    destination(req, file, callback) {
-        callback(null, './imagesUpload');
-    },
-    filename(req, file, callback) {
-        callback(null, `${file.fieldname}_${uuidv4()}_${Date.now()}.${file.mimetype.split('/')[1]}`);
-    },
-});
-
-let upload = multer({ storage: Storage, limits: { fileSize: 6291456 } })
-
-router.post('/user/upload', upload.single('avatar'), (req, res) => {
-    if (!req.file) {
-        return response.error(res, 'No se envió la fotografía');
-    }
-    console.log(`Se ha guardado en ${JSON.stringify(req.file.path)}`)
-    response.success(res, {
-        data: req.file.path
-    });
-});
+router.post('/images/user/upload', uploadUser.single('avatar'), uploadImage);
+router.post('/images/group/upload', uploadGroups.single('picture'), uploadImage);
+router.post('/images/dist/upload', uploadGroups.single('picture'), uploadImage);
+router.post('/images/publication/upload', uploadGroups.array('pictures'), uploadImage);
+router.get('/images/:type/:fileName', getImage);
 
 export default router;

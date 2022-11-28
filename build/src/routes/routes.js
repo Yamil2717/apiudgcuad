@@ -1,7 +1,4 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const Validations_1 = require("../middlewares/Validations");
@@ -11,9 +8,8 @@ const userController_1 = require("../controllers/userController");
 const User_1 = require("../Validations/User");
 const interestController_1 = require("../controllers/interestController");
 const tools_1 = require("../lib/tools");
-const multer_1 = __importDefault(require("multer"));
-const uuid_1 = require("uuid");
 const tagsController_1 = require("../controllers/tagsController");
+const imagesController_1 = require("../controllers/imagesController");
 const path = require('node:path');
 const response = new tools_1.Response();
 const router = (0, express_1.Router)();
@@ -30,22 +26,9 @@ router.get('/interest', interestController_1.getAllInterest);
 /* Tags routes */
 router.get('/tags', tagsController_1.getAllTags);
 /* Images routes */
-const Storage = multer_1.default.diskStorage({
-    destination(req, file, callback) {
-        callback(null, './imagesUpload');
-    },
-    filename(req, file, callback) {
-        callback(null, `${file.fieldname}_${(0, uuid_1.v4)()}_${Date.now()}.${file.mimetype.split('/')[1]}`);
-    },
-});
-let upload = (0, multer_1.default)({ storage: Storage, limits: { fileSize: 6291456 } });
-router.post('/user/upload', upload.single('avatar'), (req, res) => {
-    if (!req.file) {
-        return response.error(res, 'No se envió la fotografía');
-    }
-    console.log(`Se ha guardado en ${JSON.stringify(req.file.path)}`);
-    response.success(res, {
-        data: req.file.path
-    });
-});
+router.post('/images/user/upload', imagesController_1.uploadUser.single('avatar'), imagesController_1.uploadImage);
+router.post('/images/group/upload', imagesController_1.uploadGroups.single('picture'), imagesController_1.uploadImage);
+router.post('/images/dist/upload', imagesController_1.uploadGroups.single('picture'), imagesController_1.uploadImage);
+router.post('/images/publication/upload', imagesController_1.uploadGroups.array('pictures'), imagesController_1.uploadImage);
+router.get('/images/:type/:fileName', imagesController_1.getImage);
 exports.default = router;

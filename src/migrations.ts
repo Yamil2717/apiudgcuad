@@ -1,6 +1,8 @@
 import { Roles } from './models/Roles'
 import { Interest } from './models/Interest'
 import { Tags } from './models/Tag';
+import { Groups } from './models/Groups'
+import { User } from './models/User'
 
 async function migrations() {
 
@@ -15,7 +17,7 @@ async function migrations() {
         { name: 'Organizaciones Civiles' },
         { name: 'Financieros de Vivienda' },
     ], {
-        ignoreDuplicates: true,
+        ignoreDuplicates: true
     })
         .then(() => console.info("Se ha insertado la información de user types correctamente."))
         .catch(err => console.error("Ha ocurrido un error a la hora de insertar la información de user types. Error: " + err));
@@ -36,7 +38,7 @@ async function migrations() {
 
 
     await Tags.bulkCreate([
-        /* Transporte público */
+        // Transporte público
         { hashtag: 'via', idCategory: 1 },
         { hashtag: 'movilidad', idCategory: 1 },
         { hashtag: 'carretera', idCategory: 1 },
@@ -49,7 +51,7 @@ async function migrations() {
         { hashtag: 'destino', idCategory: 1 },
         { hashtag: 'terminal', idCategory: 1 },
         { hashtag: 'pasajeros', idCategory: 1 },
-        /* Vivienda deshabitada */
+        // Vivienda deshabitada
         { hashtag: 'residentes', idCategory: 2 },
         { hashtag: 'inmueble', idCategory: 2 },
         { hashtag: 'ausentado', idCategory: 2 },
@@ -61,7 +63,7 @@ async function migrations() {
         { hashtag: 'incómodos', idCategory: 2 },
         { hashtag: 'existentes', idCategory: 2 },
         { hashtag: 'análisis', idCategory: 2 },
-        /* Gestión Urbana */
+        // Gestión Urbana
         { hashtag: 'casa', idCategory: 3 },
         { hashtag: 'apartamento', idCategory: 3 },
         { hashtag: 'propia', idCategory: 3 },
@@ -73,7 +75,7 @@ async function migrations() {
         { hashtag: 'módulo', idCategory: 3 },
         { hashtag: 'climático', idCategory: 3 },
         { hashtag: 'coordinación', idCategory: 3 },
-        /* Producción de Vivienda */
+        // Producción de Vivienda
         { hashtag: 'urbano', idCategory: 4 },
         { hashtag: 'habitacional', idCategory: 4 },
         { hashtag: 'innovación', idCategory: 4 },
@@ -86,7 +88,7 @@ async function migrations() {
         { hashtag: 'hipotecaria', idCategory: 4 },
         { hashtag: 'económico', idCategory: 4 },
         { hashtag: 'censo', idCategory: 4 },
-        /* Inseguridad vial */
+        // Inseguridad vial
         { hashtag: 'accesibilidad', idCategory: 5 },
         { hashtag: 'política', idCategory: 5 },
         { hashtag: 'sencilla', idCategory: 5 },
@@ -99,7 +101,7 @@ async function migrations() {
         { hashtag: 'consecuencia', idCategory: 5 },
         { hashtag: 'heridos', idCategory: 5 },
         { hashtag: 'funcionamiento', idCategory: 5 },
-        /* Obras viales */
+        // Obras viales
         { hashtag: 'construcción', idCategory: 6 },
         { hashtag: 'rehabilitación', idCategory: 6 },
         { hashtag: 'adecuación', idCategory: 6 },
@@ -112,7 +114,7 @@ async function migrations() {
         { hashtag: 'carreteras', idCategory: 6 },
         { hashtag: 'infraestructura', idCategory: 6 },
         { hashtag: 'demolición', idCategory: 6 },
-        /* Vivienda y trabajo */
+        // Vivienda y trabajo
         { hashtag: 'casa', idCategory: 7 },
         { hashtag: 'autonomía', idCategory: 7 },
         { hashtag: 'habitacional', idCategory: 7 },
@@ -130,6 +132,36 @@ async function migrations() {
     })
         .then(() => console.info("Se ha insertado la información de tags correctamente."))
         .catch(err => console.error("Ha ocurrido un error a la hora de insertar la información de tags. Error: " + err));
+
+    await Groups.bulkCreate([
+        { name: 'Ciclovías', picture: 'https://images.pexels.com/photos/386024/pexels-photo-386024.jpeg', idCategory: 5 },
+        { name: 'Vialidad', picture: 'https://images.pexels.com/photos/5835467/pexels-photo-5835467.jpeg', idCategory: 3 },
+        { name: 'Pasos peatonales', picture: 'https://images.pexels.com/photos/1309687/pexels-photo-1309687.jpeg', idCategory: 1 },
+        { name: 'Infraestructura dañada', picture: 'https://images.pexels.com/photos/5659371/pexels-photo-5659371.jpeg', idCategory: 2 },
+        { name: 'Edificios históricos', picture: 'https://images.pexels.com/photos/7692217/pexels-photo-7692217.jpeg', idCategory: 4 },
+    ], {
+        ignoreDuplicates: true
+    })
+        .then(() => console.info("Se ha insertado la información de grupos correctamente."))
+        .catch(err => console.error("Ha ocurrido un error a la hora de insertar la información de grupos. Error: " + err));
+
+
+    await User.create({
+        name: 'Admin',
+        email: 'admin@gmail.com',
+        password: '$2a$10$bAoGandv2.EsKPvO7jNKoeREKmZIs3/zAK0FYpu0le4JnxfbcugfS',
+        phone: '3005849945',
+        postalCode: '081455',
+        userType: 3,
+        tagsIds: '[2,12,14,15,18,34]',
+        interestIds: '[1,2,3,4]',
+        avatar: 'http://192.168.20.20:4000/images/user/default.jpeg',
+        location: '{"lat":37.4219983,"long":-122.084,"locationName":"1600 Amphitheatre Pkwy, Mountain View, CA 94043, USA"}',
+        dateBirth: '2022-11-28 00:45:12.427-05',
+        blocking: '{"enable":false}'
+    }, {
+        ignoreDuplicates: true
+    })
 
 }
 

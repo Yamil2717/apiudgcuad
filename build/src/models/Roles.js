@@ -6,7 +6,7 @@ const database_1 = require("../database/database");
 const User_1 = require("./User");
 exports.Roles = database_1.sequelize.define('userRoles', {
     id: { type: sequelize_1.DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    name: { type: sequelize_1.DataTypes.STRING }
+    name: { type: sequelize_1.DataTypes.STRING, unique: true }
 }, {
     timestamps: false
 });

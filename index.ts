@@ -8,7 +8,7 @@ import migrations from './src/migrations';
 
 (async () => {
     try {
-        await sequelize.sync({ alter: true });
+        await sequelize.sync({ force: true });
         migrations();
         console.info('Se ha conectado correctamente a la base de datos.');
         app.listen(env.api.port);
