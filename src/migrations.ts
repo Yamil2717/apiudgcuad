@@ -155,7 +155,7 @@ async function migrations() {
         userType: 3,
         tagsIds: '[2,12,14,15,18,34]',
         interestIds: '[1,2,3,4]',
-        avatar: 'http://192.168.20.20:4000/images/user/default.jpeg',
+        avatar: 'http://https://habitandolametropoli.com/apiametropoli.com/api/images/user/default.jpeg',
         location: '{"lat":37.4219983,"long":-122.084,"locationName":"1600 Amphitheatre Pkwy, Mountain View, CA 94043, USA"}',
         dateBirth: '2022-11-28 00:45:12.427-05',
         blocking: '{"enable":false}'

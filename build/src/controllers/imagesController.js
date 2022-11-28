@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getImage = exports.uploadImage = exports.uploadPublications = exports.uploadDist = exports.uploadGroups = exports.uploadUser = void 0;
+exports.getImage = exports.uploadImagePublications = exports.uploadImage = exports.uploadPublications = exports.uploadDist = exports.uploadGroups = exports.uploadUser = void 0;
 const tools_1 = require("../lib/tools");
 const resAPI = new tools_1.Response();
 const path_1 = __importDefault(require("path"));
@@ -17,7 +17,7 @@ async function uploadImage(req, res) {
         }
         console.info(`Se ha guardado una imagen en ${JSON.stringify(req.file.path)}`);
         resAPI.success(res, {
-            data: `http://192.168.20.20:4000/images/user/${req.file.filename}`
+            data: `http://https://habitandolametropoli.com/api/images/user/${req.file.filename}`
         });
     }
     catch (error) {
@@ -26,6 +26,22 @@ async function uploadImage(req, res) {
     }
 }
 exports.uploadImage = uploadImage;
+async function uploadImagePublications(req, res) {
+    try {
+        if (!req.file) {
+            return resAPI.error(res, 'No se envió la fotografía');
+        }
+        console.info(`Se ha guardado una imagen en ${JSON.stringify(req.file.path)}`);
+        resAPI.success(res, {
+            data: `http://https://habitandolametropoli.com/api/images/user/${req.file.filename}`
+        });
+    }
+    catch (error) {
+        console.error(error?.message);
+        return resAPI.error(res, error?.message, 500);
+    }
+}
+exports.uploadImagePublications = uploadImagePublications;
 async function getImage(req, res) {
     try {
         let { type, fileName } = req.params;

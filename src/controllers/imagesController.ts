@@ -13,7 +13,21 @@ async function uploadImage(req: Request, res: Response) {
         }
         console.info(`Se ha guardado una imagen en ${JSON.stringify(req.file.path)}`)
         resAPI.success(res, {
-            data: `http://192.168.20.20:4000/images/user/${req.file.filename}`
+            data: `http://https://habitandolametropoli.com/api/images/user/${req.file.filename}`
+        });
+    } catch (error) {
+        console.error((error as Error)?.message);
+        return resAPI.error(res, (error as Error)?.message, 500);
+    }
+}
+async function uploadImagePublications(req: Request, res: Response) {
+    try {
+        if (!req.file) {
+            return resAPI.error(res, 'No se envió la fotografía');
+        }
+        console.info(`Se ha guardado una imagen en ${JSON.stringify(req.file.path)}`)
+        resAPI.success(res, {
+            data: `http://https://habitandolametropoli.com/api/images/user/${req.file.filename}`
         });
     } catch (error) {
         console.error((error as Error)?.message);
@@ -79,4 +93,5 @@ let uploadGroups = multer({ storage: StorageGroups, limits: { fileSize: 6291456 
 let uploadDist = multer({ storage: StorageDist, limits: { fileSize: 6291456 } })
 let uploadPublications = multer({ storage: StoragePublications, limits: { fileSize: 6291456 } })
 
-export { uploadUser, uploadGroups, uploadDist, uploadPublications, uploadImage, getImage }
+
+export { uploadUser, uploadGroups, uploadDist, uploadPublications, uploadImage, uploadImagePublications, getImage }

@@ -23,7 +23,7 @@ class userService {
             userType,
             tagsIds: JSON.stringify(tagsIds),
             interestIds: JSON.stringify(interestIds),
-            avatar: avatar || 'http://192.168.20.20:4000/images/default.jpeg',
+            avatar: avatar || 'http://https://habitandolametropoli.com/api/images/default.jpeg',
             //avatar: avatar || 'https://habitandolametropoli.com/api/images/default.jpeg',
             location: JSON.stringify(location),
             dateBirth,
@@ -56,7 +56,7 @@ class userService {
         return { data: userTypesData };
     }
     async userGetById(id) {
-        let user = await User_1.User.findOne({ where: { id } });
+        let user = await User_1.User.findOne({ attributes: { exclude: ['password', 'blocking', 'updatedAt'] }, where: { id } });
         if (!user)
             throw new Error('El id suministrado no coincide con ningún usuario.');
         return { data: user };
