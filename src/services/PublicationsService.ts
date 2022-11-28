@@ -20,7 +20,7 @@ class publicationsService {
 
     async getAllPublications() {
         let publications: any = await Publication.findAll();
-        if (publications.length <= 0) throw new Error('Ha ocurrido un error, no se encuentra ningún tipo de interés registrado.');
+        if (publications.length <= 0) throw new Error('Ha ocurrido un error, no se encuentra ningún tipo de post registrado.');
         return { data: publications };
     }
 
