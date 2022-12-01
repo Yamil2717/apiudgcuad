@@ -9,10 +9,12 @@ const resAPI = new tools_1.Response();
 const PublicationsService_1 = __importDefault(require("../services/PublicationsService"));
 async function createPublication(req, res) {
     try {
-        let { description, pictures, pictureGroup, groupID, groupName, categoryID, ownerID, ownerName } = req.body;
+        let { description, pictures, pictureGroup, groupID, groupName, categoryID, ownerID, ownerName, } = req.body;
         let publication = await PublicationsService_1.default.createPublication(description, pictures, pictureGroup, groupID, groupName, categoryID, ownerID, ownerName);
+        if (!publication)
+            return;
         console.info(`SOMEONE CREATE A NEW PUBLICATION`);
-        resAPI.success(res, { message: 'Ha creado la publicación correctamente.', ...publication });
+        resAPI.success(res, { message: "Ha creado la publicación correctamente." });
     }
     catch (error) {
         console.error(error?.message);
@@ -24,7 +26,7 @@ async function getAllPublications(req, res) {
     try {
         let publications = await PublicationsService_1.default.getAllPublications();
         console.info(`SOMEONE GOT ALL THE PUBLICATIONS`);
-        resAPI.success(res, { message: 'Ha obtenido la lista de publicaciones correcta.', ...publications });
+        resAPI.success(res, publications);
     }
     catch (error) {
         console.error(error?.message);

@@ -11,7 +11,7 @@ async function getAllTags(req, res) {
     try {
         let tags = await TagsService_1.default.getAllTags();
         console.info(`SOMEONE GOT THE LIST OF TAGS`);
-        resAPI.success(res, { message: 'Ha obtenido la lista de tags de forma correcta.', ...tags });
+        resAPI.success(res, tags);
     }
     catch (error) {
         console.error(error?.message);

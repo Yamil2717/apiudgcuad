@@ -7,10 +7,10 @@ exports.Encrypt = exports.Response = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 class Response {
     success(res, data, statusCode = 200) {
-        res.status(statusCode).send({ ...data });
+        res.status(statusCode).send(data);
     }
     error(res, message, statusCode = 500) {
-        res.status(statusCode).send({ error: true, message });
+        res.status(statusCode).json({ error: statusCode, message });
     }
 }
 exports.Response = Response;
@@ -24,5 +24,5 @@ class encrypt {
         return same;
     }
 }
-let Encrypt = new encrypt;
+let Encrypt = new encrypt();
 exports.Encrypt = Encrypt;

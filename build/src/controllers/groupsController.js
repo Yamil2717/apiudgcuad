@@ -11,7 +11,7 @@ async function getAllGroups(req, res) {
     try {
         let groups = await GroupsService_1.default.getAllGroups();
         console.info(`SOMEONE GOT THE LIST OF GROUPS`);
-        resAPI.success(res, { message: 'Ha obtenido la lista de grupos de forma correcta.', ...groups });
+        resAPI.success(res, groups);
     }
     catch (error) {
         console.error(error?.message);

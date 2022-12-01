@@ -19,7 +19,8 @@ const env = {
         accessSecret: process.env.SECRET_ACCESS_KEY || '',
         refreshSecret: process.env.SECRET_REFRESH_KEY || '',
         cookieDomain: process.env.COOKIE_DOMAIN || '',
-        adminEmail: process.env.ADMIN_EMAIL || ''
+        adminEmail: process.env.ADMIN_EMAIL || '',
+        urlAPI: process.env.URL_API || ''
     }
 };
 exports.default = env;

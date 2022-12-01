@@ -1,97 +1,101 @@
-import { Request, Response } from 'express';
-import { Response as response } from '../lib/tools';
+import { Request, Response } from "express";
+import { Response as response } from "../lib/tools";
 const resAPI = new response();
-import path from 'path';
-import fs from 'fs';
-import multer from 'multer';
-import { v4 as uuidv4 } from 'uuid';
+import path from "path";
+import fs from "fs";
+import multer from "multer";
+import { v4 as uuidv4 } from "uuid";
+import env from "../utils/env";
 
 async function uploadImage(req: Request, res: Response) {
-    try {
-        if (!req.file) {
-            return resAPI.error(res, 'No se envió la fotografía');
-        }
-        console.info(`Se ha guardado una imagen en ${JSON.stringify(req.file.path)}`)
-        resAPI.success(res, {
-            data: `http://https://habitandolametropoli.com/api/images/user/${req.file.filename}`
-        });
-    } catch (error) {
-        console.error((error as Error)?.message);
-        return resAPI.error(res, (error as Error)?.message, 500);
+  try {
+    if (!req.file) {
+      return resAPI.error(res, "No se envió la fotografía");
     }
+    console.info(
+      `Se ha guardado una imagen en ${JSON.stringify(req.file.path)}`
+    );
+    resAPI.success(res, `${env.api.urlAPI}/images/user/${req.file.filename}`);
+  } catch (error) {
+    console.error((error as Error)?.message);
+    return resAPI.error(res, (error as Error)?.message, 400);
+  }
 }
 async function uploadImagePublications(req: Request, res: Response) {
-    try {
-        if (!req.file) {
-            return resAPI.error(res, 'No se envió la fotografía');
-        }
-        console.info(`Se ha guardado una imagen en ${JSON.stringify(req.file.path)}`)
-        resAPI.success(res, {
-            data: `http://https://habitandolametropoli.com/api/images/user/${req.file.filename}`
-        });
-    } catch (error) {
-        console.error((error as Error)?.message);
-        return resAPI.error(res, (error as Error)?.message, 500);
+  try {
+    let tempReqFiles: any = req.files;
+    req.files = [...tempReqFiles];
+    if (req.files.length <= 0) {
+      return resAPI.error(res, "No se ha recibido las fotografías");
     }
+    let arrayUrls: any = [];
+    req.files.map((file: any) => {
+      console.info(`Se ha guardado una imagen en ${JSON.stringify(file.path)}`);
+      arrayUrls.push(`${env.api.urlAPI}/images/publications/${file.filename}`);
+    });
+    resAPI.success(res, arrayUrls);
+  } catch (error) {
+    console.error((error as Error)?.message);
+    return resAPI.error(res, (error as Error)?.message, 400);
+  }
 }
 
 async function getImage(req: Request, res: Response) {
-    try {
-        let { type, fileName } = req.params;
-        let pathImage = path.resolve(`./imagesUpload/${type}/${fileName}`);
-        if (await fs.existsSync(pathImage)) {
-            res.sendFile(pathImage);
-        } else {
-            resAPI.error(res, 'No se encontró.', 404);
-        }
-    } catch (error) {
-        console.error((error as Error)?.message);
-        return resAPI.error(res, (error as Error)?.message, 500);
+  try {
+    let { type, fileName } = req.params;
+    let pathImage = path.resolve(`./imagesUpload/${type}/${fileName}`);
+    if (await fs.existsSync(pathImage)) {
+      res.sendFile(pathImage);
+    } else {
+      resAPI.error(res, "No se encontró.", 404);
     }
+  } catch (error) {
+    console.error((error as Error)?.message);
+    return resAPI.error(res, (error as Error)?.message, 500);
+  }
 }
 
 // Configs multer
 
-const StorageUser = multer.diskStorage({
+function getStorage(type: string) {
+  const Storage = multer.diskStorage({
     destination(req, file, callback) {
-        callback(null, './imagesUpload/user');
+      callback(null, `./imagesUpload/${type}`);
     },
     filename(req, file, callback) {
-        callback(null, `${file.fieldname}_${uuidv4()}_${Date.now()}.${file.mimetype.split('/')[1]}`);
+      callback(
+        null,
+        `${file.fieldname}_${uuidv4()}_${Date.now()}.${
+          file.mimetype.split("/")[1]
+        }`
+      );
     },
-});
+  });
+  return Storage;
+}
 
-const StorageGroups = multer.diskStorage({
-    destination(req, file, callback) {
-        callback(null, './imagesUpload/groups');
+function upload(type: string) {
+  let upload = multer({
+    storage: getStorage(type),
+    limits: { fileSize: 6 * 1024 * 1024 },
+    fileFilter: (req, file, cb) => {
+      if (
+        file.mimetype == "image/png" ||
+        file.mimetype == "image/jpg" ||
+        file.mimetype == "image/jpeg"
+      ) {
+        cb(null, true);
+      } else {
+        cb(null, false);
+        const err = new Error(
+          "Solo se permiten los siguientes formatos: .png, .jpg y .jpeg"
+        );
+        err.name = "ExtensionError";
+        return cb(err);
+      }
     },
-    filename(req, file, callback) {
-        callback(null, `${file.fieldname}_${uuidv4()}_${Date.now()}.${file.mimetype.split('/')[1]}`);
-    },
-});
+  });
+  return upload;
+}
 
-const StorageDist = multer.diskStorage({
-    destination(req, file, callback) {
-        callback(null, './imagesUpload/dist');
-    },
-    filename(req, file, callback) {
-        callback(null, `${file.fieldname}_${uuidv4()}_${Date.now()}.${file.mimetype.split('/')[1]}`);
-    },
-});
-
-const StoragePublications = multer.diskStorage({
-    destination(req, file, callback) {
-        callback(null, './imagesUpload/publications');
-    },
-    filename(req, file, callback) {
-        callback(null, `${file.fieldname}_${uuidv4()}_${Date.now()}.${file.mimetype.split('/')[1]}`);
-    },
-});
-
-let uploadUser = multer({ storage: StorageUser, limits: { fileSize: 6291456 } })
-let uploadGroups = multer({ storage: StorageGroups, limits: { fileSize: 6291456 } })
-let uploadDist = multer({ storage: StorageDist, limits: { fileSize: 6291456 } })
-let uploadPublications = multer({ storage: StoragePublications, limits: { fileSize: 6291456 } })
-
-
-export { uploadUser, uploadGroups, uploadDist, uploadPublications, uploadImage, uploadImagePublications, getImage }
+export { upload, uploadImage, uploadImagePublications, getImage };

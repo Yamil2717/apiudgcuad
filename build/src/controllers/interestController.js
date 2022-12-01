@@ -11,7 +11,7 @@ async function getAllInterest(req, res) {
     try {
         let interests = await InterestService_1.default.getAllInterest();
         console.info(`SOMEONE GOT THE LIST OF INTEREST`);
-        resAPI.success(res, { message: 'Ha obtenido la lista de intereses de forma correcta.', ...interests });
+        resAPI.success(res, interests);
     }
     catch (error) {
         console.error(error?.message);

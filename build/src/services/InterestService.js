@@ -5,13 +5,13 @@ class interestService {
     async getAllInterest() {
         let interests = await Interest_1.Interest.findAll();
         let interestData = [];
-        for (let interest in interests) {
-            interestData.push({ ...interests[interest].dataValues });
-        }
+        interests.map((interest) => {
+            interestData.push(interest.get());
+        });
         if (interestData.length <= 0)
-            throw new Error('Ha ocurrido un error, no se encuentra ningún tipo de interés registrado.');
-        return { data: interestData };
+            throw new Error("Ha ocurrido un error, no se encuentra ningún tipo de interés registrado.");
+        return interestData;
     }
 }
-let InterestService = new interestService;
+let InterestService = new interestService();
 exports.default = InterestService;

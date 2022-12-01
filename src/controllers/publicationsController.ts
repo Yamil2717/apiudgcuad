@@ -1,29 +1,48 @@
-import { Request, Response } from 'express';
-import { Response as response } from '../lib/tools';
+import { Request, Response } from "express";
+import { Response as response } from "../lib/tools";
 const resAPI = new response();
-import PublicationsService from '../services/PublicationsService';
+import PublicationsService from "../services/PublicationsService";
 
 async function createPublication(req: Request, res: Response) {
-    try {
-        let { description, pictures, pictureGroup, groupID, groupName, categoryID, ownerID, ownerName } = req.body;
-        let publication: any = await PublicationsService.createPublication(description, pictures, pictureGroup, groupID, groupName, categoryID, ownerID, ownerName)
-        console.info(`SOMEONE CREATE A NEW PUBLICATION`)
-        resAPI.success(res, { message: 'Ha creado la publicación correctamente.', ...publication });
-    } catch (error) {
-        console.error((error as Error)?.message);
-        return resAPI.error(res, (error as Error)?.message, 500);
-    }
+  try {
+    let {
+      description,
+      pictures,
+      pictureGroup,
+      groupID,
+      groupName,
+      categoryID,
+      ownerID,
+      ownerName,
+    } = req.body;
+    let publication: any = await PublicationsService.createPublication(
+      description,
+      pictures,
+      pictureGroup,
+      groupID,
+      groupName,
+      categoryID,
+      ownerID,
+      ownerName
+    );
+    if (!publication) return;
+    console.info(`SOMEONE CREATE A NEW PUBLICATION`);
+    resAPI.success(res, { message: "Ha creado la publicación correctamente." });
+  } catch (error) {
+    console.error((error as Error)?.message);
+    return resAPI.error(res, (error as Error)?.message, 500);
+  }
 }
 
 async function getAllPublications(req: Request, res: Response) {
-    try {
-        let publications: any = await PublicationsService.getAllPublications()
-        console.info(`SOMEONE GOT ALL THE PUBLICATIONS`)
-        resAPI.success(res, { message: 'Ha obtenido la lista de publicaciones correcta.', ...publications });
-    } catch (error) {
-        console.error((error as Error)?.message);
-        return resAPI.error(res, (error as Error)?.message, 500);
-    }
+  try {
+    let publications: any = await PublicationsService.getAllPublications();
+    console.info(`SOMEONE GOT ALL THE PUBLICATIONS`);
+    resAPI.success(res, publications);
+  } catch (error) {
+    console.error((error as Error)?.message);
+    return resAPI.error(res, (error as Error)?.message, 500);
+  }
 }
 
-export { createPublication, getAllPublications }
+export { createPublication, getAllPublications };
