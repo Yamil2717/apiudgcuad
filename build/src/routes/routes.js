@@ -13,6 +13,7 @@ const imagesController_1 = require("../controllers/imagesController");
 const groupsController_1 = require("../controllers/groupsController");
 const publicationsController_1 = require("../controllers/publicationsController");
 const path = require("node:path");
+const commentsController_1 = require("../controllers/commentsController");
 const response = new tools_1.Response();
 const router = (0, express_1.Router)();
 // Users routes
@@ -32,6 +33,9 @@ router.get("/groups", (0, Auth_1.Auth)("User", response), groupsController_1.get
 // Publications routes
 router.post("/publication", (0, Auth_1.Auth)("User", response), publicationsController_1.createPublication);
 router.get("/publications", (0, Auth_1.Auth)("User", response), publicationsController_1.getAllPublications);
+// Comments routes
+router.post("/comment", (0, Auth_1.Auth)("User", response), commentsController_1.createCommentByID);
+router.get("/comments/:idPost", (0, Auth_1.Auth)("User", response), commentsController_1.getAllCommentsByID);
 // Images routes
 router.post("/images/user/upload", (0, imagesController_1.upload)("user").single("avatar"), imagesController_1.uploadImage);
 router.post("/images/group/upload", (0, imagesController_1.upload)("groups").single("picture"), imagesController_1.uploadImage);

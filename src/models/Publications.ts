@@ -15,4 +15,5 @@ export const Publication = sequelize.define("publications", {
   categoryID: { type: DataTypes.INTEGER },
   ownerID: { type: DataTypes.STRING },
   ownerName: { type: DataTypes.STRING },
+  commentCount: {type: DataTypes.INTEGER},
 });

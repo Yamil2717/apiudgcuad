@@ -5,11 +5,7 @@ class groupsService {
     let groups: any = await Groups.findAll();
     let groupsData: any = [];
     groups.map((group: any) => {
-      let groupData = group.get();
-      groupsData.push({
-        ...groupData,
-        membersIDS: JSON.parse(groupData["membersIDS"]),
-      });
+      groupsData.push(group.get());
     });
     if (groupsData.length <= 0)
       throw new Error(

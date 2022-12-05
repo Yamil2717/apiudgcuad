@@ -6,11 +6,7 @@ class groupsService {
         let groups = await Groups_1.Groups.findAll();
         let groupsData = [];
         groups.map((group) => {
-            let groupData = group.get();
-            groupsData.push({
-                ...groupData,
-                membersIDS: JSON.parse(groupData["membersIDS"]),
-            });
+            groupsData.push(group.get());
         });
         if (groupsData.length <= 0)
             throw new Error("Ha ocurrido un error, no se encuentra ningún tipo de grupo registrado.");

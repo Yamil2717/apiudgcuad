@@ -7,6 +7,7 @@ const User_1 = require("../models/User");
 const Roles_1 = require("../models/Roles");
 const tools_1 = require("../lib/tools");
 const AuthService_1 = __importDefault(require("./AuthService"));
+const env_1 = __importDefault(require("../utils/env"));
 class userService {
     async userRegister(name, email, password, phone, postalCode, userType, tagsIds, interestIds, location, dateBirth, avatar) {
         email = email.toLowerCase();
@@ -22,14 +23,12 @@ class userService {
             phone,
             postalCode,
             userType,
-            tagsIds: JSON.stringify(tagsIds),
-            interestIds: JSON.stringify(interestIds),
-            avatar: avatar ||
-                "http://https://habitandolametropoli.com/api/images/default.jpeg",
-            //avatar: avatar || 'https://habitandolametropoli.com/api/images/default.jpeg',
-            location: JSON.stringify(location),
+            tagsIds: tagsIds,
+            interestIds: interestIds,
+            avatar: avatar || `${env_1.default.api.urlAPI}/images/user/default.jpeg`,
+            location: location,
             dateBirth,
-            blocking: JSON.stringify({ enable: false }),
+            blocking: { enable: false },
         });
         if (!registerUser)
             throw new Error("Ha ocurrido un error y no sé pudo registrar la cuenta");
@@ -61,19 +60,16 @@ class userService {
     }
     async userGetById(id) {
         let user = await User_1.User.findOne({
-            attributes: { exclude: ["password", "blocking", "updatedAt"] },
+            attributes: {
+                exclude: ["password", "blocking", "updatedAt"],
+            },
             where: { id },
         });
         if (!user) {
             throw new Error("El id suministrado no coincide con ningún usuario.");
         }
-        let userData = user.get();
-        return {
-            ...userData,
-            tagsIds: JSON.parse(userData.tagsIds),
-            interestIds: JSON.parse(userData.interestIds),
-            location: JSON.parse(userData.location),
-        };
+        let rol = await Roles_1.Roles.findOne({ where: { id: user?.roleId } });
+        return { ...user.get(), role: rol.get() };
     }
 }
 let UserService = new userService();

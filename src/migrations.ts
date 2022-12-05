@@ -20,16 +20,15 @@ async function migrations() {
     ],
     {
       ignoreDuplicates: true,
+      logging: false,
     }
   )
     .then(() =>
-      console.info(
-        "Se ha insertado la información de user types correctamente."
-      )
+      console.info("Se ha insertado la información de roles correctamente.")
     )
     .catch((err) =>
       console.error(
-        "Ha ocurrido un error a la hora de insertar la información de user types. Error: " +
+        "Ha ocurrido un error a la hora de insertar la información de roles. Error: " +
           err
       )
     );
@@ -74,6 +73,7 @@ async function migrations() {
     ],
     {
       ignoreDuplicates: true,
+      logging: false,
     }
   )
     .then(() =>
@@ -180,6 +180,7 @@ async function migrations() {
     ],
     {
       ignoreDuplicates: true,
+      logging: false,
     }
   )
     .then(() =>
@@ -227,6 +228,7 @@ async function migrations() {
     ],
     {
       ignoreDuplicates: true,
+      logging: false,
     }
   )
     .then(() =>
@@ -246,20 +248,21 @@ async function migrations() {
       password: "$2a$10$bAoGandv2.EsKPvO7jNKoeREKmZIs3/zAK0FYpu0le4JnxfbcugfS",
       phone: "3005849945",
       postalCode: "081455",
-      userType: 3,
-      tagsIds: JSON.stringify([2, 12, 14, 15, 18, 34]),
-      interestIds: JSON.stringify([1, 2, 3, 4]),
+      roleId: 3,
+      tagsIds: [2, 12, 14, 15, 18, 34],
+      interestIds: [1, 2, 3, 4],
       avatar: `${env.api.urlAPI}/images/user/default.jpeg`,
-      location: JSON.stringify({
+      location: {
         lat: 37.4219983,
         long: -122.084,
         locationName: "1600 Amphitheatre Pkwy, Mountain View, CA 94043, USA",
-      }),
+      },
       dateBirth: "2022-11-28 00:45:12.427-05",
       blocking: '{"enable":false}',
     },
     {
       ignoreDuplicates: true,
+      logging: false,
     }
   )
     .then(() =>

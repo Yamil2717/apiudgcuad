@@ -22,9 +22,10 @@ async function migrations() {
         { name: "Financieros de Vivienda" },
     ], {
         ignoreDuplicates: true,
+        logging: false,
     })
-        .then(() => console.info("Se ha insertado la información de user types correctamente."))
-        .catch((err) => console.error("Ha ocurrido un error a la hora de insertar la información de user types. Error: " +
+        .then(() => console.info("Se ha insertado la información de roles correctamente."))
+        .catch((err) => console.error("Ha ocurrido un error a la hora de insertar la información de roles. Error: " +
         err));
     await Interest_1.Interest.bulkCreate([
         {
@@ -57,6 +58,7 @@ async function migrations() {
         },
     ], {
         ignoreDuplicates: true,
+        logging: false,
     })
         .then(() => console.info("Se ha insertado la información de intereses correctamente."))
         .catch((err) => console.error("Ha ocurrido un error a la hora de insertar la información de intereses. Error: " +
@@ -153,6 +155,7 @@ async function migrations() {
         { hashtag: "empleo", idCategory: 7 },
     ], {
         ignoreDuplicates: true,
+        logging: false,
     })
         .then(() => console.info("Se ha insertado la información de tags correctamente."))
         .catch((err) => console.error("Ha ocurrido un error a la hora de insertar la información de tags. Error: " +
@@ -185,6 +188,7 @@ async function migrations() {
         },
     ], {
         ignoreDuplicates: true,
+        logging: false,
     })
         .then(() => console.info("Se ha insertado la información de grupos correctamente."))
         .catch((err) => console.error("Ha ocurrido un error a la hora de insertar la información de grupos. Error: " +
@@ -195,19 +199,20 @@ async function migrations() {
         password: "$2a$10$bAoGandv2.EsKPvO7jNKoeREKmZIs3/zAK0FYpu0le4JnxfbcugfS",
         phone: "3005849945",
         postalCode: "081455",
-        userType: 3,
-        tagsIds: JSON.stringify([2, 12, 14, 15, 18, 34]),
-        interestIds: JSON.stringify([1, 2, 3, 4]),
+        roleId: 3,
+        tagsIds: [2, 12, 14, 15, 18, 34],
+        interestIds: [1, 2, 3, 4],
         avatar: `${env_1.default.api.urlAPI}/images/user/default.jpeg`,
-        location: JSON.stringify({
+        location: {
             lat: 37.4219983,
             long: -122.084,
             locationName: "1600 Amphitheatre Pkwy, Mountain View, CA 94043, USA",
-        }),
+        },
         dateBirth: "2022-11-28 00:45:12.427-05",
         blocking: '{"enable":false}',
     }, {
         ignoreDuplicates: true,
+        logging: false,
     })
         .then(() => console.info("Se ha insertado el usuario de admin correctamente."))
         .catch((err) => console.error("Ha ocurrido un error a la hora de insertar el usuario de admin. Error: " +

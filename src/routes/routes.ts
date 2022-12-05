@@ -26,6 +26,10 @@ import {
 const path = require("node:path");
 import multer from "multer";
 import { v4 as uuidv4 } from "uuid";
+import {
+  createCommentByID,
+  getAllCommentsByID,
+} from "../controllers/commentsController";
 const response = new Response();
 const router = Router();
 
@@ -62,6 +66,11 @@ router.get("/groups", Auth("User", response), getAllGroups);
 
 router.post("/publication", Auth("User", response), createPublication);
 router.get("/publications", Auth("User", response), getAllPublications);
+
+// Comments routes
+
+router.post("/comment", Auth("User", response), createCommentByID);
+router.get("/comments/:idPost", Auth("User", response), getAllCommentsByID);
 
 // Images routes
 

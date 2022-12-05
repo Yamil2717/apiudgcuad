@@ -17,4 +17,5 @@ exports.Publication = database_1.sequelize.define("publications", {
     categoryID: { type: sequelize_1.DataTypes.INTEGER },
     ownerID: { type: sequelize_1.DataTypes.STRING },
     ownerName: { type: sequelize_1.DataTypes.STRING },
+    commentCount: { type: sequelize_1.DataTypes.INTEGER },
 });

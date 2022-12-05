@@ -4,12 +4,19 @@ import { sequelize } from "./src/database/database";
 
 import "./src/models/User";
 import "./src/models/Roles";
+import "./src/models/Groups";
+import "./src/models/Comments";
+import "./src/models/Publications";
+import "./src/models/Interest";
+import "./src/models/Tag";
+
 import migrations from "./src/migrations";
 
 (async () => {
   try {
-    await sequelize.sync({ alter: true });
-    migrations();
+    await sequelize
+      .sync({ alter: true, logging: false })
+      .then(() => migrations());
     console.info("Se ha conectado correctamente a la base de datos.");
     app.listen(env.api.port);
     console.info(
