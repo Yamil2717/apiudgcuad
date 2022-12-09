@@ -5,25 +5,13 @@ import PublicationsService from "../services/PublicationsService";
 
 async function createPublication(req: Request, res: Response) {
   try {
-    let {
-      description,
-      pictures,
-      pictureGroup,
-      groupID,
-      groupName,
-      categoryID,
-      ownerID,
-      ownerName,
-    } = req.body;
+    let { description, pictures, groupID, categoryID, ownerID } = req.body;
     let publication: any = await PublicationsService.createPublication(
       description,
       pictures,
-      pictureGroup,
       groupID,
-      groupName,
       categoryID,
-      ownerID,
-      ownerName
+      ownerID
     );
     if (!publication) return;
     console.info(`SOMEONE CREATE A NEW PUBLICATION`);

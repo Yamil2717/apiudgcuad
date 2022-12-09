@@ -1,17 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const Groups_1 = require("../models/Groups");
 const Publications_1 = require("../models/Publications");
+const User_1 = require("../models/User");
 class publicationsService {
-    async createPublication(description, pictures, pictureGroup, groupID, groupName, categoryID, ownerID, ownerName) {
+    async createPublication(description, pictures, groupID, categoryID, ownerID) {
         let publication = await Publications_1.Publication.create({
             description,
             pictures,
-            pictureGroup,
-            groupID,
-            groupName,
             categoryID,
             ownerID,
-            ownerName,
+            groupID,
         });
         if (!publication)
             throw new Error("Ha ocurrido un error y no sé pudo crear el post");
@@ -21,6 +20,14 @@ class publicationsService {
         let publications = await Publications_1.Publication.findAll({
             limit: 15,
             order: [["createdAt", "DESC"]],
+            include: [
+                {
+                    model: User_1.User,
+                    attributes: ["name"],
+                    required: true,
+                },
+                { model: Groups_1.Groups, required: true },
+            ],
         });
         let publicationsData = [];
         publications.map((publication) => {

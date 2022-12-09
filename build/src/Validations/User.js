@@ -27,9 +27,8 @@ exports.createUserValidation = (0, yup_1.object)({
             .max(10)
             .required("Debe ingresar su código postal")
             .typeError("Debe ingresar su código postal"),
-        roleId: (0, yup_1.number)()
-            /*string()
-            .uuid()*/
+        roleId: (0, yup_1.string)()
+            .uuid()
             .required("Debe ingresar un tipo de usuario.")
             .typeError("Debe ingresar un tipo de usuario"),
         tagsIds: (0, yup_1.array)()

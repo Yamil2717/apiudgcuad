@@ -10,8 +10,8 @@ const resAPI = new tools_1.Response();
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 async function createUser(req, res) {
     try {
-        let { name, email, password, phone, postalCode, userType, tagsIds, interestIds, location, dateBirth, avatar, } = req.body;
-        let user = await UserServices_1.default.userRegister(name, email, password, phone, postalCode, userType, tagsIds, interestIds, location, dateBirth, avatar);
+        let { name, email, password, phone, postalCode, roleId, tagsIds, interestIds, location, dateBirth, avatar, } = req.body;
+        let user = await UserServices_1.default.userRegister(name, email, password, phone, postalCode, roleId, tagsIds, interestIds, location, dateBirth, avatar);
         console.info(`USER CREATED, UUID: ${user.id}`);
         resAPI.success(res, { message: "Se ha registrado correctamente." });
     }

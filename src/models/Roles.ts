@@ -5,11 +5,9 @@ export const Roles = sequelize.define(
   "roles",
   {
     id: {
-      /*type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,*/
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
-      autoIncrement: true,
     },
     name: { type: DataTypes.STRING, unique: true },
   },

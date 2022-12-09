@@ -22,8 +22,8 @@ async function getAllCommentsByID(req, res) {
 exports.getAllCommentsByID = getAllCommentsByID;
 async function createCommentByID(req, res) {
     try {
-        let { idPost, comment, ownerID, ownerName, photoUrl } = req.body;
-        let comments = await CommentsService_1.default.putCommentByPostID(idPost, comment, ownerID, ownerName, photoUrl);
+        let { idPublication, comment, ownerID, idFatherComment } = req.body;
+        let comments = await CommentsService_1.default.putCommentByPostID(idPublication, comment, ownerID, idFatherComment);
         console.info(`SOMEONE MAKE A COMMENT`);
         resAPI.success(res, comments);
     }

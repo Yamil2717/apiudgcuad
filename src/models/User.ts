@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database";
+import { Roles } from "./Roles";
 
 export const User = sequelize.define("users", {
   id: {
@@ -13,15 +14,22 @@ export const User = sequelize.define("users", {
   phone: { type: DataTypes.STRING },
   postalCode: { type: DataTypes.STRING(10) },
   roleId: {
-    //type: DataTypes.UUID
-    type: DataTypes.INTEGER,
-    /*onDelete: "restrict",
-    onUpdate: "CASCADE",*/
+    type: DataTypes.UUID,
+    references: {
+      model: Roles,
+      key: "id",
+    },
+    onUpdate: "CASCADE",
+    onDelete: "RESTRICT",
   },
   tagsIds: { type: DataTypes.ARRAY(DataTypes.INTEGER) },
-  interestIds: { type: DataTypes.ARRAY(DataTypes.INTEGER) },
+  interestIds: { type: DataTypes.ARRAY(DataTypes.UUID) },
   avatar: { type: DataTypes.STRING },
   location: { type: DataTypes.JSON },
   dateBirth: { type: DataTypes.DATE },
   blocking: { type: DataTypes.JSON },
+});
+
+User.belongsTo(Roles, {
+  foreignKey: "roleId",
 });

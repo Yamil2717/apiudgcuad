@@ -11,7 +11,7 @@ class userService {
     password: string,
     phone: string,
     postalCode: string,
-    userType: number,
+    roleId: number,
     tagsIds: Array<number>,
     interestIds: Array<any>,
     location: object,
@@ -30,11 +30,11 @@ class userService {
       password: hashedPassword,
       phone,
       postalCode,
-      userType,
-      tagsIds: tagsIds,
-      interestIds: interestIds,
+      roleId,
+      tagsIds,
+      interestIds,
       avatar: avatar || `${env.api.urlAPI}/images/user/default.jpeg`,
-      location: location,
+      location,
       dateBirth,
       blocking: { enable: false },
     });
@@ -83,12 +83,12 @@ class userService {
         exclude: ["password", "blocking", "updatedAt"],
       },
       where: { id },
+      include: { model: Roles, required: true },
     });
     if (!user) {
       throw new Error("El id suministrado no coincide con ningún usuario.");
     }
-    let rol: any = await Roles.findOne({ where: { id: user?.roleId } });
-    return { ...user.get(), role: rol.get() };
+    return user.get();
   }
 }
 

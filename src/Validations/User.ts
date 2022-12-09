@@ -1,4 +1,4 @@
-import { object, string, number, array, date, ref } from "yup";
+import { object, string, array, date, ref } from "yup";
 
 export const createUserValidation = object({
   body: object({
@@ -25,9 +25,8 @@ export const createUserValidation = object({
       .max(10)
       .required("Debe ingresar su código postal")
       .typeError("Debe ingresar su código postal"),
-    roleId: number()
-      /*string()
-      .uuid()*/
+    roleId: string()
+      .uuid()
       .required("Debe ingresar un tipo de usuario.")
       .typeError("Debe ingresar un tipo de usuario"),
     tagsIds: array()

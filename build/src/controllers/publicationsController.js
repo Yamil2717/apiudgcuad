@@ -9,8 +9,8 @@ const resAPI = new tools_1.Response();
 const PublicationsService_1 = __importDefault(require("../services/PublicationsService"));
 async function createPublication(req, res) {
     try {
-        let { description, pictures, pictureGroup, groupID, groupName, categoryID, ownerID, ownerName, } = req.body;
-        let publication = await PublicationsService_1.default.createPublication(description, pictures, pictureGroup, groupID, groupName, categoryID, ownerID, ownerName);
+        let { description, pictures, groupID, categoryID, ownerID } = req.body;
+        let publication = await PublicationsService_1.default.createPublication(description, pictures, groupID, categoryID, ownerID);
         if (!publication)
             return;
         console.info(`SOMEONE CREATE A NEW PUBLICATION`);

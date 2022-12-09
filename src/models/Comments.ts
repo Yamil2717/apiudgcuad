@@ -1,5 +1,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database";
+import { Publication } from "./Publications";
+import { User } from "./User";
 
 export const Comments = sequelize.define("comments", {
   id: {
@@ -7,10 +9,36 @@ export const Comments = sequelize.define("comments", {
     primaryKey: true,
     defaultValue: DataTypes.UUIDV4,
   },
-  idPost: { type: DataTypes.UUID },
+  idPublication: {
+    type: DataTypes.UUID,
+    references: {
+      model: Publication,
+      key: "id",
+    },
+    onUpdate: "CASCADE",
+    onDelete: "RESTRICT",
+  },
   comment: { type: DataTypes.STRING },
-  ownerID: { type: DataTypes.UUID },
-  ownerName: { type: DataTypes.STRING },
-  photoUrl: { type: DataTypes.STRING },
-  subCommentsCounter: { type: DataTypes.INTEGER },
+  ownerID: {
+    type: DataTypes.UUID,
+    references: {
+      model: User,
+      key: "id",
+    },
+    onUpdate: "CASCADE",
+    onDelete: "RESTRICT",
+  },
+  likePositive: { type: DataTypes.INTEGER, defaultValue: 0 },
+  likeNeutral: { type: DataTypes.INTEGER, defaultValue: 0 },
+  likeNegative: { type: DataTypes.INTEGER, defaultValue: 0 },
+  subComment: { type: DataTypes.BOOLEAN, defaultValue: false },
+  idFatherComment: { type: DataTypes.UUID },
+});
+
+Comments.belongsTo(Publication, {
+  foreignKey: "idPublication",
+});
+
+Comments.belongsTo(User, {
+  foreignKey: "ownerID",
 });

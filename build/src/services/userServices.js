@@ -9,7 +9,7 @@ const tools_1 = require("../lib/tools");
 const AuthService_1 = __importDefault(require("./AuthService"));
 const env_1 = __importDefault(require("../utils/env"));
 class userService {
-    async userRegister(name, email, password, phone, postalCode, userType, tagsIds, interestIds, location, dateBirth, avatar) {
+    async userRegister(name, email, password, phone, postalCode, roleId, tagsIds, interestIds, location, dateBirth, avatar) {
         email = email.toLowerCase();
         let userExist = await User_1.User.findOne({ where: { email } });
         if (userExist) {
@@ -22,11 +22,11 @@ class userService {
             password: hashedPassword,
             phone,
             postalCode,
-            userType,
-            tagsIds: tagsIds,
-            interestIds: interestIds,
+            roleId,
+            tagsIds,
+            interestIds,
             avatar: avatar || `${env_1.default.api.urlAPI}/images/user/default.jpeg`,
-            location: location,
+            location,
             dateBirth,
             blocking: { enable: false },
         });
@@ -64,12 +64,12 @@ class userService {
                 exclude: ["password", "blocking", "updatedAt"],
             },
             where: { id },
+            include: { model: Roles_1.Roles, required: true },
         });
         if (!user) {
             throw new Error("El id suministrado no coincide con ningún usuario.");
         }
-        let rol = await Roles_1.Roles.findOne({ where: { id: user?.roleId } });
-        return { ...user.get(), role: rol.get() };
+        return user.get();
     }
 }
 let UserService = new userService();

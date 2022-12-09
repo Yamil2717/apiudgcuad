@@ -6,14 +6,14 @@ class tagsService {
         let tags = await Tag_1.Tags.findAll();
         let tagsData = {};
         tags.map((tag) => {
-            let { id, hashtag, idCategory } = tag.get();
-            if (!tagsData[idCategory]) {
-                tagsData[idCategory] = [{ id, hashtag, idCategory }];
+            let { id, hashtag, idInterest } = tag.get();
+            if (!tagsData[idInterest]) {
+                tagsData[idInterest] = [{ id, hashtag, idInterest }];
             }
             else {
-                tagsData[idCategory] = [
-                    ...tagsData[idCategory],
-                    { id, hashtag, idCategory },
+                tagsData[idInterest] = [
+                    ...tagsData[idInterest],
+                    { id, hashtag, idInterest },
                 ];
             }
         });

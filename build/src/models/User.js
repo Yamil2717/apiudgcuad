@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const sequelize_1 = require("sequelize");
 const database_1 = require("../database/database");
+const Roles_1 = require("./Roles");
 exports.User = database_1.sequelize.define("users", {
     id: {
         type: sequelize_1.DataTypes.UUID,
@@ -15,15 +16,21 @@ exports.User = database_1.sequelize.define("users", {
     phone: { type: sequelize_1.DataTypes.STRING },
     postalCode: { type: sequelize_1.DataTypes.STRING(10) },
     roleId: {
-        //type: DataTypes.UUID
-        type: sequelize_1.DataTypes.INTEGER,
-        /*onDelete: "restrict",
-        onUpdate: "CASCADE",*/
+        type: sequelize_1.DataTypes.UUID,
+        references: {
+            model: Roles_1.Roles,
+            key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "RESTRICT",
     },
     tagsIds: { type: sequelize_1.DataTypes.ARRAY(sequelize_1.DataTypes.INTEGER) },
-    interestIds: { type: sequelize_1.DataTypes.ARRAY(sequelize_1.DataTypes.INTEGER) },
+    interestIds: { type: sequelize_1.DataTypes.ARRAY(sequelize_1.DataTypes.UUID) },
     avatar: { type: sequelize_1.DataTypes.STRING },
     location: { type: sequelize_1.DataTypes.JSON },
     dateBirth: { type: sequelize_1.DataTypes.DATE },
     blocking: { type: sequelize_1.DataTypes.JSON },
+});
+exports.User.belongsTo(Roles_1.Roles, {
+    foreignKey: "roleId",
 });

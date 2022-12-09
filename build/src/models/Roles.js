@@ -5,11 +5,9 @@ const sequelize_1 = require("sequelize");
 const database_1 = require("../database/database");
 exports.Roles = database_1.sequelize.define("roles", {
     id: {
-        /*type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,*/
-        type: sequelize_1.DataTypes.INTEGER,
+        type: sequelize_1.DataTypes.UUID,
+        defaultValue: sequelize_1.DataTypes.UUIDV4,
         primaryKey: true,
-        autoIncrement: true,
     },
     name: { type: sequelize_1.DataTypes.STRING, unique: true },
 }, {

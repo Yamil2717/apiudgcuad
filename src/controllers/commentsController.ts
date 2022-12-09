@@ -17,13 +17,12 @@ async function getAllCommentsByID(req: Request, res: Response) {
 
 async function createCommentByID(req: Request, res: Response) {
   try {
-    let { idPost, comment, ownerID, ownerName, photoUrl } = req.body;
+    let { idPublication, comment, ownerID, idFatherComment } = req.body;
     let comments: any = await CommentsService.putCommentByPostID(
-      idPost,
+      idPublication,
       comment,
       ownerID,
-      ownerName,
-      photoUrl
+      idFatherComment
     );
     console.info(`SOMEONE MAKE A COMMENT`);
     resAPI.success(res, comments);
