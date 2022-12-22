@@ -15,7 +15,7 @@ import migrations from "./src/migrations";
 (async () => {
   try {
     await sequelize
-      .sync({ force: true, logging: false })
+      .sync({ alter: true, logging: false })
       .then(() => migrations());
     console.info("Se ha conectado correctamente a la base de datos.");
     app.listen(env.api.port);

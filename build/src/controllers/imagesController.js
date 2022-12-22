@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getImage = exports.uploadImagePublications = exports.uploadImage = exports.upload = void 0;
+exports.deleteImage = exports.getImage = exports.uploadImage = exports.upload = void 0;
 const tools_1 = require("../lib/tools");
 const resAPI = new tools_1.Response();
 const path_1 = __importDefault(require("path"));
@@ -13,11 +13,28 @@ const uuid_1 = require("uuid");
 const env_1 = __importDefault(require("../utils/env"));
 async function uploadImage(req, res) {
     try {
-        if (!req.file) {
-            return resAPI.error(res, "No se envió la fotografía");
+        let { type } = req.params;
+        if (type !== "publications") {
+            let file = req.files;
+            if (!file[0]) {
+                return resAPI.error(res, "No se envió la fotografía");
+            }
+            console.info(`Se ha guardado una imagen en ${JSON.stringify(file[0].path)}`);
+            resAPI.success(res, `${env_1.default.api.urlAPI}/images/${type}/${file[0].filename}`);
         }
-        console.info(`Se ha guardado una imagen en ${JSON.stringify(req.file.path)}`);
-        resAPI.success(res, `${env_1.default.api.urlAPI}/images/user/${req.file.filename}`);
+        else {
+            let tempReqFiles = req.files;
+            req.files = [...tempReqFiles];
+            if (req.files.length <= 0) {
+                return resAPI.error(res, "No se ha recibido las fotografías");
+            }
+            let arrayUrls = [];
+            req.files.map((file) => {
+                console.info(`Se ha guardado una imagen en ${JSON.stringify(file.path)}`);
+                arrayUrls.push(`${env_1.default.api.urlAPI}/images/${type}/${file.filename}`);
+            });
+            resAPI.success(res, arrayUrls);
+        }
     }
     catch (error) {
         console.error(error?.message);
@@ -25,26 +42,6 @@ async function uploadImage(req, res) {
     }
 }
 exports.uploadImage = uploadImage;
-async function uploadImagePublications(req, res) {
-    try {
-        let tempReqFiles = req.files;
-        req.files = [...tempReqFiles];
-        if (req.files.length <= 0) {
-            return resAPI.error(res, "No se ha recibido las fotografías");
-        }
-        let arrayUrls = [];
-        req.files.map((file) => {
-            console.info(`Se ha guardado una imagen en ${JSON.stringify(file.path)}`);
-            arrayUrls.push(`${env_1.default.api.urlAPI}/images/publications/${file.filename}`);
-        });
-        resAPI.success(res, arrayUrls);
-    }
-    catch (error) {
-        console.error(error?.message);
-        return resAPI.error(res, error?.message, 400);
-    }
-}
-exports.uploadImagePublications = uploadImagePublications;
 async function getImage(req, res) {
     try {
         let { type, fileName } = req.params;
@@ -62,22 +59,41 @@ async function getImage(req, res) {
     }
 }
 exports.getImage = getImage;
+async function deleteImage(req, res) {
+    try {
+        let { type, fileName } = req.params;
+        let pathImage = path_1.default.resolve(`./imagesUpload/${type}/${fileName}`);
+        fs_1.default.unlink(pathImage, (err) => {
+            if (err) {
+                resAPI.error(res, "No existe esa imagen.");
+            }
+            else {
+                resAPI.success(res, "ok");
+            }
+        });
+    }
+    catch (error) {
+        console.error(error?.message);
+        return resAPI.error(res, error?.message, 500);
+    }
+}
+exports.deleteImage = deleteImage;
 // Configs multer
-function getStorage(type) {
-    const Storage = multer_1.default.diskStorage({
+function getStorage() {
+    return multer_1.default.diskStorage({
         destination(req, file, callback) {
+            let { type } = req.params;
             callback(null, `./imagesUpload/${type}`);
         },
         filename(req, file, callback) {
             callback(null, `${file.fieldname}_${(0, uuid_1.v4)()}_${Date.now()}.${file.mimetype.split("/")[1]}`);
         },
     });
-    return Storage;
 }
-function upload(type) {
-    let upload = (0, multer_1.default)({
-        storage: getStorage(type),
-        limits: { fileSize: 6 * 1024 * 1024 },
+function upload() {
+    return (0, multer_1.default)({
+        storage: getStorage(),
+        limits: { fileSize: 4 * 1024 * 1024 },
         fileFilter: (req, file, cb) => {
             if (file.mimetype == "image/png" ||
                 file.mimetype == "image/jpg" ||
@@ -92,6 +108,5 @@ function upload(type) {
             }
         },
     });
-    return upload;
 }
 exports.upload = upload;

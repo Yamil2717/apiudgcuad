@@ -34,6 +34,7 @@ class userService {
       tagsIds,
       interestIds,
       avatar: avatar || `${env.api.urlAPI}/images/user/default.jpeg`,
+      header: `${env.api.urlAPI}/images/profile_banner/default.jpeg`,
       location,
       dateBirth,
       blocking: { enable: false },
@@ -86,7 +87,7 @@ class userService {
       include: { model: Roles, required: true },
     });
     if (!user) {
-      throw new Error("El id suministrado no coincide con ningún usuario.");
+      throw new Error("Debe volver a ingresar...");
     }
     return user.get();
   }

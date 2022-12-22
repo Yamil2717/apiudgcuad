@@ -6,38 +6,34 @@ import {
   createUser,
   loginUser,
   getTypesUser,
-  getUserById,
+  getUserByID,
+  getUserByToken,
 } from "../controllers/userController";
 import { createUserValidation, userLoginValidation } from "../Validations/User";
 import { getAllInterest } from "../controllers/interestController";
 import { Response } from "../lib/tools";
 import { getAllTags } from "../controllers/tagsController";
-import {
-  upload,
-  uploadImage,
-  uploadImagePublications,
-  getImage,
-} from "../controllers/imagesController";
 import { getAllGroups } from "../controllers/groupsController";
 import {
   createPublication,
   getAllPublications,
+  getAllPublicationsFromUserID,
 } from "../controllers/publicationsController";
 const path = require("node:path");
-import multer from "multer";
-import { v4 as uuidv4 } from "uuid";
 import {
   createCommentByID,
   getAllCommentsByID,
 } from "../controllers/commentsController";
+import imagesRoutes from "./imagesRoutes";
 const response = new Response();
 const router = Router();
 
 // Users routes
 
 router.post("/user", Validations(createUserValidation, response), createUser);
-router.get("/user", Auth("User", response), getUserById);
+router.get("/user", Auth("User", response), getUserByToken);
 router.get("/user/types", getTypesUser);
+router.get("/user/:id", Auth("User", response), getUserByID);
 
 // Auth routes
 router.post(
@@ -66,34 +62,17 @@ router.get("/groups", Auth("User", response), getAllGroups);
 
 router.post("/publication", Auth("User", response), createPublication);
 router.get("/publications", Auth("User", response), getAllPublications);
+router.get(
+  "/publications/:ownerID",
+  Auth("User", response),
+  getAllPublicationsFromUserID
+);
 
 // Comments routes
 
 router.post("/comment", Auth("User", response), createCommentByID);
 router.get("/comments/:idPost", Auth("User", response), getAllCommentsByID);
 
-// Images routes
-
-router.post(
-  "/images/user/upload",
-  upload("user").single("avatar"),
-  uploadImage
-);
-router.post(
-  "/images/group/upload",
-  upload("groups").single("picture"),
-  uploadImage
-);
-router.post(
-  "/images/dist/upload",
-  upload("dist").single("picture"),
-  uploadImage
-);
-router.post(
-  "/images/publication/upload",
-  upload("publications").array("pictures", 4),
-  uploadImagePublications
-);
-router.get("/images/:type/:fileName", getImage);
+router.use("/images", imagesRoutes);
 
 export default router;

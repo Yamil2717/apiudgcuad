@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserById = exports.getTypesUser = exports.loginUser = exports.createUser = void 0;
+exports.getUserByID = exports.getUserByToken = exports.getTypesUser = exports.loginUser = exports.createUser = void 0;
 const tools_1 = require("../lib/tools");
 const UserServices_1 = __importDefault(require("../services/UserServices"));
 const resAPI = new tools_1.Response();
@@ -47,7 +47,7 @@ async function getTypesUser(req, res) {
     }
 }
 exports.getTypesUser = getTypesUser;
-async function getUserById(req, res) {
+async function getUserByToken(req, res) {
     try {
         let authorization = req.headers.authorization;
         let token = authorization.split(" ");
@@ -63,4 +63,19 @@ async function getUserById(req, res) {
         return resAPI.error(res, error?.message, 500);
     }
 }
-exports.getUserById = getUserById;
+exports.getUserByToken = getUserByToken;
+async function getUserByID(req, res) {
+    try {
+        let { id } = req.params;
+        if (!id) {
+            resAPI.error(res, "No se ha podido obtener el id del usuario.");
+        }
+        let dataUser = await UserServices_1.default.userGetById(id);
+        resAPI.success(res, dataUser);
+    }
+    catch (error) {
+        console.error(error?.message);
+        return resAPI.error(res, error?.message, 500);
+    }
+}
+exports.getUserByID = getUserByID;

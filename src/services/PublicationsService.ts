@@ -47,6 +47,33 @@ class publicationsService {
 
     return publicationsData;
   }
+
+  async getAllPublicationsFromUserID(ownerID: string) {
+    let publications: any = await Publication.findAll({
+      limit: 15,
+      order: [["createdAt", "DESC"]],
+      include: [
+        {
+          model: User,
+          attributes: ["name"],
+          required: true,
+        },
+        { model: Groups, required: true },
+      ],
+      where: { ownerID },
+    });
+    let publicationsData: any = [];
+    publications.map((publication: any) => {
+      publicationsData.push(publication.get());
+    });
+    if (publicationsData.length <= 0) {
+      throw new Error(
+        "Ha ocurrido un error, no se encuentra ningún tipo de post registrado."
+      );
+    }
+
+    return publicationsData;
+  }
 }
 
 let PublicationsService = new publicationsService();

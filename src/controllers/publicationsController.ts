@@ -33,4 +33,17 @@ async function getAllPublications(req: Request, res: Response) {
   }
 }
 
-export { createPublication, getAllPublications };
+async function getAllPublicationsFromUserID(req: Request, res: Response) {
+  try {
+    let { ownerID } = req.params;
+    let publications: any =
+      await PublicationsService.getAllPublicationsFromUserID(ownerID);
+    console.info(`SOMEONE GOT ALL THE PUBLICATIONS OF USER ID: ${ownerID}`);
+    resAPI.success(res, publications);
+  } catch (error) {
+    console.error((error as Error)?.message);
+    return resAPI.error(res, (error as Error)?.message, 500);
+  }
+}
+
+export { createPublication, getAllPublications, getAllPublicationsFromUserID };

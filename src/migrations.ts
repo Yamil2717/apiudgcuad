@@ -8,7 +8,7 @@ import env from "./utils/env";
 async function migrations() {
   await Roles.bulkCreate(
     [
-      { id: "fc987eec-e7d6-43a2-a8fd-5e87ad8b1830", name: "Admin" },
+      { id: "fc987eec-e7d6-43a2-a8fd-5e87ad8b1830", name: "Administrador" },
       { name: "Empresario" },
       { name: "Desarrollador" },
       { name: "Funcionario público" },
@@ -448,7 +448,7 @@ async function migrations() {
 
   await User.create(
     {
-      name: "Admin",
+      name: "Héctor Lavoe",
       email: "admin@gmail.com",
       password: "$2a$10$bAoGandv2.EsKPvO7jNKoeREKmZIs3/zAK0FYpu0le4JnxfbcugfS",
       phone: "3005849945",
@@ -462,6 +462,7 @@ async function migrations() {
         "8d79c80e-7ca3-4636-9b0f-fe234a035c78",
       ],
       avatar: `${env.api.urlAPI}/images/user/default.jpeg`,
+      header: `${env.api.urlAPI}/images/profile_banner/default.jpeg`,
       location: {
         lat: 37.4219983,
         long: -122.084,

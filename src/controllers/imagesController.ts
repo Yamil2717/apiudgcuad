@@ -9,31 +9,34 @@ import env from "../utils/env";
 
 async function uploadImage(req: Request, res: Response) {
   try {
-    if (!req.file) {
-      return resAPI.error(res, "No se envió la fotografía");
+    let { type } = req.params;
+    if (type !== "publications") {
+      let file: any = req.files;
+      if (!file[0]) {
+        return resAPI.error(res, "No se envió la fotografía");
+      }
+      console.info(
+        `Se ha guardado una imagen en ${JSON.stringify(file[0].path)}`
+      );
+      resAPI.success(
+        res,
+        `${env.api.urlAPI}/images/${type}/${file[0].filename}`
+      );
+    } else {
+      let tempReqFiles: any = req.files;
+      req.files = [...tempReqFiles];
+      if (req.files.length <= 0) {
+        return resAPI.error(res, "No se ha recibido las fotografías");
+      }
+      let arrayUrls: any = [];
+      req.files.map((file: any) => {
+        console.info(
+          `Se ha guardado una imagen en ${JSON.stringify(file.path)}`
+        );
+        arrayUrls.push(`${env.api.urlAPI}/images/${type}/${file.filename}`);
+      });
+      resAPI.success(res, arrayUrls);
     }
-    console.info(
-      `Se ha guardado una imagen en ${JSON.stringify(req.file.path)}`
-    );
-    resAPI.success(res, `${env.api.urlAPI}/images/user/${req.file.filename}`);
-  } catch (error) {
-    console.error((error as Error)?.message);
-    return resAPI.error(res, (error as Error)?.message, 400);
-  }
-}
-async function uploadImagePublications(req: Request, res: Response) {
-  try {
-    let tempReqFiles: any = req.files;
-    req.files = [...tempReqFiles];
-    if (req.files.length <= 0) {
-      return resAPI.error(res, "No se ha recibido las fotografías");
-    }
-    let arrayUrls: any = [];
-    req.files.map((file: any) => {
-      console.info(`Se ha guardado una imagen en ${JSON.stringify(file.path)}`);
-      arrayUrls.push(`${env.api.urlAPI}/images/publications/${file.filename}`);
-    });
-    resAPI.success(res, arrayUrls);
   } catch (error) {
     console.error((error as Error)?.message);
     return resAPI.error(res, (error as Error)?.message, 400);
@@ -55,11 +58,29 @@ async function getImage(req: Request, res: Response) {
   }
 }
 
+async function deleteImage(req: Request, res: Response) {
+  try {
+    let { type, fileName } = req.params;
+    let pathImage = path.resolve(`./imagesUpload/${type}/${fileName}`);
+    fs.unlink(pathImage, (err) => {
+      if (err) {
+        resAPI.error(res, "No existe esa imagen.");
+      } else {
+        resAPI.success(res, "ok");
+      }
+    });
+  } catch (error) {
+    console.error((error as Error)?.message);
+    return resAPI.error(res, (error as Error)?.message, 500);
+  }
+}
+
 // Configs multer
 
-function getStorage(type: string) {
-  const Storage = multer.diskStorage({
+function getStorage() {
+  return multer.diskStorage({
     destination(req, file, callback) {
+      let { type } = req.params;
       callback(null, `./imagesUpload/${type}`);
     },
     filename(req, file, callback) {
@@ -71,13 +92,12 @@ function getStorage(type: string) {
       );
     },
   });
-  return Storage;
 }
 
-function upload(type: string) {
-  let upload = multer({
-    storage: getStorage(type),
-    limits: { fileSize: 6 * 1024 * 1024 },
+function upload() {
+  return multer({
+    storage: getStorage(),
+    limits: { fileSize: 4 * 1024 * 1024 },
     fileFilter: (req, file, cb) => {
       if (
         file.mimetype == "image/png" ||
@@ -95,7 +115,6 @@ function upload(type: string) {
       }
     },
   });
-  return upload;
 }
 
-export { upload, uploadImage, uploadImagePublications, getImage };
+export { upload, uploadImage, getImage, deleteImage };

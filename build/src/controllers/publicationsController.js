@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllPublications = exports.createPublication = void 0;
+exports.getAllPublicationsFromUserID = exports.getAllPublications = exports.createPublication = void 0;
 const tools_1 = require("../lib/tools");
 const resAPI = new tools_1.Response();
 const PublicationsService_1 = __importDefault(require("../services/PublicationsService"));
@@ -34,3 +34,16 @@ async function getAllPublications(req, res) {
     }
 }
 exports.getAllPublications = getAllPublications;
+async function getAllPublicationsFromUserID(req, res) {
+    try {
+        let { ownerID } = req.params;
+        let publications = await PublicationsService_1.default.getAllPublicationsFromUserID(ownerID);
+        console.info(`SOMEONE GOT ALL THE PUBLICATIONS OF USER ID: ${ownerID}`);
+        resAPI.success(res, publications);
+    }
+    catch (error) {
+        console.error(error?.message);
+        return resAPI.error(res, error?.message, 500);
+    }
+}
+exports.getAllPublicationsFromUserID = getAllPublicationsFromUserID;

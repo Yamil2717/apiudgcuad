@@ -64,7 +64,7 @@ async function getTypesUser(req: Request, res: Response) {
   }
 }
 
-async function getUserById(req: Request, res: Response) {
+async function getUserByToken(req: Request, res: Response) {
   try {
     let authorization: any = req.headers.authorization;
     let token = authorization.split(" ");
@@ -80,4 +80,18 @@ async function getUserById(req: Request, res: Response) {
   }
 }
 
-export { createUser, loginUser, getTypesUser, getUserById };
+async function getUserByID(req: Request, res: Response) {
+  try {
+    let { id } = req.params;
+    if (!id) {
+      resAPI.error(res, "No se ha podido obtener el id del usuario.");
+    }
+    let dataUser = await UserService.userGetById(id);
+    resAPI.success(res, dataUser);
+  } catch (error) {
+    console.error((error as Error)?.message);
+    return resAPI.error(res, (error as Error)?.message, 500);
+  }
+}
+
+export { createUser, loginUser, getTypesUser, getUserByToken, getUserByID };
