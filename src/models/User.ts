@@ -24,14 +24,17 @@ export const User = sequelize.define("users", {
   },
   tagsIds: { type: DataTypes.ARRAY(DataTypes.INTEGER) },
   interestIds: { type: DataTypes.ARRAY(DataTypes.UUID) },
-  friends: { type: DataTypes.ARRAY(DataTypes.UUID) },
-  follows: { type: DataTypes.ARRAY(DataTypes.UUID) },
-  groups: { type: DataTypes.ARRAY(DataTypes.UUID) },
+  friends: { type: DataTypes.JSON, defaultValue: {} },
+  follows: { type: DataTypes.JSON, defaultValue: {} },
+  groups: { type: DataTypes.JSON, defaultValue: {} },
   avatar: { type: DataTypes.STRING },
   header: { type: DataTypes.STRING },
-  location: { type: DataTypes.JSON },
+  location: {
+    type: DataTypes.JSON,
+    defaultValue: { lat: 0, long: 0, locationName: "No street name" },
+  },
   dateBirth: { type: DataTypes.DATE },
-  blocking: { type: DataTypes.JSON },
+  blocking: { type: DataTypes.JSON, defaultValue: { enable: false } },
 });
 
 User.belongsTo(Roles, {

@@ -11,7 +11,7 @@ const router = Router();
 
 router.post("/:type/upload", upload().array("picture", 4), uploadImage);
 router.get("/:type/:fileName", getImage);
-router.delete("/:type:/fileName", deleteImage);
+router.delete("/:type/:fileName", deleteImage);
 router.use((err: any, req: any, res: any, next: any) => {
   if (err.code === "LIMIT_FILE_SIZE") {
     return response.error(

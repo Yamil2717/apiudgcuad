@@ -9,6 +9,7 @@ import "./src/models/Comments";
 import "./src/models/Publications";
 import "./src/models/Interest";
 import "./src/models/Tag";
+import "./src/models/Reactions";
 
 import migrations from "./src/migrations";
 

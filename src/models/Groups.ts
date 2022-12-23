@@ -9,7 +9,9 @@ export const Groups = sequelize.define("groups", {
     defaultValue: DataTypes.UUIDV4,
   },
   name: { type: DataTypes.STRING, unique: true },
+  description: { type: DataTypes.STRING },
   picture: { type: DataTypes.STRING },
+  header: { type: DataTypes.STRING },
   membersCount: { type: DataTypes.INTEGER, defaultValue: 0 },
   membersIDS: { type: DataTypes.ARRAY(DataTypes.UUID), defaultValue: [] },
   idInterest: {

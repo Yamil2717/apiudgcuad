@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserByID = exports.getUserByToken = exports.getTypesUser = exports.loginUser = exports.createUser = void 0;
+exports.toggleFollow = exports.updateHeader = exports.updateAvatar = exports.getUserByID = exports.getUserByToken = exports.getTypesUser = exports.loginUser = exports.createUser = void 0;
 const tools_1 = require("../lib/tools");
 const UserServices_1 = __importDefault(require("../services/UserServices"));
 const resAPI = new tools_1.Response();
@@ -79,3 +79,57 @@ async function getUserByID(req, res) {
     }
 }
 exports.getUserByID = getUserByID;
+async function updateAvatar(req, res) {
+    try {
+        let { url } = req.body;
+        let authorization = req.headers.authorization;
+        let token = authorization.split(" ");
+        let payloadToken = jsonwebtoken_1.default.decode(token[1]);
+        if (!payloadToken.id) {
+            resAPI.error(res, "No se ha podido obtener el id del usuario.");
+        }
+        let dataUser = await UserServices_1.default.userUpdateAvatar(url, payloadToken.id);
+        resAPI.success(res, dataUser);
+    }
+    catch (error) {
+        console.error(error?.message);
+        return resAPI.error(res, error?.message, 500);
+    }
+}
+exports.updateAvatar = updateAvatar;
+async function updateHeader(req, res) {
+    try {
+        let { url } = req.body;
+        let authorization = req.headers.authorization;
+        let token = authorization.split(" ");
+        let payloadToken = jsonwebtoken_1.default.decode(token[1]);
+        if (!payloadToken.id) {
+            resAPI.error(res, "No se ha podido obtener el id del usuario.");
+        }
+        let dataUser = await UserServices_1.default.userUpdateHeader(url, payloadToken.id);
+        resAPI.success(res, dataUser);
+    }
+    catch (error) {
+        console.error(error?.message);
+        return resAPI.error(res, error?.message, 500);
+    }
+}
+exports.updateHeader = updateHeader;
+async function toggleFollow(req, res) {
+    try {
+        let { id } = req.params;
+        let authorization = req.headers.authorization;
+        let token = authorization.split(" ");
+        let payloadToken = jsonwebtoken_1.default.decode(token[1]);
+        if (!payloadToken.id) {
+            resAPI.error(res, "No se ha podido obtener el id del usuario.");
+        }
+        let dataUser = await UserServices_1.default.toggleFollow(id, payloadToken.id);
+        resAPI.success(res, dataUser);
+    }
+    catch (error) {
+        console.error(error?.message);
+        return resAPI.error(res, error?.message, 500);
+    }
+}
+exports.toggleFollow = toggleFollow;

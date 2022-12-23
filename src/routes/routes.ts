@@ -8,13 +8,21 @@ import {
   getTypesUser,
   getUserByID,
   getUserByToken,
+  updateAvatar,
+  updateHeader,
+  toggleFollow,
 } from "../controllers/userController";
 import { createUserValidation, userLoginValidation } from "../Validations/User";
 import { getAllInterest } from "../controllers/interestController";
 import { Response } from "../lib/tools";
 import { getAllTags } from "../controllers/tagsController";
-import { getAllGroups } from "../controllers/groupsController";
 import {
+  createGroup,
+  getAllGroups,
+  getGroupById,
+} from "../controllers/groupsController";
+import {
+  addReactionOnPublication,
   createPublication,
   getAllPublications,
   getAllPublicationsFromUserID,
@@ -31,9 +39,12 @@ const router = Router();
 // Users routes
 
 router.post("/user", Validations(createUserValidation, response), createUser);
+router.put("/user/follow/:id", Auth("User", response), toggleFollow);
 router.get("/user", Auth("User", response), getUserByToken);
 router.get("/user/types", getTypesUser);
 router.get("/user/:id", Auth("User", response), getUserByID);
+router.put("/user/avatar", Auth("User", response), updateAvatar);
+router.put("/user/header", Auth("User", response), updateHeader);
 
 // Auth routes
 router.post(
@@ -56,12 +67,19 @@ router.get("/tags", getAllTags);
 
 // Groups routes
 
+router.post("/group", Auth("User", response), createGroup);
+router.get("/group/:id", Auth("User", response), getGroupById);
 router.get("/groups", Auth("User", response), getAllGroups);
 
 // Publications routes
 
 router.post("/publication", Auth("User", response), createPublication);
 router.get("/publications", Auth("User", response), getAllPublications);
+router.post(
+  "/publication/reaction",
+  Auth("User", response),
+  addReactionOnPublication
+);
 router.get(
   "/publications/:ownerID",
   Auth("User", response),

@@ -72,6 +72,50 @@ class userService {
         }
         return user.get();
     }
+    async userUpdateAvatar(url, id) {
+        let user = await User_1.User.update({
+            avatar: url,
+        }, {
+            where: { id },
+            returning: true,
+        });
+        if (user[0] === 1) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    async userUpdateHeader(url, id) {
+        let user = await User_1.User.update({
+            header: url,
+        }, {
+            where: { id },
+            returning: true,
+        });
+        if (user[0] === 1) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    async toggleFollow(idTarget, id) {
+        let user = await User_1.User.findOne({ where: { id } });
+        let tempFollows = { ...user?.follows };
+        if (tempFollows[idTarget]) {
+            delete tempFollows[idTarget];
+        }
+        else {
+            tempFollows[idTarget] = { date: Date.now() };
+        }
+        await User_1.User.update({
+            follows: tempFollows,
+        }, {
+            where: { id },
+        });
+        return true;
+    }
 }
 let UserService = new userService();
 exports.default = UserService;

@@ -91,6 +91,59 @@ class userService {
     }
     return user.get();
   }
+
+  async userUpdateAvatar(url: string, id: string) {
+    let user: any = await User.update(
+      {
+        avatar: url,
+      },
+      {
+        where: { id },
+        returning: true,
+      }
+    );
+    if (user[0] === 1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  async userUpdateHeader(url: string, id: string) {
+    let user: any = await User.update(
+      {
+        header: url,
+      },
+      {
+        where: { id },
+        returning: true,
+      }
+    );
+    if (user[0] === 1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  async toggleFollow(idTarget: string, id: string) {
+    let user: any = await User.findOne({ where: { id } });
+    let tempFollows = { ...user?.follows };
+    if (tempFollows[idTarget]) {
+      delete tempFollows[idTarget];
+    } else {
+      tempFollows[idTarget] = { date: Date.now() };
+    }
+    await User.update(
+      {
+        follows: tempFollows,
+      },
+      {
+        where: { id },
+      }
+    );
+    return true;
+  }
 }
 
 let UserService = new userService();

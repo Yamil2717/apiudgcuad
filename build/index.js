@@ -13,6 +13,7 @@ require("./src/models/Comments");
 require("./src/models/Publications");
 require("./src/models/Interest");
 require("./src/models/Tag");
+require("./src/models/Reactions");
 const migrations_1 = __importDefault(require("./src/migrations"));
 (async () => {
     try {

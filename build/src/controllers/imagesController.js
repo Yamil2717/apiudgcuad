@@ -62,12 +62,16 @@ exports.getImage = getImage;
 async function deleteImage(req, res) {
     try {
         let { type, fileName } = req.params;
+        if (fileName === "default.jpeg") {
+            return resAPI.success(res, "ok");
+        }
         let pathImage = path_1.default.resolve(`./imagesUpload/${type}/${fileName}`);
         fs_1.default.unlink(pathImage, (err) => {
             if (err) {
                 resAPI.error(res, "No existe esa imagen.");
             }
             else {
+                console.log(`Se ha eliminado la imagen de la ruta ${pathImage}`);
                 resAPI.success(res, "ok");
             }
         });

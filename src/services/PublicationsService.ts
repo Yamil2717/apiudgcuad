@@ -1,6 +1,7 @@
 import { Groups } from "../models/Groups";
 import { Publication } from "../models/Publications";
 import { User } from "../models/User";
+import ReactionsService from "./ReactionsService";
 
 class publicationsService {
   async createPublication(
@@ -22,7 +23,7 @@ class publicationsService {
     return true;
   }
 
-  async getAllPublications() {
+  async getAllPublications(userID: string) {
     let publications: any = await Publication.findAll({
       limit: 15,
       order: [["createdAt", "DESC"]],
@@ -36,10 +37,18 @@ class publicationsService {
       ],
     });
     let publicationsData: any = [];
-    publications.map((publication: any) => {
-      publicationsData.push(publication.get());
-    });
+    await Promise.all(
+      publications.map(async (publication: any) => {
+        let reaction = await ReactionsService.getReactionPublication(
+          publication.id,
+          userID
+        );
+        publication.setDataValue("reaction", reaction);
+        await publicationsData.push(publication.get());
+      })
+    );
     if (publicationsData.length <= 0) {
+      publicationsData = [];
       throw new Error(
         "Ha ocurrido un error, no se encuentra ningún tipo de post registrado."
       );
@@ -48,7 +57,7 @@ class publicationsService {
     return publicationsData;
   }
 
-  async getAllPublicationsFromUserID(ownerID: string) {
+  async getAllPublicationsFromUserID(ownerID: string, userID: string) {
     let publications: any = await Publication.findAll({
       limit: 15,
       order: [["createdAt", "DESC"]],
@@ -63,9 +72,16 @@ class publicationsService {
       where: { ownerID },
     });
     let publicationsData: any = [];
-    publications.map((publication: any) => {
-      publicationsData.push(publication.get());
-    });
+    await Promise.all(
+      publications.map(async (publication: any) => {
+        let reaction = await ReactionsService.getReactionPublication(
+          publication.id,
+          userID
+        );
+        publication.setDataValue("reaction", reaction);
+        await publicationsData.push(publication.get());
+      })
+    );
     if (publicationsData.length <= 0) {
       throw new Error(
         "Ha ocurrido un error, no se encuentra ningún tipo de post registrado."
