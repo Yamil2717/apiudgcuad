@@ -5,6 +5,7 @@ import ReactionsService from "./ReactionsService";
 
 class publicationsService {
   async createPublication(
+    title: string,
     description: string,
     pictures: Array<string>,
     groupID: string,
@@ -12,6 +13,7 @@ class publicationsService {
     ownerID: string
   ) {
     let publication = await Publication.create({
+      title,
       description,
       pictures,
       categoryID,

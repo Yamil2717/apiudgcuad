@@ -9,14 +9,23 @@ async function migrations() {
   await Roles.bulkCreate(
     [
       { id: "fc987eec-e7d6-43a2-a8fd-5e87ad8b1830", name: "Administrador" },
-      { name: "Empresario" },
-      { name: "Desarrollador" },
-      { name: "Funcionario público" },
-      { name: "Vendedor" },
-      { name: "Usuario vivienda" },
-      { name: "Académicos" },
-      { name: "Organizaciones Civiles" },
-      { name: "Financieros de Vivienda" },
+      { id: "76ee0015-c032-4482-ba56-a4ffd5c2ffda", name: "Empresario" },
+      { id: "14697009-18a0-4024-83e3-7012cf804559", name: "Desarrollador" },
+      {
+        id: "459bc490-d384-4db9-8830-0a100bd74485",
+        name: "Funcionario público",
+      },
+      { id: "57541c2b-48a7-4097-981d-28fc03a52009", name: "Vendedor" },
+      { id: "134685eb-47ef-46c9-af43-d8442927645b", name: "Usuario vivienda" },
+      { id: "129da192-8db4-42b8-955a-e7a65d0be9b5", name: "Académicos" },
+      {
+        id: "16f9b2cf-65fb-4a5f-8247-2a64c510eefd",
+        name: "Organizaciones Civiles",
+      },
+      {
+        id: "c9b223e0-bff6-412e-8cfa-7f9580ab628f",
+        name: "Financieros de Vivienda",
+      },
     ],
     {
       ignoreDuplicates: true,
@@ -446,39 +455,202 @@ async function migrations() {
       )
     );
 
-  await User.create(
-    {
-      name: "Héctor Lavoe",
-      email: "admin@gmail.com",
-      password: "$2a$10$bAoGandv2.EsKPvO7jNKoeREKmZIs3/zAK0FYpu0le4JnxfbcugfS",
-      phone: "3005849945",
-      postalCode: "081455",
-      roleId: "fc987eec-e7d6-43a2-a8fd-5e87ad8b1830",
-      tagsIds: [2, 12, 14, 15, 18, 34],
-      interestIds: [
-        "a737d9e4-3c99-4e6d-b46d-c1ce7ee91012",
-        "31fec336-370e-4f8d-a084-707740433315",
-        "12fdfc18-99c3-4fa0-8d7f-0932b9066e5b",
-        "8d79c80e-7ca3-4636-9b0f-fe234a035c78",
-      ],
-      avatar: `${env.api.urlAPI}/images/user/default.jpeg`,
-      header: `${env.api.urlAPI}/images/profile_banner/default.jpeg`,
-      location: {
-        lat: 37.4219983,
-        long: -122.084,
-        locationName: "1600 Amphitheatre Pkwy, Mountain View, CA 94043, USA",
+  await User.bulkCreate(
+    [
+      {
+        name: "Héctor Lavoe",
+        email: "admin@gmail.com",
+        password:
+          "$2a$10$bAoGandv2.EsKPvO7jNKoeREKmZIs3/zAK0FYpu0le4JnxfbcugfS",
+        phone: "3005849945",
+        postalCode: "081455",
+        roleId: "fc987eec-e7d6-43a2-a8fd-5e87ad8b1830",
+        tagsIds: [2, 12, 14, 15, 18, 34],
+        interestIds: [
+          "a737d9e4-3c99-4e6d-b46d-c1ce7ee91012",
+          "31fec336-370e-4f8d-a084-707740433315",
+          "12fdfc18-99c3-4fa0-8d7f-0932b9066e5b",
+          "8d79c80e-7ca3-4636-9b0f-fe234a035c78",
+        ],
+        avatar: `${env.api.urlAPI}/images/user/default.jpeg`,
+        header: `${env.api.urlAPI}/images/profile_banner/default.jpeg`,
+        location: {
+          lat: 37.4219983,
+          long: -122.084,
+          locationName: "1600 Amphitheatre Pkwy, Mountain View, CA 94043, USA",
+        },
+        dateBirth: "2022-11-28 00:45:12.427-05",
+        blocking: { enable: false },
       },
-      dateBirth: "2022-11-28 00:45:12.427-05",
-      blocking: { enable: false },
-    },
+      {
+        name: "Christian Iglesias",
+        email: "ciglesias1997@gmail.com",
+        password:
+          "$2a$10$j6kJCPdfs/ZhwnFG0Tl26uFL8fI.Xbn8cBWGbUkJy24vWfEbqkzRy",
+        phone: "3052300750",
+        postalCode: "12346",
+        roleId: "14697009-18a0-4024-83e3-7012cf804559",
+        tagsIds: [9],
+        interestIds: ["a737d9e4-3c99-4e6d-b46d-c1ce7ee91012"],
+        avatar: `${env.api.urlAPI}/images/user/default.jpeg`,
+        header: `${env.api.urlAPI}/images/profile_banner/default.jpeg`,
+        location: { lat: 0, long: 0, locationName: "No street name" },
+        dateBirth: "2022-11-28 00:45:12.427-05",
+        blocking: { enable: false },
+      },
+      {
+        name: "Chris Igl",
+        email: "christgg1997@gmail.com",
+        password:
+          "$2a$10$j6kJCPdfs/ZhwnFG0Tl26uFL8fI.Xbn8cBWGbUkJy24vWfEbqkzRy",
+        phone: "3052307750",
+        postalCode: "12350",
+        roleId: "57541c2b-48a7-4097-981d-28fc03a52009",
+        tagsIds: [1, 9],
+        interestIds: [
+          "a737d9e4-3c99-4e6d-b46d-c1ce7ee91012",
+          "12fdfc18-99c3-4fa0-8d7f-0932b9066e5b",
+        ],
+        avatar: `${env.api.urlAPI}/images/user/default.jpeg`,
+        header: `${env.api.urlAPI}/images/profile_banner/default.jpeg`,
+        location: {
+          lat: 10.9523327,
+          long: -74.81292429999999,
+          locationName:
+            "Cra. 8g, Suroccidente, Barranquilla, Atlántico, Colombia",
+        },
+        dateBirth: "2022-11-28 00:45:12.427-05",
+        blocking: { enable: false },
+      },
+      {
+        name: "Hugo Diego",
+        email: "diegolimore@gmail.com",
+        password:
+          "$2a$10$GiUnhaFyc0OQfY2bXnNwoeNstcQtq3Vn9SEcwp449UbIySuoJ5bBm",
+        phone: "3314968614",
+        postalCode: "45170",
+        roleId: "14697009-18a0-4024-83e3-7012cf804559",
+        tagsIds: [4, 40, 42],
+        interestIds: [
+          "a737d9e4-3c99-4e6d-b46d-c1ce7ee91012",
+          "8d79c80e-7ca3-4636-9b0f-fe234a035c78",
+          "496e6896-0279-4d59-a9ba-4ea93ac0e1ec",
+        ],
+        avatar: `${env.api.urlAPI}/images/user/default.jpeg`,
+        header: `${env.api.urlAPI}/images/profile_banner/default.jpeg`,
+        location: {
+          lat: 20.6977081,
+          long: -103.4650834,
+          locationName:
+            "Av. Del Bajío 5903, El Bajío, 45017 Zapopan, Jal., Mexico",
+        },
+        dateBirth: "2022-11-28 00:45:12.427-05",
+        blocking: { enable: false },
+      },
+      {
+        name: "Alberto",
+        email: "aglopezruiz@gmail.com",
+        password:
+          "$2a$10$9/U77i8u1Yw9EGgS3eBkJutSANqeGf6.y8hBf35f/6XJyUJUPI0m2",
+        phone: "3328126249",
+        postalCode: "44100",
+        roleId: "129da192-8db4-42b8-955a-e7a65d0be9b5",
+        tagsIds: [19],
+        interestIds: ["31fec336-370e-4f8d-a084-707740433315"],
+        avatar: `${env.api.urlAPI}/images/user/default.jpeg`,
+        header: `${env.api.urlAPI}/images/profile_banner/default.jpeg`,
+        location: {
+          lat: 20.6847507,
+          long: -103.3510474,
+          locationName:
+            "Calle Contreras Medellín 518, Centro, 44100 Guadalajara, Jal., Mexico",
+        },
+        dateBirth: "2022-11-28 00:45:12.427-05",
+        blocking: { enable: false },
+      },
+      {
+        name: "Francisco",
+        email: "panchoxfx@gmail.com",
+        password:
+          "$2a$10$veOlfPqQyuCFRoS6tBkQn.32BEmwJpytHVq5oGKDqU22RYkDQkRx6",
+        phone: "3315381729",
+        postalCode: "45170",
+        roleId: "14697009-18a0-4024-83e3-7012cf804559",
+        tagsIds: [10, 16],
+        interestIds: [
+          "a737d9e4-3c99-4e6d-b46d-c1ce7ee91012",
+          "31fec336-370e-4f8d-a084-707740433315",
+          "12fdfc18-99c3-4fa0-8d7f-0932b9066e5b",
+          "8d79c80e-7ca3-4636-9b0f-fe234a035c78",
+        ],
+        avatar: `${env.api.urlAPI}/images/user/default.jpeg`,
+        header: `${env.api.urlAPI}/images/profile_banner/default.jpeg`,
+        location: {
+          lat: 20.7201731,
+          long: -103.3625616,
+          locationName:
+            "Colina Galia 2175, Colinas de Atemajac, 45170 Zapopan, Jal., Mexico",
+        },
+        dateBirth: "2022-11-28 00:45:12.427-05",
+        blocking: { enable: false },
+      },
+      {
+        name: "Juan Demerutis",
+        email: "juan.demerutis@gmail.com",
+        password:
+          "$2a$10$abDbKSEernNF.l.k9RZLm.k5xIBPCVqXkS7LmBAYnMLWpiSQ79XXG",
+        phone: "3338154886",
+        postalCode: "44250",
+        roleId: "129da192-8db4-42b8-955a-e7a65d0be9b5",
+        tagsIds: [2, 9, 82],
+        interestIds: [
+          "a737d9e4-3c99-4e6d-b46d-c1ce7ee91012",
+          "31fec336-370e-4f8d-a084-707740433315",
+          "92eb2e67-7f15-4027-837a-332dad68ac13",
+        ],
+        avatar: `${env.api.urlAPI}/images/user/default.jpeg`,
+        header: `${env.api.urlAPI}/images/profile_banner/default.jpeg`,
+        location: {
+          lat: 20.7404052,
+          long: -103.3120695,
+          locationName:
+            "Torre Administrativa, Calz. Independencia Norte, Huentitán El Bajo, 44250 Guadalajara, Jal., Mexico",
+        },
+        dateBirth: "2022-11-28 00:45:12.427-05",
+        blocking: { enable: false },
+      },
+      {
+        name: "Carlos sanchez",
+        email: "carlos19972107sanchez@gmail.com",
+        password:
+          "$2a$10$Gcs0yFOtQO975K1I0O.JSeEU7J.4eXfXOR.Tp9YpeaumQWCH.z1AC",
+        phone: "3335552123",
+        postalCode: "54100",
+        roleId: "14697009-18a0-4024-83e3-7012cf804559",
+        tagsIds: [15, 19, 59],
+        interestIds: [
+          "31fec336-370e-4f8d-a084-707740433315",
+          "f95c1843-c46e-443e-9c3d-4407bf8f25a6",
+          "92eb2e67-7f15-4027-837a-332dad68ac13",
+        ],
+        avatar: `${env.api.urlAPI}/images/user/default.jpeg`,
+        header: `${env.api.urlAPI}/images/profile_banner/default.jpeg`,
+        location: {
+          lat: 22.8845846,
+          long: -109.9537216,
+          locationName:
+            "Predio Paraíso Escondido s/n, 23450 Cabo San Lucas, B.C.S., México",
+        },
+        dateBirth: "2022-11-28 00:45:12.427-05",
+        blocking: { enable: false },
+      },
+    ],
     {
       ignoreDuplicates: true,
       logging: false,
     }
   )
-    .then(() =>
-      console.info("Se ha insertado el usuario de admin correctamente.")
-    )
+    .then(() => console.info("Se ha insertado los usuario correctamente."))
     .catch((err) =>
       console.error(
         "Ha ocurrido un error a la hora de insertar el usuario de admin. Error: " +

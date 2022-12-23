@@ -7,8 +7,11 @@ import JWT from "jsonwebtoken";
 
 async function createPublication(req: Request, res: Response) {
   try {
-    let { description, pictures, groupID, categoryID, ownerID } = req.body;
+    let { title, description, pictures, groupID, categoryID, ownerID } =
+      req.body;
+    console.log(title, "aaa");
     let publication: any = await PublicationsService.createPublication(
+      title,
       description,
       pictures,
       groupID,

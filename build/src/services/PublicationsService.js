@@ -8,8 +8,9 @@ const Publications_1 = require("../models/Publications");
 const User_1 = require("../models/User");
 const ReactionsService_1 = __importDefault(require("./ReactionsService"));
 class publicationsService {
-    async createPublication(description, pictures, groupID, categoryID, ownerID) {
+    async createPublication(title, description, pictures, groupID, categoryID, ownerID) {
         let publication = await Publications_1.Publication.create({
+            title,
             description,
             pictures,
             categoryID,

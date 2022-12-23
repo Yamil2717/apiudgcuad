@@ -10,6 +10,7 @@ export const Publication = sequelize.define("publications", {
     primaryKey: true,
     defaultValue: DataTypes.UUIDV4,
   },
+  title: { type: DataTypes.STRING },
   description: { type: DataTypes.STRING },
   pictures: { type: DataTypes.ARRAY(DataTypes.STRING), defaultValue: [] },
   categoryID: {

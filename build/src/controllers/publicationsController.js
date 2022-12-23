@@ -11,8 +11,9 @@ const ReactionsService_1 = __importDefault(require("../services/ReactionsService
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 async function createPublication(req, res) {
     try {
-        let { description, pictures, groupID, categoryID, ownerID } = req.body;
-        let publication = await PublicationsService_1.default.createPublication(description, pictures, groupID, categoryID, ownerID);
+        let { title, description, pictures, groupID, categoryID, ownerID } = req.body;
+        console.log(title, "aaa");
+        let publication = await PublicationsService_1.default.createPublication(title, description, pictures, groupID, categoryID, ownerID);
         if (!publication)
             return;
         console.info(`SOMEONE CREATE A NEW PUBLICATION`);

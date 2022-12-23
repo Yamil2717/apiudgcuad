@@ -12,6 +12,7 @@ exports.Publication = database_1.sequelize.define("publications", {
         primaryKey: true,
         defaultValue: sequelize_1.DataTypes.UUIDV4,
     },
+    title: { type: sequelize_1.DataTypes.STRING },
     description: { type: sequelize_1.DataTypes.STRING },
     pictures: { type: sequelize_1.DataTypes.ARRAY(sequelize_1.DataTypes.STRING), defaultValue: [] },
     categoryID: {
