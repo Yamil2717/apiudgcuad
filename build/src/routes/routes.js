@@ -38,8 +38,11 @@ router.get("/tags", tagsController_1.getAllTags);
 // Groups routes
 router.post("/group", (0, Auth_1.Auth)("User", response), groupsController_1.createGroup);
 router.get("/group/:id", (0, Auth_1.Auth)("User", response), groupsController_1.getGroupById);
-router.get("/groups", (0, Auth_1.Auth)("User", response), groupsController_1.getAllGroups);
+router.get("/myGroups", (0, Auth_1.Auth)("User", response), groupsController_1.getAllMyGroups);
+router.put("/group/picture/:id", (0, Auth_1.Auth)("User", response), groupsController_1.updatePictureGroup);
+router.put("/group/header/:id", (0, Auth_1.Auth)("User", response), groupsController_1.updateHeaderGroup);
 // Publications routes
+router.get("/publication/:id", (0, Auth_1.Auth)("User", response), publicationsController_1.getPublicationByID);
 router.post("/publication", (0, Auth_1.Auth)("User", response), publicationsController_1.createPublication);
 router.get("/publications", (0, Auth_1.Auth)("User", response), publicationsController_1.getAllPublications);
 router.post("/publication/reaction", (0, Auth_1.Auth)("User", response), publicationsController_1.addReactionOnPublication);

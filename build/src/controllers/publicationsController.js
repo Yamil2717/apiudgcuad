@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addReactionOnPublication = exports.getAllPublicationsFromUserID = exports.getAllPublications = exports.createPublication = void 0;
+exports.addReactionOnPublication = exports.getAllPublicationsFromUserID = exports.getAllPublications = exports.getPublicationByID = exports.createPublication = void 0;
 const tools_1 = require("../lib/tools");
 const resAPI = new tools_1.Response();
 const PublicationsService_1 = __importDefault(require("../services/PublicationsService"));
@@ -25,6 +25,25 @@ async function createPublication(req, res) {
     }
 }
 exports.createPublication = createPublication;
+async function getPublicationByID(req, res) {
+    try {
+        let { id } = req.params;
+        let authorization = req.headers.authorization;
+        let token = authorization.split(" ");
+        let payloadToken = jsonwebtoken_1.default.decode(token[1]);
+        if (!payloadToken.id) {
+            resAPI.error(res, "No se ha podido obtener el id del usuario.");
+        }
+        let publications = await PublicationsService_1.default.getPublicationByID(id, payloadToken.id);
+        console.info(`SOMEONE GOT PUBLICATION: ${id}`);
+        resAPI.success(res, publications);
+    }
+    catch (error) {
+        console.error(error?.message);
+        return resAPI.error(res, error?.message, 500);
+    }
+}
+exports.getPublicationByID = getPublicationByID;
 async function getAllPublications(req, res) {
     try {
         let authorization = req.headers.authorization;

@@ -27,6 +27,27 @@ async function createPublication(req: Request, res: Response) {
   }
 }
 
+async function getPublicationByID(req: Request, res: Response) {
+  try {
+    let { id } = req.params;
+    let authorization: any = req.headers.authorization;
+    let token = authorization.split(" ");
+    let payloadToken: any = JWT.decode(token[1]);
+    if (!payloadToken.id) {
+      resAPI.error(res, "No se ha podido obtener el id del usuario.");
+    }
+    let publications: any = await PublicationsService.getPublicationByID(
+      id,
+      payloadToken.id
+    );
+    console.info(`SOMEONE GOT PUBLICATION: ${id}`);
+    resAPI.success(res, publications);
+  } catch (error) {
+    console.error((error as Error)?.message);
+    return resAPI.error(res, (error as Error)?.message, 500);
+  }
+}
+
 async function getAllPublications(req: Request, res: Response) {
   try {
     let authorization: any = req.headers.authorization;
@@ -86,6 +107,7 @@ async function addReactionOnPublication(req: Request, res: Response) {
 
 export {
   createPublication,
+  getPublicationByID,
   getAllPublications,
   getAllPublicationsFromUserID,
   addReactionOnPublication,

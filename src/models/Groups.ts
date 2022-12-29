@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database";
 import { Interest } from "./Interest";
+import { User } from "./User";
 
 export const Groups = sequelize.define("groups", {
   id: {
@@ -23,8 +24,20 @@ export const Groups = sequelize.define("groups", {
     onUpdate: "CASCADE",
     onDelete: "RESTRICT",
   },
+  ownerID: {
+    type: DataTypes.UUID,
+    references: {
+      model: User,
+      key: "id",
+    },
+    allowNull: false,
+  },
 });
 
 Groups.belongsTo(Interest, {
   foreignKey: "idInterest",
+});
+
+Groups.belongsTo(User, {
+  foreignKey: "ownerID",
 });

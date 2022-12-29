@@ -374,41 +374,9 @@ async function migrations() {
         .then(() => console.info("Se ha insertado la información de tags correctamente."))
         .catch((err) => console.error("Ha ocurrido un error a la hora de insertar la información de tags. Error: " +
         err));
-    await Groups_1.Groups.bulkCreate([
-        {
-            name: "Ciclovías",
-            picture: "https://images.pexels.com/photos/386024/pexels-photo-386024.jpeg",
-            idInterest: "496e6896-0279-4d59-a9ba-4ea93ac0e1ec",
-        },
-        {
-            name: "Vialidad",
-            picture: "https://images.pexels.com/photos/5835467/pexels-photo-5835467.jpeg",
-            idInterest: "12fdfc18-99c3-4fa0-8d7f-0932b9066e5b",
-        },
-        {
-            name: "Pasos peatonales",
-            picture: "https://images.pexels.com/photos/1309687/pexels-photo-1309687.jpeg",
-            idInterest: "a737d9e4-3c99-4e6d-b46d-c1ce7ee91012",
-        },
-        {
-            name: "Infraestructura dañada",
-            picture: "https://images.pexels.com/photos/5659371/pexels-photo-5659371.jpeg",
-            idInterest: "31fec336-370e-4f8d-a084-707740433315",
-        },
-        {
-            name: "Edificios históricos",
-            picture: "https://images.pexels.com/photos/7692217/pexels-photo-7692217.jpeg",
-            idInterest: "8d79c80e-7ca3-4636-9b0f-fe234a035c78",
-        },
-    ], {
-        ignoreDuplicates: true,
-        logging: false,
-    })
-        .then(() => console.info("Se ha insertado la información de grupos correctamente."))
-        .catch((err) => console.error("Ha ocurrido un error a la hora de insertar la información de grupos. Error: " +
-        err));
     await User_1.User.bulkCreate([
         {
+            id: "dec1b80e-f92e-4a11-a88c-0d58c11bb2e7",
             name: "Héctor Lavoe",
             email: "admin@gmail.com",
             password: "$2a$10$bAoGandv2.EsKPvO7jNKoeREKmZIs3/zAK0FYpu0le4JnxfbcugfS",
@@ -428,6 +396,13 @@ async function migrations() {
                 lat: 37.4219983,
                 long: -122.084,
                 locationName: "1600 Amphitheatre Pkwy, Mountain View, CA 94043, USA",
+            },
+            groups: {
+                "0e0a0784-58e8-47d3-939c-56959e36656c": "2022-11-28 00:45:12.427-05",
+                "9b594b00-0307-4b5f-935d-e1e8023e918e": "2022-11-28 00:45:12.427-05",
+                "07522151-449a-4eff-a8dd-c1d7f9a2823a": "2022-11-28 00:45:12.427-05",
+                "b482fdae-4653-436b-bf66-56a2013b304a": "2022-11-28 00:45:12.427-05",
+                "1b285ff4-a8fc-4763-a778-8503c9ccb805": "2022-11-28 00:45:12.427-05",
             },
             dateBirth: "2022-11-28 00:45:12.427-05",
             blocking: { enable: false },
@@ -587,6 +562,64 @@ async function migrations() {
     })
         .then(() => console.info("Se ha insertado los usuario correctamente."))
         .catch((err) => console.error("Ha ocurrido un error a la hora de insertar el usuario de admin. Error: " +
+        err));
+    await Groups_1.Groups.bulkCreate([
+        {
+            id: "0e0a0784-58e8-47d3-939c-56959e36656c",
+            name: "Ciclovías",
+            picture: "https://images.pexels.com/photos/386024/pexels-photo-386024.jpeg",
+            header: `${env_1.default.api.urlAPI}/images/group_banner/default.jpeg`,
+            idInterest: "496e6896-0279-4d59-a9ba-4ea93ac0e1ec",
+            ownerID: "dec1b80e-f92e-4a11-a88c-0d58c11bb2e7",
+            membersIDS: ["dec1b80e-f92e-4a11-a88c-0d58c11bb2e7"],
+            membersCount: 1,
+        },
+        {
+            id: "9b594b00-0307-4b5f-935d-e1e8023e918e",
+            name: "Vialidad",
+            picture: "https://images.pexels.com/photos/5835467/pexels-photo-5835467.jpeg",
+            header: `${env_1.default.api.urlAPI}/images/group_banner/default.jpeg`,
+            idInterest: "12fdfc18-99c3-4fa0-8d7f-0932b9066e5b",
+            ownerID: "dec1b80e-f92e-4a11-a88c-0d58c11bb2e7",
+            membersIDS: ["dec1b80e-f92e-4a11-a88c-0d58c11bb2e7"],
+            membersCount: 1,
+        },
+        {
+            id: "07522151-449a-4eff-a8dd-c1d7f9a2823a",
+            name: "Pasos peatonales",
+            picture: "https://images.pexels.com/photos/1309687/pexels-photo-1309687.jpeg",
+            header: `${env_1.default.api.urlAPI}/images/group_banner/default.jpeg`,
+            idInterest: "a737d9e4-3c99-4e6d-b46d-c1ce7ee91012",
+            ownerID: "dec1b80e-f92e-4a11-a88c-0d58c11bb2e7",
+            membersIDS: ["dec1b80e-f92e-4a11-a88c-0d58c11bb2e7"],
+            membersCount: 1,
+        },
+        {
+            id: "b482fdae-4653-436b-bf66-56a2013b304a",
+            name: "Infraestructura dañada",
+            picture: "https://images.pexels.com/photos/5659371/pexels-photo-5659371.jpeg",
+            header: `${env_1.default.api.urlAPI}/images/group_banner/default.jpeg`,
+            idInterest: "31fec336-370e-4f8d-a084-707740433315",
+            ownerID: "dec1b80e-f92e-4a11-a88c-0d58c11bb2e7",
+            membersIDS: ["dec1b80e-f92e-4a11-a88c-0d58c11bb2e7"],
+            membersCount: 1,
+        },
+        {
+            id: "1b285ff4-a8fc-4763-a778-8503c9ccb805",
+            name: "Edificios históricos",
+            picture: "https://images.pexels.com/photos/7692217/pexels-photo-7692217.jpeg",
+            header: `${env_1.default.api.urlAPI}/images/group_banner/default.jpeg`,
+            idInterest: "8d79c80e-7ca3-4636-9b0f-fe234a035c78",
+            ownerID: "dec1b80e-f92e-4a11-a88c-0d58c11bb2e7",
+            membersIDS: ["dec1b80e-f92e-4a11-a88c-0d58c11bb2e7"],
+            membersCount: 1,
+        },
+    ], {
+        ignoreDuplicates: true,
+        logging: false,
+    })
+        .then(() => console.info("Se ha insertado la información de grupos correctamente."))
+        .catch((err) => console.error("Ha ocurrido un error a la hora de insertar la información de grupos. Error: " +
         err));
 }
 exports.default = migrations;

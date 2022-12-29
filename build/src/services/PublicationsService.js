@@ -21,6 +21,20 @@ class publicationsService {
             throw new Error("Ha ocurrido un error y no sé pudo crear el post");
         return true;
     }
+    async getPublicationByID(idPublication, idOwner) {
+        let publication = await Publications_1.Publication.findOne({
+            where: { id: idPublication },
+            include: [
+                { model: User_1.User, attributes: ["name"], required: true },
+                { model: Groups_1.Groups, required: true },
+            ],
+        });
+        let reaction = await ReactionsService_1.default.getReactionPublication(publication.id, idOwner);
+        publication.setDataValue("reaction", reaction);
+        if (!publication)
+            throw new Error("Ha ocurrido un error y no sé encontró el post solicitado.");
+        return publication.get();
+    }
     async getAllPublications(userID) {
         let publications = await Publications_1.Publication.findAll({
             limit: 15,

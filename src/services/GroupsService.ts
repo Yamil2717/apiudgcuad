@@ -1,4 +1,7 @@
+import { Op } from "sequelize";
 import { Groups } from "../models/Groups";
+import env from "../utils/env";
+import UserService from "./UserServices";
 
 class groupsService {
   async createGroup(
@@ -12,14 +15,19 @@ class groupsService {
       description,
       picture,
       membersIDS: [ownerID],
+      membersCount: 1,
+      ownerID,
       idInterest: "12fdfc18-99c3-4fa0-8d7f-0932b9066e5b",
+      header: `${env.api.urlAPI}/images/group_banner/default.jpeg`,
     });
     return group;
   }
+
   async getGroupById(id: string) {
-    let group = await Groups.findOne({ where: { id } });
-    return group?.get();
+    let group: any = await Groups.findOne({ where: { id } });
+    return group.get();
   }
+
   async getAllGroups() {
     let groups: any = await Groups.findAll();
     let groupsData: any = [];
@@ -31,6 +39,59 @@ class groupsService {
         "Ha ocurrido un error, no se encuentra ningún tipo de grupo registrado."
       );
     return groupsData;
+  }
+
+  async getAllMyGroups(userID: string) {
+    let user: any = await UserService.userGetById(userID);
+    let { groups } = user;
+    let groupsIDs: any = [];
+    Object.keys(groups).map((key) => {
+      groupsIDs.push({ id: key });
+    });
+    let groupsData: any = await Groups.findAll({
+      where: {
+        [Op.or]: groupsIDs,
+      },
+    });
+    let groupsDataReturn: any = [];
+    groupsData.map((group: any) => {
+      groupsDataReturn.push(group.get());
+    });
+    return groupsDataReturn;
+  }
+
+  async groupUpdatePicture(url: string, groupID: string, ownerID: string) {
+    let group: any = await Groups.update(
+      {
+        picture: url,
+      },
+      {
+        where: { id: groupID, ownerID },
+        returning: true,
+      }
+    );
+    if (group[0] === 1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  async groupUpdateHeader(url: string, groupID: string, ownerID: string) {
+    let group: any = await Groups.update(
+      {
+        header: url,
+      },
+      {
+        where: { id: groupID, ownerID },
+        returning: true,
+      }
+    );
+    if (group[0] === 1) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
 

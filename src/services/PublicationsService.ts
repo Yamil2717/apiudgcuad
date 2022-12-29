@@ -25,6 +25,26 @@ class publicationsService {
     return true;
   }
 
+  async getPublicationByID(idPublication: string, idOwner: string) {
+    let publication: any = await Publication.findOne({
+      where: { id: idPublication },
+      include: [
+        { model: User, attributes: ["name"], required: true },
+        { model: Groups, required: true },
+      ],
+    });
+    let reaction = await ReactionsService.getReactionPublication(
+      publication.id,
+      idOwner
+    );
+    publication.setDataValue("reaction", reaction);
+    if (!publication)
+      throw new Error(
+        "Ha ocurrido un error y no sé encontró el post solicitado."
+      );
+    return publication.get();
+  }
+
   async getAllPublications(userID: string) {
     let publications: any = await Publication.findAll({
       limit: 15,

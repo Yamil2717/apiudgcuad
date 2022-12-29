@@ -4,6 +4,7 @@ exports.Groups = void 0;
 const sequelize_1 = require("sequelize");
 const database_1 = require("../database/database");
 const Interest_1 = require("./Interest");
+const User_1 = require("./User");
 exports.Groups = database_1.sequelize.define("groups", {
     id: {
         type: sequelize_1.DataTypes.UUID,
@@ -25,7 +26,18 @@ exports.Groups = database_1.sequelize.define("groups", {
         onUpdate: "CASCADE",
         onDelete: "RESTRICT",
     },
+    ownerID: {
+        type: sequelize_1.DataTypes.UUID,
+        references: {
+            model: User_1.User,
+            key: "id",
+        },
+        allowNull: false,
+    },
 });
 exports.Groups.belongsTo(Interest_1.Interest, {
     foreignKey: "idInterest",
+});
+exports.Groups.belongsTo(User_1.User, {
+    foreignKey: "ownerID",
 });

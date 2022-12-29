@@ -18,14 +18,17 @@ import { Response } from "../lib/tools";
 import { getAllTags } from "../controllers/tagsController";
 import {
   createGroup,
-  getAllGroups,
+  getAllMyGroups,
   getGroupById,
+  updatePictureGroup,
+  updateHeaderGroup,
 } from "../controllers/groupsController";
 import {
   addReactionOnPublication,
   createPublication,
   getAllPublications,
   getAllPublicationsFromUserID,
+  getPublicationByID,
 } from "../controllers/publicationsController";
 const path = require("node:path");
 import {
@@ -69,10 +72,13 @@ router.get("/tags", getAllTags);
 
 router.post("/group", Auth("User", response), createGroup);
 router.get("/group/:id", Auth("User", response), getGroupById);
-router.get("/groups", Auth("User", response), getAllGroups);
+router.get("/myGroups", Auth("User", response), getAllMyGroups);
+router.put("/group/picture/:id", Auth("User", response), updatePictureGroup);
+router.put("/group/header/:id", Auth("User", response), updateHeaderGroup);
 
 // Publications routes
 
+router.get("/publication/:id", Auth("User", response), getPublicationByID);
 router.post("/publication", Auth("User", response), createPublication);
 router.get("/publications", Auth("User", response), getAllPublications);
 router.post(
