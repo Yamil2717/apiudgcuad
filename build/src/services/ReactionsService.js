@@ -61,8 +61,6 @@ class reactionsService {
                 return true;
             }
             else {
-                console.log(reactionDB.action);
-                console.log(action);
                 await Reactions_1.Reactions.update({
                     action,
                 }, {
@@ -117,7 +115,6 @@ class reactionsService {
                     default:
                         return false;
                 }
-                console.log("xd");
             }
         }
         else {

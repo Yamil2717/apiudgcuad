@@ -74,6 +74,7 @@ async function updatePictureGroup(req, res) {
             resAPI.error(res, "No se ha podido obtener el id del usuario.");
         }
         let dataGroup = await GroupsService_1.default.groupUpdatePicture(url, id, payloadToken.id);
+        console.info(`THE ID ${payloadToken.id} UPDATE THE PICTURE OF GROUP ID ${id}`);
         resAPI.success(res, dataGroup);
     }
     catch (error) {
@@ -93,6 +94,7 @@ async function updateHeaderGroup(req, res) {
             resAPI.error(res, "No se ha podido obtener el id del usuario.");
         }
         let dataGroup = await GroupsService_1.default.groupUpdateHeader(url, id, payloadToken.id);
+        console.info(`THE ID ${payloadToken.id} UPDATE THE HEADER OF GROUP ID ${id}`);
         resAPI.success(res, dataGroup);
     }
     catch (error) {

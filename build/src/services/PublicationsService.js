@@ -85,6 +85,31 @@ class publicationsService {
         }
         return publicationsData;
     }
+    async getAllPublicationsFromGroupID(groupID, userID) {
+        let publications = await Publications_1.Publication.findAll({
+            limit: 15,
+            order: [["createdAt", "DESC"]],
+            include: [
+                {
+                    model: User_1.User,
+                    attributes: ["name"],
+                    required: true,
+                },
+                { model: Groups_1.Groups, required: true },
+            ],
+            where: { groupID },
+        });
+        let publicationsData = [];
+        await Promise.all(publications.map(async (publication) => {
+            let reaction = await ReactionsService_1.default.getReactionPublication(publication.id, userID);
+            publication.setDataValue("reaction", reaction);
+            await publicationsData.push(publication.get());
+        }));
+        if (publicationsData.length <= 0) {
+            throw new Error("Ha ocurrido un error, no se encuentra ningún tipo de post registrado.");
+        }
+        return publicationsData;
+    }
 }
 let PublicationsService = new publicationsService();
 exports.default = PublicationsService;

@@ -9,7 +9,6 @@ async function createPublication(req: Request, res: Response) {
   try {
     let { title, description, pictures, groupID, categoryID, ownerID } =
       req.body;
-    console.log(title, "aaa");
     let publication: any = await PublicationsService.createPublication(
       title,
       description,
@@ -67,6 +66,28 @@ async function getAllPublications(req: Request, res: Response) {
   }
 }
 
+async function getAllPublicationsFromGroupID(req: Request, res: Response) {
+  try {
+    let { groupID } = req.params;
+    let authorization: any = req.headers.authorization;
+    let token = authorization.split(" ");
+    let payloadToken: any = JWT.decode(token[1]);
+    if (!payloadToken.id) {
+      resAPI.error(res, "No se ha podido obtener el id del usuario.");
+    }
+    let publications: any =
+      await PublicationsService.getAllPublicationsFromGroupID(
+        groupID,
+        payloadToken.id
+      );
+    console.info(`SOMEONE GOT ALL THE PUBLICATIONS OF GROUP ID: ${groupID}`);
+    resAPI.success(res, publications);
+  } catch (error) {
+    console.error((error as Error)?.message);
+    return resAPI.error(res, (error as Error)?.message, 500);
+  }
+}
+
 async function getAllPublicationsFromUserID(req: Request, res: Response) {
   try {
     let { ownerID } = req.params;
@@ -109,6 +130,7 @@ export {
   createPublication,
   getPublicationByID,
   getAllPublications,
+  getAllPublicationsFromGroupID,
   getAllPublicationsFromUserID,
   addReactionOnPublication,
 };

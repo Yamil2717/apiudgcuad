@@ -144,6 +144,21 @@ class userService {
     );
     return true;
   }
+
+  async addGroup(idGroup: string, id: string) {
+    let user: any = await User.findOne({ where: { id } });
+    let { groups } = user.get();
+    groups[idGroup] = new Date().toISOString();
+    await User.update(
+      {
+        groups,
+      },
+      {
+        where: { id },
+      }
+    );
+    return true;
+  }
 }
 
 let UserService = new userService();

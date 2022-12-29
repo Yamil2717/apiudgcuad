@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.toggleFollow = exports.updateHeader = exports.updateAvatar = exports.getUserByID = exports.getUserByToken = exports.getTypesUser = exports.loginUser = exports.createUser = void 0;
+exports.addGroup = exports.toggleFollow = exports.updateHeader = exports.updateAvatar = exports.getUserByID = exports.getUserByToken = exports.getTypesUser = exports.loginUser = exports.createUser = void 0;
 const tools_1 = require("../lib/tools");
 const UserServices_1 = __importDefault(require("../services/UserServices"));
 const resAPI = new tools_1.Response();
@@ -133,3 +133,21 @@ async function toggleFollow(req, res) {
     }
 }
 exports.toggleFollow = toggleFollow;
+async function addGroup(req, res) {
+    try {
+        let { id } = req.params;
+        let authorization = req.headers.authorization;
+        let token = authorization.split(" ");
+        let payloadToken = jsonwebtoken_1.default.decode(token[1]);
+        if (!payloadToken.id) {
+            resAPI.error(res, "No se ha podido obtener el id del usuario.");
+        }
+        let dataUser = await UserServices_1.default.addGroup(id, payloadToken.id);
+        resAPI.success(res, dataUser);
+    }
+    catch (error) {
+        console.error(error?.message);
+        return resAPI.error(res, error?.message, 500);
+    }
+}
+exports.addGroup = addGroup;

@@ -76,6 +76,9 @@ async function updatePictureGroup(req: Request, res: Response) {
       id,
       payloadToken.id
     );
+    console.info(
+      `THE ID ${payloadToken.id} UPDATE THE PICTURE OF GROUP ID ${id}`
+    );
     resAPI.success(res, dataGroup);
   } catch (error) {
     console.error((error as Error)?.message);
@@ -97,6 +100,9 @@ async function updateHeaderGroup(req: Request, res: Response) {
       url,
       id,
       payloadToken.id
+    );
+    console.info(
+      `THE ID ${payloadToken.id} UPDATE THE HEADER OF GROUP ID ${id}`
     );
     resAPI.success(res, dataGroup);
   } catch (error) {

@@ -11,6 +11,7 @@ import {
   updateAvatar,
   updateHeader,
   toggleFollow,
+  addGroup,
 } from "../controllers/userController";
 import { createUserValidation, userLoginValidation } from "../Validations/User";
 import { getAllInterest } from "../controllers/interestController";
@@ -27,6 +28,7 @@ import {
   addReactionOnPublication,
   createPublication,
   getAllPublications,
+  getAllPublicationsFromGroupID,
   getAllPublicationsFromUserID,
   getPublicationByID,
 } from "../controllers/publicationsController";
@@ -48,6 +50,7 @@ router.get("/user/types", getTypesUser);
 router.get("/user/:id", Auth("User", response), getUserByID);
 router.put("/user/avatar", Auth("User", response), updateAvatar);
 router.put("/user/header", Auth("User", response), updateHeader);
+router.put("/user/addGroup/:id", Auth("User", response), addGroup);
 
 // Auth routes
 router.post(
@@ -85,6 +88,11 @@ router.post(
   "/publication/reaction",
   Auth("User", response),
   addReactionOnPublication
+);
+router.get(
+  "/publications/group/:groupID",
+  Auth("User", response),
+  getAllPublicationsFromGroupID
 );
 router.get(
   "/publications/:ownerID",

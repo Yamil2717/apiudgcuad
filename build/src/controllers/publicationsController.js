@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addReactionOnPublication = exports.getAllPublicationsFromUserID = exports.getAllPublications = exports.getPublicationByID = exports.createPublication = void 0;
+exports.addReactionOnPublication = exports.getAllPublicationsFromUserID = exports.getAllPublicationsFromGroupID = exports.getAllPublications = exports.getPublicationByID = exports.createPublication = void 0;
 const tools_1 = require("../lib/tools");
 const resAPI = new tools_1.Response();
 const PublicationsService_1 = __importDefault(require("../services/PublicationsService"));
@@ -12,7 +12,6 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 async function createPublication(req, res) {
     try {
         let { title, description, pictures, groupID, categoryID, ownerID } = req.body;
-        console.log(title, "aaa");
         let publication = await PublicationsService_1.default.createPublication(title, description, pictures, groupID, categoryID, ownerID);
         if (!publication)
             return;
@@ -62,6 +61,25 @@ async function getAllPublications(req, res) {
     }
 }
 exports.getAllPublications = getAllPublications;
+async function getAllPublicationsFromGroupID(req, res) {
+    try {
+        let { groupID } = req.params;
+        let authorization = req.headers.authorization;
+        let token = authorization.split(" ");
+        let payloadToken = jsonwebtoken_1.default.decode(token[1]);
+        if (!payloadToken.id) {
+            resAPI.error(res, "No se ha podido obtener el id del usuario.");
+        }
+        let publications = await PublicationsService_1.default.getAllPublicationsFromGroupID(groupID, payloadToken.id);
+        console.info(`SOMEONE GOT ALL THE PUBLICATIONS OF GROUP ID: ${groupID}`);
+        resAPI.success(res, publications);
+    }
+    catch (error) {
+        console.error(error?.message);
+        return resAPI.error(res, error?.message, 500);
+    }
+}
+exports.getAllPublicationsFromGroupID = getAllPublicationsFromGroupID;
 async function getAllPublicationsFromUserID(req, res) {
     try {
         let { ownerID } = req.params;

@@ -27,6 +27,7 @@ router.get("/user/types", userController_1.getTypesUser);
 router.get("/user/:id", (0, Auth_1.Auth)("User", response), userController_1.getUserByID);
 router.put("/user/avatar", (0, Auth_1.Auth)("User", response), userController_1.updateAvatar);
 router.put("/user/header", (0, Auth_1.Auth)("User", response), userController_1.updateHeader);
+router.put("/user/addGroup/:id", (0, Auth_1.Auth)("User", response), userController_1.addGroup);
 // Auth routes
 router.post("/user/auth", (0, Validations_1.Validations)(User_1.userLoginValidation, response), userController_1.loginUser);
 router.post("/user/auth/refreshToken", (0, Auth_1.Auth)("Admin", response), authController_1.refreshToken);
@@ -46,6 +47,7 @@ router.get("/publication/:id", (0, Auth_1.Auth)("User", response), publicationsC
 router.post("/publication", (0, Auth_1.Auth)("User", response), publicationsController_1.createPublication);
 router.get("/publications", (0, Auth_1.Auth)("User", response), publicationsController_1.getAllPublications);
 router.post("/publication/reaction", (0, Auth_1.Auth)("User", response), publicationsController_1.addReactionOnPublication);
+router.get("/publications/group/:groupID", (0, Auth_1.Auth)("User", response), publicationsController_1.getAllPublicationsFromGroupID);
 router.get("/publications/:ownerID", (0, Auth_1.Auth)("User", response), publicationsController_1.getAllPublicationsFromUserID);
 // Comments routes
 router.post("/comment", (0, Auth_1.Auth)("User", response), commentsController_1.createCommentByID);

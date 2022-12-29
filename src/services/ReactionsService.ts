@@ -69,8 +69,6 @@ class reactionsService {
         }
         return true;
       } else {
-        console.log(reactionDB.action);
-        console.log(action);
         await Reactions.update(
           {
             action,
@@ -128,7 +126,6 @@ class reactionsService {
           default:
             return false;
         }
-        console.log("xd");
       }
     } else {
       let publication = await Publication.findOne({

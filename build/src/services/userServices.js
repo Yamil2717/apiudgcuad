@@ -116,6 +116,17 @@ class userService {
         });
         return true;
     }
+    async addGroup(idGroup, id) {
+        let user = await User_1.User.findOne({ where: { id } });
+        let { groups } = user.get();
+        groups[idGroup] = new Date().toISOString();
+        await User_1.User.update({
+            groups,
+        }, {
+            where: { id },
+        });
+        return true;
+    }
 }
 let UserService = new userService();
 exports.default = UserService;
