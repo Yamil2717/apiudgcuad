@@ -3,12 +3,14 @@ import { Roles } from "../models/Roles";
 import { Encrypt } from "../lib/tools";
 import AuthService from "./AuthService";
 import env from "../utils/env";
+import { Requests } from "../models/Requests";
 
 class userService {
   async userRegister(
     name: string,
     email: string,
     password: string,
+    countryIndicator: string,
     phone: string,
     postalCode: string,
     roleId: number,
@@ -28,6 +30,7 @@ class userService {
       name,
       email,
       password: hashedPassword,
+      countryIndicator,
       phone,
       postalCode,
       roleId,
@@ -42,6 +45,55 @@ class userService {
     if (!registerUser)
       throw new Error("Ha ocurrido un error y no sé pudo registrar la cuenta");
     return registerUser;
+  }
+
+  async updateData(
+    id: string,
+    oldPassword: string,
+    data: {
+      name: string;
+      email: string;
+      password: string;
+      countryIndicator: string;
+      phone: string;
+      postalCode: string;
+      roleId: string;
+    }
+  ) {
+    if (data?.email) {
+      data.email = data.email.toLowerCase();
+    }
+    if (data?.password) {
+      let userDB: any = await User.findOne({ where: { id } });
+      let passwordOldCheck = await Encrypt.comparePassword(
+        oldPassword,
+        userDB.password
+      );
+      if (!passwordOldCheck) {
+        throw new Error(
+          "La antigua contraseña ingresada no coincide con la registrada en la DB."
+        );
+      }
+      data.password = await Encrypt.encryptPassword(data.password);
+    }
+    let user: any = await User.update(
+      { ...data },
+      {
+        where: { id },
+      }
+    );
+    if (user[0] === 1) {
+      let userData: any = await User.findOne({
+        attributes: {
+          exclude: ["password", "blocking", "updatedAt"],
+        },
+        where: { id },
+        include: { model: Roles, required: true },
+      });
+      return userData.get();
+    } else {
+      throw new Error("No se pudo actualizar la información del usuario");
+    }
   }
 
   async userLogin(email: string, password: string) {
@@ -134,7 +186,7 @@ class userService {
     } else {
       tempFollows[idTarget] = { date: Date.now() };
     }
-    await User.update(
+    let userUpdate: any = await User.update(
       {
         follows: tempFollows,
       },
@@ -142,14 +194,21 @@ class userService {
         where: { id },
       }
     );
-    return true;
+    if (userUpdate[0] === 1) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   async addGroup(idGroup: string, id: string) {
     let user: any = await User.findOne({ where: { id } });
     let { groups } = user.get();
+    if (!groups) {
+      groups = {};
+    }
     groups[idGroup] = new Date().toISOString();
-    await User.update(
+    let userUpdate: any = await User.update(
       {
         groups,
       },
@@ -157,7 +216,98 @@ class userService {
         where: { id },
       }
     );
-    return true;
+    if (userUpdate[0] === 1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  async addFriend(id: string, idTarget: string) {
+    let userOne: any = await User.findOne({ where: { id } });
+    let userTwo: any = await User.findOne({ where: { id: idTarget } });
+    let date = new Date().toISOString();
+    if (!userOne.friends[idTarget]) {
+      userOne.friends[idTarget] = {
+        dateAccepted: date,
+        allowMessage: false,
+      };
+    }
+    if (!userTwo.friends[id]) {
+      userTwo.friends[id] = {
+        dateAccepted: date,
+        allowMessage: false,
+      };
+    }
+    let userOneUpdate: any = await User.update(
+      { friends: userOne.friends },
+      { where: { id } }
+    );
+    let userTwoUpdate: any = await User.update(
+      { friends: userTwo.friends },
+      { where: { id: idTarget } }
+    );
+    if (userOneUpdate[0] === 1 && userTwoUpdate[0] === 1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  async deleteFriend(id: string, idTarget: string) {
+    let userOne: any = await User.findOne({ where: { id } });
+    let userTwo: any = await User.findOne({ where: { id: idTarget } });
+    if (userOne.friends[idTarget]) {
+      delete userOne.friends[idTarget];
+    }
+    if (userTwo.friends[id]) {
+      delete userTwo.friends[id];
+    }
+    let userOneUpdate: any = await User.update(
+      { friends: userOne.friends },
+      { where: { id } }
+    );
+    let userTwoUpdate: any = await User.update(
+      { friends: userTwo.friends },
+      { where: { id: idTarget } }
+    );
+    let request: any = await Requests.destroy({
+      where: { senderRequestID: id, receiverRequestID: idTarget },
+    });
+    if (!request) {
+      await Requests.destroy({
+        where: { senderRequestID: idTarget, receiverRequestID: id },
+      });
+    }
+    if (userOneUpdate[0] === 1 && userTwoUpdate[0] === 1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  async acceptMessage(id: string, idTarget: string) {
+    let userOne: any = await User.findOne({ where: { id } });
+    let userTwo: any = await User.findOne({ where: { id: idTarget } });
+    if (userOne.friends[idTarget]) {
+      userOne.friends[idTarget].allowMessage = true;
+    }
+    if (userTwo.friends[id]) {
+      userTwo.friends[id].allowMessage = true;
+    }
+    let userOneUpdate: any = await User.update(
+      { friends: userOne.friends },
+      { where: { id } }
+    );
+    let userTwoUpdate: any = await User.update(
+      { friends: userTwo.friends },
+      { where: { id: idTarget } }
+    );
+    if (userOneUpdate[0] === 1 && userTwoUpdate[0] === 1) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
 

@@ -10,6 +10,7 @@ async function createUser(req: Request, res: Response) {
       name,
       email,
       password,
+      countryIndicator,
       phone,
       postalCode,
       roleId,
@@ -23,6 +24,7 @@ async function createUser(req: Request, res: Response) {
       name,
       email,
       password,
+      countryIndicator,
       phone,
       postalCode,
       roleId,
@@ -34,6 +36,41 @@ async function createUser(req: Request, res: Response) {
     );
     console.info(`USER CREATED, UUID: ${user.id}`);
     resAPI.success(res, { message: "Se ha registrado correctamente." });
+  } catch (error) {
+    console.error((error as Error)?.message);
+    return resAPI.error(res, (error as Error)?.message, 409);
+  }
+}
+
+async function updateData(req: Request, res: Response) {
+  try {
+    let {
+      name,
+      email,
+      password,
+      countryIndicator,
+      phone,
+      postalCode,
+      roleId,
+      oldPassword,
+    } = req.body;
+    let authorization: any = req.headers.authorization;
+    let token = authorization.split(" ");
+    let payloadToken: any = JWT.decode(token[1]);
+    if (!payloadToken.id) {
+      resAPI.error(res, "No se ha podido obtener el id del usuario.");
+    }
+    let user: any = await UserService.updateData(payloadToken.id, oldPassword, {
+      name,
+      email,
+      password,
+      countryIndicator,
+      phone,
+      postalCode,
+      roleId,
+    });
+    console.info(`USER DATA UPDATE, UUID: ${payloadToken.id}`);
+    resAPI.success(res, user);
   } catch (error) {
     console.error((error as Error)?.message);
     return resAPI.error(res, (error as Error)?.message, 409);
@@ -162,14 +199,69 @@ async function addGroup(req: Request, res: Response) {
   }
 }
 
+async function addFriend(req: Request, res: Response) {
+  try {
+    let { id } = req.params;
+    let authorization: any = req.headers.authorization;
+    let token = authorization.split(" ");
+    let payloadToken: any = JWT.decode(token[1]);
+    if (!payloadToken.id) {
+      resAPI.error(res, "No se ha podido obtener el id del usuario.");
+    }
+    let dataUser = await UserService.addFriend(id, payloadToken.id);
+    resAPI.success(res, dataUser);
+  } catch (error) {
+    console.error((error as Error)?.message);
+    return resAPI.error(res, (error as Error)?.message, 500);
+  }
+}
+
+async function deleteFriend(req: Request, res: Response) {
+  try {
+    let { id } = req.params;
+    let authorization: any = req.headers.authorization;
+    let token = authorization.split(" ");
+    let payloadToken: any = JWT.decode(token[1]);
+    if (!payloadToken.id) {
+      resAPI.error(res, "No se ha podido obtener el id del usuario.");
+    }
+    let dataUser = await UserService.deleteFriend(id, payloadToken.id);
+    resAPI.success(res, dataUser);
+  } catch (error) {
+    console.error((error as Error)?.message);
+    return resAPI.error(res, (error as Error)?.message, 500);
+  }
+}
+
+async function acceptMessage(req: Request, res: Response) {
+  try {
+    let { id } = req.params;
+    let authorization: any = req.headers.authorization;
+    let token = authorization.split(" ");
+    let payloadToken: any = JWT.decode(token[1]);
+    if (!payloadToken.id) {
+      resAPI.error(res, "No se ha podido obtener el id del usuario.");
+    }
+    let dataUser = await UserService.acceptMessage(id, payloadToken.id);
+    resAPI.success(res, dataUser);
+  } catch (error) {
+    console.error((error as Error)?.message);
+    return resAPI.error(res, (error as Error)?.message, 500);
+  }
+}
+
 export {
   createUser,
   loginUser,
   getTypesUser,
   getUserByToken,
   getUserByID,
+  updateData,
   updateAvatar,
   updateHeader,
   toggleFollow,
   addGroup,
+  addFriend,
+  deleteFriend,
+  acceptMessage,
 };

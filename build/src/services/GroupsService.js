@@ -8,7 +8,7 @@ const Groups_1 = require("../models/Groups");
 const env_1 = __importDefault(require("../utils/env"));
 const UserServices_1 = __importDefault(require("./UserServices"));
 class groupsService {
-    async createGroup(name, description, picture, ownerID) {
+    async createGroup(name, description, picture, ownerID, idCategory) {
         let group = await Groups_1.Groups.create({
             name,
             description,
@@ -16,7 +16,7 @@ class groupsService {
             membersIDS: [ownerID],
             membersCount: 1,
             ownerID,
-            idInterest: "12fdfc18-99c3-4fa0-8d7f-0932b9066e5b",
+            idInterest: idCategory,
             header: `${env_1.default.api.urlAPI}/images/group_banner/default.jpeg`,
         });
         return group;

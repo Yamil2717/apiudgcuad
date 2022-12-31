@@ -12,6 +12,10 @@ import {
   updateHeader,
   toggleFollow,
   addGroup,
+  addFriend,
+  deleteFriend,
+  acceptMessage,
+  updateData,
 } from "../controllers/userController";
 import { createUserValidation, userLoginValidation } from "../Validations/User";
 import { getAllInterest } from "../controllers/interestController";
@@ -38,6 +42,12 @@ import {
   getAllCommentsByID,
 } from "../controllers/commentsController";
 import imagesRoutes from "./imagesRoutes";
+import {
+  sendRequestUserFriend,
+  getRequestUser,
+  deleteRequestUser,
+  sendRequestUserMessage,
+} from "../controllers/RequestsController";
 const response = new Response();
 const router = Router();
 
@@ -48,11 +58,30 @@ router.put("/user/follow/:id", Auth("User", response), toggleFollow);
 router.get("/user", Auth("User", response), getUserByToken);
 router.get("/user/types", getTypesUser);
 router.get("/user/:id", Auth("User", response), getUserByID);
+router.put("/user/data", Auth("User", response), updateData);
 router.put("/user/avatar", Auth("User", response), updateAvatar);
 router.put("/user/header", Auth("User", response), updateHeader);
 router.put("/user/addGroup/:id", Auth("User", response), addGroup);
+router.put("/user/addFriend/:id", Auth("User", response), addFriend);
+router.delete("/user/deleteFriend/:id", Auth("User", response), deleteFriend);
+router.put("/user/acceptMessage/:id", Auth("User", response), acceptMessage);
 
+// Users request routes
+
+router.post(
+  "/request/user/friend",
+  Auth("User", response),
+  sendRequestUserFriend
+);
+router.post(
+  "/request/user/message",
+  Auth("User", response),
+  sendRequestUserMessage
+);
+router.get("/request/user/:id", Auth("User", response), getRequestUser);
+router.delete("/request/user/:id", Auth("User", response), deleteRequestUser);
 // Auth routes
+
 router.post(
   "/user/auth",
   Validations(userLoginValidation, response),
@@ -74,8 +103,8 @@ router.get("/tags", getAllTags);
 // Groups routes
 
 router.post("/group", Auth("User", response), createGroup);
-router.get("/group/:id", Auth("User", response), getGroupById);
 router.get("/myGroups", Auth("User", response), getAllMyGroups);
+router.get("/group/:id", Auth("User", response), getGroupById);
 router.put("/group/picture/:id", Auth("User", response), updatePictureGroup);
 router.put("/group/header/:id", Auth("User", response), updateHeaderGroup);
 

@@ -8,8 +8,9 @@ const Roles_1 = require("../models/Roles");
 const tools_1 = require("../lib/tools");
 const AuthService_1 = __importDefault(require("./AuthService"));
 const env_1 = __importDefault(require("../utils/env"));
+const Requests_1 = require("../models/Requests");
 class userService {
-    async userRegister(name, email, password, phone, postalCode, roleId, tagsIds, interestIds, location, dateBirth, avatar) {
+    async userRegister(name, email, password, countryIndicator, phone, postalCode, roleId, tagsIds, interestIds, location, dateBirth, avatar) {
         email = email.toLowerCase();
         let userExist = await User_1.User.findOne({ where: { email } });
         if (userExist) {
@@ -20,6 +21,7 @@ class userService {
             name,
             email,
             password: hashedPassword,
+            countryIndicator,
             phone,
             postalCode,
             roleId,
@@ -34,6 +36,35 @@ class userService {
         if (!registerUser)
             throw new Error("Ha ocurrido un error y no sé pudo registrar la cuenta");
         return registerUser;
+    }
+    async updateData(id, oldPassword, data) {
+        if (data?.email) {
+            data.email = data.email.toLowerCase();
+        }
+        if (data?.password) {
+            let userDB = await User_1.User.findOne({ where: { id } });
+            let passwordOldCheck = await tools_1.Encrypt.comparePassword(oldPassword, userDB.password);
+            if (!passwordOldCheck) {
+                throw new Error("La antigua contraseña ingresada no coincide con la registrada en la DB.");
+            }
+            data.password = await tools_1.Encrypt.encryptPassword(data.password);
+        }
+        let user = await User_1.User.update({ ...data }, {
+            where: { id },
+        });
+        if (user[0] === 1) {
+            let userData = await User_1.User.findOne({
+                attributes: {
+                    exclude: ["password", "blocking", "updatedAt"],
+                },
+                where: { id },
+                include: { model: Roles_1.Roles, required: true },
+            });
+            return userData.get();
+        }
+        else {
+            throw new Error("No se pudo actualizar la información del usuario");
+        }
     }
     async userLogin(email, password) {
         email = email.toLowerCase();
@@ -109,23 +140,105 @@ class userService {
         else {
             tempFollows[idTarget] = { date: Date.now() };
         }
-        await User_1.User.update({
+        let userUpdate = await User_1.User.update({
             follows: tempFollows,
         }, {
             where: { id },
         });
-        return true;
+        if (userUpdate[0] === 1) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
     async addGroup(idGroup, id) {
         let user = await User_1.User.findOne({ where: { id } });
         let { groups } = user.get();
+        if (!groups) {
+            groups = {};
+        }
         groups[idGroup] = new Date().toISOString();
-        await User_1.User.update({
+        let userUpdate = await User_1.User.update({
             groups,
         }, {
             where: { id },
         });
-        return true;
+        if (userUpdate[0] === 1) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    async addFriend(id, idTarget) {
+        let userOne = await User_1.User.findOne({ where: { id } });
+        let userTwo = await User_1.User.findOne({ where: { id: idTarget } });
+        let date = new Date().toISOString();
+        if (!userOne.friends[idTarget]) {
+            userOne.friends[idTarget] = {
+                dateAccepted: date,
+                allowMessage: false,
+            };
+        }
+        if (!userTwo.friends[id]) {
+            userTwo.friends[id] = {
+                dateAccepted: date,
+                allowMessage: false,
+            };
+        }
+        let userOneUpdate = await User_1.User.update({ friends: userOne.friends }, { where: { id } });
+        let userTwoUpdate = await User_1.User.update({ friends: userTwo.friends }, { where: { id: idTarget } });
+        if (userOneUpdate[0] === 1 && userTwoUpdate[0] === 1) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    async deleteFriend(id, idTarget) {
+        let userOne = await User_1.User.findOne({ where: { id } });
+        let userTwo = await User_1.User.findOne({ where: { id: idTarget } });
+        if (userOne.friends[idTarget]) {
+            delete userOne.friends[idTarget];
+        }
+        if (userTwo.friends[id]) {
+            delete userTwo.friends[id];
+        }
+        let userOneUpdate = await User_1.User.update({ friends: userOne.friends }, { where: { id } });
+        let userTwoUpdate = await User_1.User.update({ friends: userTwo.friends }, { where: { id: idTarget } });
+        let request = await Requests_1.Requests.destroy({
+            where: { senderRequestID: id, receiverRequestID: idTarget },
+        });
+        if (!request) {
+            await Requests_1.Requests.destroy({
+                where: { senderRequestID: idTarget, receiverRequestID: id },
+            });
+        }
+        if (userOneUpdate[0] === 1 && userTwoUpdate[0] === 1) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    async acceptMessage(id, idTarget) {
+        let userOne = await User_1.User.findOne({ where: { id } });
+        let userTwo = await User_1.User.findOne({ where: { id: idTarget } });
+        if (userOne.friends[idTarget]) {
+            userOne.friends[idTarget].allowMessage = true;
+        }
+        if (userTwo.friends[id]) {
+            userTwo.friends[id].allowMessage = true;
+        }
+        let userOneUpdate = await User_1.User.update({ friends: userOne.friends }, { where: { id } });
+        let userTwoUpdate = await User_1.User.update({ friends: userTwo.friends }, { where: { id: idTarget } });
+        if (userOneUpdate[0] === 1 && userTwoUpdate[0] === 1) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }
 let UserService = new userService();

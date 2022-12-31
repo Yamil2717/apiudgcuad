@@ -18,6 +18,11 @@ exports.createUserValidation = (0, yup_1.object)({
         rePassword: (0, yup_1.string)()
             .oneOf([(0, yup_1.ref)("password"), null], "Las contraseñas no coinciden.")
             .required("Debe ingresar la confirmación de la contraseña"),
+        countryIndicator: (0, yup_1.string)()
+            .min(1)
+            .max(3)
+            .required("Debe ingresar un indicador del país de su numero de teléfono válido.")
+            .typeError("Debe ingresar un indicador del país de su numero de teléfono válido."),
         phone: (0, yup_1.string)()
             .min(10)
             .max(10)

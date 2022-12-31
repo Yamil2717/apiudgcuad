@@ -8,7 +8,8 @@ class groupsService {
     name: string,
     description: string,
     picture: string,
-    ownerID: string
+    ownerID: string,
+    idCategory: string
   ) {
     let group = await Groups.create({
       name,
@@ -17,7 +18,7 @@ class groupsService {
       membersIDS: [ownerID],
       membersCount: 1,
       ownerID,
-      idInterest: "12fdfc18-99c3-4fa0-8d7f-0932b9066e5b",
+      idInterest: idCategory,
       header: `${env.api.urlAPI}/images/group_banner/default.jpeg`,
     });
     return group;

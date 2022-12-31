@@ -17,6 +17,7 @@ const publicationsController_1 = require("../controllers/publicationsController"
 const path = require("node:path");
 const commentsController_1 = require("../controllers/commentsController");
 const imagesRoutes_1 = __importDefault(require("./imagesRoutes"));
+const RequestsController_1 = require("../controllers/RequestsController");
 const response = new tools_1.Response();
 const router = (0, express_1.Router)();
 // Users routes
@@ -25,9 +26,18 @@ router.put("/user/follow/:id", (0, Auth_1.Auth)("User", response), userControlle
 router.get("/user", (0, Auth_1.Auth)("User", response), userController_1.getUserByToken);
 router.get("/user/types", userController_1.getTypesUser);
 router.get("/user/:id", (0, Auth_1.Auth)("User", response), userController_1.getUserByID);
+router.put("/user/data", (0, Auth_1.Auth)("User", response), userController_1.updateData);
 router.put("/user/avatar", (0, Auth_1.Auth)("User", response), userController_1.updateAvatar);
 router.put("/user/header", (0, Auth_1.Auth)("User", response), userController_1.updateHeader);
 router.put("/user/addGroup/:id", (0, Auth_1.Auth)("User", response), userController_1.addGroup);
+router.put("/user/addFriend/:id", (0, Auth_1.Auth)("User", response), userController_1.addFriend);
+router.delete("/user/deleteFriend/:id", (0, Auth_1.Auth)("User", response), userController_1.deleteFriend);
+router.put("/user/acceptMessage/:id", (0, Auth_1.Auth)("User", response), userController_1.acceptMessage);
+// Users request routes
+router.post("/request/user/friend", (0, Auth_1.Auth)("User", response), RequestsController_1.sendRequestUserFriend);
+router.post("/request/user/message", (0, Auth_1.Auth)("User", response), RequestsController_1.sendRequestUserMessage);
+router.get("/request/user/:id", (0, Auth_1.Auth)("User", response), RequestsController_1.getRequestUser);
+router.delete("/request/user/:id", (0, Auth_1.Auth)("User", response), RequestsController_1.deleteRequestUser);
 // Auth routes
 router.post("/user/auth", (0, Validations_1.Validations)(User_1.userLoginValidation, response), userController_1.loginUser);
 router.post("/user/auth/refreshToken", (0, Auth_1.Auth)("Admin", response), authController_1.refreshToken);
@@ -38,8 +48,8 @@ router.get("/interest", interestController_1.getAllInterest);
 router.get("/tags", tagsController_1.getAllTags);
 // Groups routes
 router.post("/group", (0, Auth_1.Auth)("User", response), groupsController_1.createGroup);
-router.get("/group/:id", (0, Auth_1.Auth)("User", response), groupsController_1.getGroupById);
 router.get("/myGroups", (0, Auth_1.Auth)("User", response), groupsController_1.getAllMyGroups);
+router.get("/group/:id", (0, Auth_1.Auth)("User", response), groupsController_1.getGroupById);
 router.put("/group/picture/:id", (0, Auth_1.Auth)("User", response), groupsController_1.updatePictureGroup);
 router.put("/group/header/:id", (0, Auth_1.Auth)("User", response), groupsController_1.updateHeaderGroup);
 // Publications routes

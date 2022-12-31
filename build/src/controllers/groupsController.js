@@ -10,8 +10,8 @@ const GroupsService_1 = __importDefault(require("../services/GroupsService"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 async function createGroup(req, res) {
     try {
-        let { name, description, picture, ownerID } = req.body;
-        let groups = await GroupsService_1.default.createGroup(name, description, picture, ownerID);
+        let { name, description, picture, ownerID, idCategory } = req.body;
+        let groups = await GroupsService_1.default.createGroup(name, description, picture, ownerID, idCategory);
         console.info(`SOMEONE CREATE A NEW GROUPS`);
         resAPI.success(res, groups);
     }

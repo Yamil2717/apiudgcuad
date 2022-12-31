@@ -6,12 +6,13 @@ import JWT from "jsonwebtoken";
 
 async function createGroup(req: Request, res: Response) {
   try {
-    let { name, description, picture, ownerID } = req.body;
+    let { name, description, picture, ownerID, idCategory } = req.body;
     let groups: any = await GroupsService.createGroup(
       name,
       description,
       picture,
-      ownerID
+      ownerID,
+      idCategory
     );
     console.info(`SOMEONE CREATE A NEW GROUPS`);
     resAPI.success(res, groups);

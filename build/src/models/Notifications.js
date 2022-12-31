@@ -15,7 +15,7 @@ exports.Notifications = database_1.sequelize.define("notifications", {
     photo: { type: sequelize_1.DataTypes.STRING },
     title: { type: sequelize_1.DataTypes.STRING },
     description: { type: sequelize_1.DataTypes.STRING },
-    type: { type: sequelize_1.DataTypes.NUMBER },
+    type: { type: sequelize_1.DataTypes.INTEGER },
     idUserSender: {
         type: sequelize_1.DataTypes.UUID,
         references: { model: User_1.User, key: "id" },

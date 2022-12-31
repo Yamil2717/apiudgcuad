@@ -13,7 +13,7 @@ export const Notifications = sequelize.define("notifications", {
   photo: { type: DataTypes.STRING },
   title: { type: DataTypes.STRING },
   description: { type: DataTypes.STRING },
-  type: { type: DataTypes.NUMBER },
+  type: { type: DataTypes.INTEGER },
   idUserSender: {
     type: DataTypes.UUID,
     references: { model: User, key: "id" },

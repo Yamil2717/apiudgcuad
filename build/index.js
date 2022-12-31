@@ -14,6 +14,8 @@ require("./src/models/Publications");
 require("./src/models/Interest");
 require("./src/models/Tag");
 require("./src/models/Reactions");
+require("./src/models/Notifications");
+require("./src/models/Requests");
 const migrations_1 = __importDefault(require("./src/migrations"));
 (async () => {
     try {

@@ -16,6 +16,15 @@ export const createUserValidation = object({
     rePassword: string()
       .oneOf([ref("password"), null], "Las contraseñas no coinciden.")
       .required("Debe ingresar la confirmación de la contraseña"),
+    countryIndicator: string()
+      .min(1)
+      .max(3)
+      .required(
+        "Debe ingresar un indicador del país de su numero de teléfono válido."
+      )
+      .typeError(
+        "Debe ingresar un indicador del país de su numero de teléfono válido."
+      ),
     phone: string()
       .min(10)
       .max(10)

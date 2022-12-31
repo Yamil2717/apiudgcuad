@@ -11,6 +11,7 @@ export const User = sequelize.define("users", {
   name: { type: DataTypes.STRING },
   email: { type: DataTypes.STRING, unique: true },
   password: { type: DataTypes.STRING },
+  countryIndicator: { type: DataTypes.STRING(3) },
   phone: { type: DataTypes.STRING },
   postalCode: { type: DataTypes.STRING(10) },
   roleId: {

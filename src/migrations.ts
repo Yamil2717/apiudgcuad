@@ -1,7 +1,6 @@
 import { Roles } from "./models/Roles";
 import { Interest } from "./models/Interest";
 import { Tags } from "./models/Tag";
-import { Groups } from "./models/Groups";
 import { User } from "./models/User";
 import env from "./utils/env";
 
@@ -415,6 +414,7 @@ async function migrations() {
         email: "admin@gmail.com",
         password:
           "$2a$10$bAoGandv2.EsKPvO7jNKoeREKmZIs3/zAK0FYpu0le4JnxfbcugfS",
+        countryIndicator: "57",
         phone: "3005849945",
         postalCode: "081455",
         roleId: "fc987eec-e7d6-43a2-a8fd-5e87ad8b1830",
@@ -432,13 +432,7 @@ async function migrations() {
           long: -122.084,
           locationName: "1600 Amphitheatre Pkwy, Mountain View, CA 94043, USA",
         },
-        groups: {
-          "0e0a0784-58e8-47d3-939c-56959e36656c": "2022-11-28 00:45:12.427-05",
-          "9b594b00-0307-4b5f-935d-e1e8023e918e": "2022-11-28 00:45:12.427-05",
-          "07522151-449a-4eff-a8dd-c1d7f9a2823a": "2022-11-28 00:45:12.427-05",
-          "b482fdae-4653-436b-bf66-56a2013b304a": "2022-11-28 00:45:12.427-05",
-          "1b285ff4-a8fc-4763-a778-8503c9ccb805": "2022-11-28 00:45:12.427-05",
-        },
+        groups: {},
         dateBirth: "2022-11-28 00:45:12.427-05",
         blocking: { enable: false },
       },
@@ -447,6 +441,7 @@ async function migrations() {
         email: "ciglesias1997@gmail.com",
         password:
           "$2a$10$j6kJCPdfs/ZhwnFG0Tl26uFL8fI.Xbn8cBWGbUkJy24vWfEbqkzRy",
+        countryIndicator: "57",
         phone: "3052300750",
         postalCode: "12346",
         roleId: "14697009-18a0-4024-83e3-7012cf804559",
@@ -463,6 +458,7 @@ async function migrations() {
         email: "christgg1997@gmail.com",
         password:
           "$2a$10$j6kJCPdfs/ZhwnFG0Tl26uFL8fI.Xbn8cBWGbUkJy24vWfEbqkzRy",
+        countryIndicator: "57",
         phone: "3052307750",
         postalCode: "12350",
         roleId: "57541c2b-48a7-4097-981d-28fc03a52009",
@@ -487,6 +483,7 @@ async function migrations() {
         email: "diegolimore@gmail.com",
         password:
           "$2a$10$GiUnhaFyc0OQfY2bXnNwoeNstcQtq3Vn9SEcwp449UbIySuoJ5bBm",
+        countryIndicator: "52",
         phone: "3314968614",
         postalCode: "45170",
         roleId: "14697009-18a0-4024-83e3-7012cf804559",
@@ -512,6 +509,7 @@ async function migrations() {
         email: "aglopezruiz@gmail.com",
         password:
           "$2a$10$9/U77i8u1Yw9EGgS3eBkJutSANqeGf6.y8hBf35f/6XJyUJUPI0m2",
+        countryIndicator: "52",
         phone: "3328126249",
         postalCode: "44100",
         roleId: "129da192-8db4-42b8-955a-e7a65d0be9b5",
@@ -533,6 +531,7 @@ async function migrations() {
         email: "panchoxfx@gmail.com",
         password:
           "$2a$10$veOlfPqQyuCFRoS6tBkQn.32BEmwJpytHVq5oGKDqU22RYkDQkRx6",
+        countryIndicator: "52",
         phone: "3315381729",
         postalCode: "45170",
         roleId: "14697009-18a0-4024-83e3-7012cf804559",
@@ -559,6 +558,7 @@ async function migrations() {
         email: "juan.demerutis@gmail.com",
         password:
           "$2a$10$abDbKSEernNF.l.k9RZLm.k5xIBPCVqXkS7LmBAYnMLWpiSQ79XXG",
+        countryIndicator: "52",
         phone: "3338154886",
         postalCode: "44250",
         roleId: "129da192-8db4-42b8-955a-e7a65d0be9b5",
@@ -584,6 +584,7 @@ async function migrations() {
         email: "carlos19972107sanchez@gmail.com",
         password:
           "$2a$10$Gcs0yFOtQO975K1I0O.JSeEU7J.4eXfXOR.Tp9YpeaumQWCH.z1AC",
+        countryIndicator: "52",
         phone: "3335552123",
         postalCode: "54100",
         roleId: "14697009-18a0-4024-83e3-7012cf804559",
@@ -614,79 +615,6 @@ async function migrations() {
     .catch((err) =>
       console.error(
         "Ha ocurrido un error a la hora de insertar el usuario de admin. Error: " +
-          err
-      )
-    );
-
-  await Groups.bulkCreate(
-    [
-      {
-        id: "0e0a0784-58e8-47d3-939c-56959e36656c",
-        name: "Ciclovías",
-        picture:
-          "https://images.pexels.com/photos/386024/pexels-photo-386024.jpeg",
-        header: `${env.api.urlAPI}/images/group_banner/default.jpeg`,
-        idInterest: "496e6896-0279-4d59-a9ba-4ea93ac0e1ec",
-        ownerID: "dec1b80e-f92e-4a11-a88c-0d58c11bb2e7",
-        membersIDS: ["dec1b80e-f92e-4a11-a88c-0d58c11bb2e7"],
-        membersCount: 1,
-      },
-      {
-        id: "9b594b00-0307-4b5f-935d-e1e8023e918e",
-        name: "Vialidad",
-        picture:
-          "https://images.pexels.com/photos/5835467/pexels-photo-5835467.jpeg",
-        header: `${env.api.urlAPI}/images/group_banner/default.jpeg`,
-        idInterest: "12fdfc18-99c3-4fa0-8d7f-0932b9066e5b",
-        ownerID: "dec1b80e-f92e-4a11-a88c-0d58c11bb2e7",
-        membersIDS: ["dec1b80e-f92e-4a11-a88c-0d58c11bb2e7"],
-        membersCount: 1,
-      },
-      {
-        id: "07522151-449a-4eff-a8dd-c1d7f9a2823a",
-        name: "Pasos peatonales",
-        picture:
-          "https://images.pexels.com/photos/1309687/pexels-photo-1309687.jpeg",
-        header: `${env.api.urlAPI}/images/group_banner/default.jpeg`,
-        idInterest: "a737d9e4-3c99-4e6d-b46d-c1ce7ee91012",
-        ownerID: "dec1b80e-f92e-4a11-a88c-0d58c11bb2e7",
-        membersIDS: ["dec1b80e-f92e-4a11-a88c-0d58c11bb2e7"],
-        membersCount: 1,
-      },
-      {
-        id: "b482fdae-4653-436b-bf66-56a2013b304a",
-        name: "Infraestructura dañada",
-        picture:
-          "https://images.pexels.com/photos/5659371/pexels-photo-5659371.jpeg",
-        header: `${env.api.urlAPI}/images/group_banner/default.jpeg`,
-        idInterest: "31fec336-370e-4f8d-a084-707740433315",
-        ownerID: "dec1b80e-f92e-4a11-a88c-0d58c11bb2e7",
-        membersIDS: ["dec1b80e-f92e-4a11-a88c-0d58c11bb2e7"],
-        membersCount: 1,
-      },
-      {
-        id: "1b285ff4-a8fc-4763-a778-8503c9ccb805",
-        name: "Edificios históricos",
-        picture:
-          "https://images.pexels.com/photos/7692217/pexels-photo-7692217.jpeg",
-        header: `${env.api.urlAPI}/images/group_banner/default.jpeg`,
-        idInterest: "8d79c80e-7ca3-4636-9b0f-fe234a035c78",
-        ownerID: "dec1b80e-f92e-4a11-a88c-0d58c11bb2e7",
-        membersIDS: ["dec1b80e-f92e-4a11-a88c-0d58c11bb2e7"],
-        membersCount: 1,
-      },
-    ],
-    {
-      ignoreDuplicates: true,
-      logging: false,
-    }
-  )
-    .then(() =>
-      console.info("Se ha insertado la información de grupos correctamente.")
-    )
-    .catch((err) =>
-      console.error(
-        "Ha ocurrido un error a la hora de insertar la información de grupos. Error: " +
           err
       )
     );

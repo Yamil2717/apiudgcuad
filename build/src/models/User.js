@@ -13,6 +13,7 @@ exports.User = database_1.sequelize.define("users", {
     name: { type: sequelize_1.DataTypes.STRING },
     email: { type: sequelize_1.DataTypes.STRING, unique: true },
     password: { type: sequelize_1.DataTypes.STRING },
+    countryIndicator: { type: sequelize_1.DataTypes.STRING(3) },
     phone: { type: sequelize_1.DataTypes.STRING },
     postalCode: { type: sequelize_1.DataTypes.STRING(10) },
     roleId: {
