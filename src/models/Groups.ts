@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database";
-import { Interest } from "./Interest";
 import { User } from "./User";
 
 export const Groups = sequelize.define("groups", {
@@ -15,15 +14,6 @@ export const Groups = sequelize.define("groups", {
   header: { type: DataTypes.STRING },
   membersCount: { type: DataTypes.INTEGER, defaultValue: 0 },
   membersIDS: { type: DataTypes.ARRAY(DataTypes.UUID), defaultValue: [] },
-  idInterest: {
-    type: DataTypes.UUID,
-    references: {
-      model: Interest,
-      key: "id",
-    },
-    onUpdate: "CASCADE",
-    onDelete: "RESTRICT",
-  },
   ownerID: {
     type: DataTypes.UUID,
     references: {
@@ -32,10 +22,6 @@ export const Groups = sequelize.define("groups", {
     },
     allowNull: false,
   },
-});
-
-Groups.belongsTo(Interest, {
-  foreignKey: "idInterest",
 });
 
 Groups.belongsTo(User, {

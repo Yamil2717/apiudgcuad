@@ -14,7 +14,6 @@ import {
   addGroup,
   addFriend,
   deleteFriend,
-  acceptMessage,
   updateData,
 } from "../controllers/userController";
 import { createUserValidation, userLoginValidation } from "../Validations/User";
@@ -46,7 +45,6 @@ import {
   sendRequestUserFriend,
   getRequestUser,
   deleteRequestUser,
-  sendRequestUserMessage,
 } from "../controllers/RequestsController";
 const response = new Response();
 const router = Router();
@@ -64,7 +62,6 @@ router.put("/user/header", Auth("User", response), updateHeader);
 router.put("/user/addGroup/:id", Auth("User", response), addGroup);
 router.put("/user/addFriend/:id", Auth("User", response), addFriend);
 router.delete("/user/deleteFriend/:id", Auth("User", response), deleteFriend);
-router.put("/user/acceptMessage/:id", Auth("User", response), acceptMessage);
 
 // Users request routes
 
@@ -72,11 +69,6 @@ router.post(
   "/request/user/friend",
   Auth("User", response),
   sendRequestUserFriend
-);
-router.post(
-  "/request/user/message",
-  Auth("User", response),
-  sendRequestUserMessage
 );
 router.get("/request/user/:id", Auth("User", response), getRequestUser);
 router.delete("/request/user/:id", Auth("User", response), deleteRequestUser);
@@ -88,9 +80,6 @@ router.post(
   loginUser
 );
 router.post("/user/auth/refreshToken", Auth("Admin", response), refreshToken);
-router.get("/privacy-and-policy", (req: any, res: any) =>
-  res.sendFile(path.join(__dirname, "../pages/privacyPolicy.html"))
-);
 
 // Interest routes
 

@@ -32,16 +32,13 @@ router.put("/user/header", (0, Auth_1.Auth)("User", response), userController_1.
 router.put("/user/addGroup/:id", (0, Auth_1.Auth)("User", response), userController_1.addGroup);
 router.put("/user/addFriend/:id", (0, Auth_1.Auth)("User", response), userController_1.addFriend);
 router.delete("/user/deleteFriend/:id", (0, Auth_1.Auth)("User", response), userController_1.deleteFriend);
-router.put("/user/acceptMessage/:id", (0, Auth_1.Auth)("User", response), userController_1.acceptMessage);
 // Users request routes
 router.post("/request/user/friend", (0, Auth_1.Auth)("User", response), RequestsController_1.sendRequestUserFriend);
-router.post("/request/user/message", (0, Auth_1.Auth)("User", response), RequestsController_1.sendRequestUserMessage);
 router.get("/request/user/:id", (0, Auth_1.Auth)("User", response), RequestsController_1.getRequestUser);
 router.delete("/request/user/:id", (0, Auth_1.Auth)("User", response), RequestsController_1.deleteRequestUser);
 // Auth routes
 router.post("/user/auth", (0, Validations_1.Validations)(User_1.userLoginValidation, response), userController_1.loginUser);
 router.post("/user/auth/refreshToken", (0, Auth_1.Auth)("Admin", response), authController_1.refreshToken);
-router.get("/privacy-and-policy", (req, res) => res.sendFile(path.join(__dirname, "../pages/privacyPolicy.html")));
 // Interest routes
 router.get("/interest", interestController_1.getAllInterest);
 // Tags routes

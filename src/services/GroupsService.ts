@@ -1,4 +1,4 @@
-import { Op } from "sequelize";
+import { Op, Sequelize } from "sequelize";
 import { Groups } from "../models/Groups";
 import env from "../utils/env";
 import UserService from "./UserServices";
@@ -8,8 +8,7 @@ class groupsService {
     name: string,
     description: string,
     picture: string,
-    ownerID: string,
-    idCategory: string
+    ownerID: string
   ) {
     let group = await Groups.create({
       name,
@@ -18,7 +17,6 @@ class groupsService {
       membersIDS: [ownerID],
       membersCount: 1,
       ownerID,
-      idInterest: idCategory,
       header: `${env.api.urlAPI}/images/group_banner/default.jpeg`,
     });
     return group;
@@ -93,6 +91,25 @@ class groupsService {
     } else {
       return false;
     }
+  }
+
+  async groupUpdateMembers(id: string, value: number) {
+    let group: any;
+    if (value > 0) {
+      group = await Groups.increment("membersCount", {
+        by: value,
+        where: { id },
+      });
+    } else {
+      group = await Groups.decrement("membersCount", {
+        by: value,
+        where: { id },
+      });
+    }
+    console.log("Groups Update Members :DDD");
+    console.log(group);
+    console.log("End Groups Update Members :DDD");
+    return group;
   }
 }
 

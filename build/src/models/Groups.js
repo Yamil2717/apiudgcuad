@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Groups = void 0;
 const sequelize_1 = require("sequelize");
 const database_1 = require("../database/database");
-const Interest_1 = require("./Interest");
 const User_1 = require("./User");
 exports.Groups = database_1.sequelize.define("groups", {
     id: {
@@ -17,15 +16,6 @@ exports.Groups = database_1.sequelize.define("groups", {
     header: { type: sequelize_1.DataTypes.STRING },
     membersCount: { type: sequelize_1.DataTypes.INTEGER, defaultValue: 0 },
     membersIDS: { type: sequelize_1.DataTypes.ARRAY(sequelize_1.DataTypes.UUID), defaultValue: [] },
-    idInterest: {
-        type: sequelize_1.DataTypes.UUID,
-        references: {
-            model: Interest_1.Interest,
-            key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "RESTRICT",
-    },
     ownerID: {
         type: sequelize_1.DataTypes.UUID,
         references: {
@@ -34,9 +24,6 @@ exports.Groups = database_1.sequelize.define("groups", {
         },
         allowNull: false,
     },
-});
-exports.Groups.belongsTo(Interest_1.Interest, {
-    foreignKey: "idInterest",
 });
 exports.Groups.belongsTo(User_1.User, {
     foreignKey: "ownerID",

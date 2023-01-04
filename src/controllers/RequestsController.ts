@@ -74,33 +74,4 @@ async function deleteRequestUser(req: Request, res: Response) {
   }
 }
 
-async function sendRequestUserMessage(req: Request, res: Response) {
-  try {
-    let { id } = req.body;
-    let authorization: any = req.headers.authorization;
-    let token = authorization.split(" ");
-    let payloadToken: any = JWT.decode(token[1]);
-    if (!payloadToken.id) {
-      resAPI.error(res, "No se ha podido obtener el id del usuario.");
-    }
-    let request: any = await RequestsService.sendRequestUser(
-      payloadToken.id,
-      id,
-      2
-    );
-    console.info(
-      `THE USER ID ${payloadToken.id} SEND A MESSAGE REQUEST TO USER ID ${id}`
-    );
-    resAPI.success(res, request);
-  } catch (error) {
-    console.error((error as Error)?.message);
-    return resAPI.error(res, (error as Error)?.message, 500);
-  }
-}
-
-export {
-  sendRequestUserFriend,
-  getRequestUser,
-  deleteRequestUser,
-  sendRequestUserMessage,
-};
+export { sendRequestUserFriend, getRequestUser, deleteRequestUser };

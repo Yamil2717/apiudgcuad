@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendRequestUserMessage = exports.deleteRequestUser = exports.getRequestUser = exports.sendRequestUserFriend = void 0;
+exports.deleteRequestUser = exports.getRequestUser = exports.sendRequestUserFriend = void 0;
 const tools_1 = require("../lib/tools");
 const RequestsService_1 = __importDefault(require("../services/RequestsService"));
 const resAPI = new tools_1.Response();
@@ -65,22 +65,3 @@ async function deleteRequestUser(req, res) {
     }
 }
 exports.deleteRequestUser = deleteRequestUser;
-async function sendRequestUserMessage(req, res) {
-    try {
-        let { id } = req.body;
-        let authorization = req.headers.authorization;
-        let token = authorization.split(" ");
-        let payloadToken = jsonwebtoken_1.default.decode(token[1]);
-        if (!payloadToken.id) {
-            resAPI.error(res, "No se ha podido obtener el id del usuario.");
-        }
-        let request = await RequestsService_1.default.sendRequestUser(payloadToken.id, id, 2);
-        console.info(`THE USER ID ${payloadToken.id} SEND A MESSAGE REQUEST TO USER ID ${id}`);
-        resAPI.success(res, request);
-    }
-    catch (error) {
-        console.error(error?.message);
-        return resAPI.error(res, error?.message, 500);
-    }
-}
-exports.sendRequestUserMessage = sendRequestUserMessage;

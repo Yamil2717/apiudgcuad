@@ -3,6 +3,7 @@ import { Interest } from "./models/Interest";
 import { Tags } from "./models/Tag";
 import { User } from "./models/User";
 import env from "./utils/env";
+import { Groups } from "./models/Groups";
 
 async function migrations() {
   await Roles.bulkCreate(
@@ -46,44 +47,32 @@ async function migrations() {
       {
         id: "a737d9e4-3c99-4e6d-b46d-c1ce7ee91012",
         name: "Transporte público",
-        picture:
-          "https://live.staticflickr.com/3071/2758112598_94ddb62203_b.jpg",
+        picture: `${env.api.urlAPI}/images/groups/picture_2610d41a-49a8-41c6-be4a-13372c8884e3_1672856974411.jpeg`,
       },
       {
         id: "31fec336-370e-4f8d-a084-707740433315",
         name: "Vivienda deshabitada",
-        picture:
-          "https://www.capitalmexico.com.mx/wp-content/uploads/2019/04/Foto-Especial-29-2.jpg",
-      },
-      {
-        id: "12fdfc18-99c3-4fa0-8d7f-0932b9066e5b",
-        name: "Gestión Urbana",
-        picture:
-          "https://www.alcaldesdemexico.com/wp-content/uploads/2020/06/Gestion_urbana.jpg",
-      },
-      {
-        id: "8d79c80e-7ca3-4636-9b0f-fe234a035c78",
-        name: "Producción de Vivienda",
-        picture:
-          "https://www.rrhhdigital.com/userfiles/construccion-obreros-obra.jpg",
-      },
-      {
-        id: "496e6896-0279-4d59-a9ba-4ea93ac0e1ec",
-        name: "Inseguridad vial",
-        picture:
-          "https://www.serviasistenciaexpress.com/wp-content/uploads/2018/07/Seguridad-Vial.jpg",
-      },
-      {
-        id: "f95c1843-c46e-443e-9c3d-4407bf8f25a6",
-        name: "Obras viales",
-        picture:
-          "https://www.diariodexalapa.com.mx/incoming/8z3257-obras-xalapa.jpg/ALTERNATES/LANDSCAPE_768/Obras%20Xalapa.jpg",
+        picture: `${env.api.urlAPI}/images/groups/picture_1a46f5df-21cc-4974-9228-81647bf6ca48_1672856974411.jpeg`,
       },
       {
         id: "92eb2e67-7f15-4027-837a-332dad68ac13",
         name: "Vivienda y trabajo",
-        picture:
-          "https://images.adsttc.com/media/images/5d72/b905/284d/d10d/8700/0033/newsletter/17_%C2%A9_Iwan_Baan.jpg",
+        picture: `${env.api.urlAPI}/images/groups/picture_e88360b8-60a0-4247-aaff-9593853efb4d_1672856974411.jpeg`,
+      },
+      {
+        id: "8d79c80e-7ca3-4636-9b0f-fe234a035c78",
+        name: "Producción de Vivienda",
+        picture: `${env.api.urlAPI}/images/groups/picture_4ea8cd10-4425-4969-bba3-ea41c0e2fd0c_1672856974411.jpeg`,
+      },
+      {
+        id: "f95c1843-c46e-443e-9c3d-4407bf8f25a6",
+        name: "Inseguridad barrial",
+        picture: `${env.api.urlAPI}/images/groups/picture_ad6388cb-21ab-4baa-ac78-0b541867d997_1672856974411.jpeg`,
+      },
+      {
+        id: "12fdfc18-99c3-4fa0-8d7f-0932b9066e5b",
+        name: "Gestión Urbana",
+        picture: `${env.api.urlAPI}/images/groups/picture_7604ba46-0661-49d6-8dee-69c6e54adeb2_1672856974411.jpeg`,
       },
     ],
     {
@@ -252,55 +241,6 @@ async function migrations() {
         idInterest: "8d79c80e-7ca3-4636-9b0f-fe234a035c78",
       },
       { hashtag: "censo", idInterest: "8d79c80e-7ca3-4636-9b0f-fe234a035c78" },
-      // Inseguridad vial
-      {
-        hashtag: "accesibilidad",
-        idInterest: "496e6896-0279-4d59-a9ba-4ea93ac0e1ec",
-      },
-      {
-        hashtag: "política",
-        idInterest: "496e6896-0279-4d59-a9ba-4ea93ac0e1ec",
-      },
-      {
-        hashtag: "sencilla",
-        idInterest: "496e6896-0279-4d59-a9ba-4ea93ac0e1ec",
-      },
-      {
-        hashtag: "accidentes",
-        idInterest: "496e6896-0279-4d59-a9ba-4ea93ac0e1ec",
-      },
-      {
-        hashtag: "disminuir",
-        idInterest: "496e6896-0279-4d59-a9ba-4ea93ac0e1ec",
-      },
-      {
-        hashtag: "prevención",
-        idInterest: "496e6896-0279-4d59-a9ba-4ea93ac0e1ec",
-      },
-      {
-        hashtag: "muertos",
-        idInterest: "496e6896-0279-4d59-a9ba-4ea93ac0e1ec",
-      },
-      {
-        hashtag: "choques",
-        idInterest: "496e6896-0279-4d59-a9ba-4ea93ac0e1ec",
-      },
-      {
-        hashtag: "controlar",
-        idInterest: "496e6896-0279-4d59-a9ba-4ea93ac0e1ec",
-      },
-      {
-        hashtag: "consecuencia",
-        idInterest: "496e6896-0279-4d59-a9ba-4ea93ac0e1ec",
-      },
-      {
-        hashtag: "heridos",
-        idInterest: "496e6896-0279-4d59-a9ba-4ea93ac0e1ec",
-      },
-      {
-        hashtag: "funcionamiento",
-        idInterest: "496e6896-0279-4d59-a9ba-4ea93ac0e1ec",
-      },
       // Obras viales
       {
         hashtag: "construcción",
@@ -432,7 +372,13 @@ async function migrations() {
           long: -122.084,
           locationName: "1600 Amphitheatre Pkwy, Mountain View, CA 94043, USA",
         },
-        groups: {},
+        groups: {
+          "0e0a0784-58e8-47d3-939c-56959e36656c": "2022-11-28 00:45:12.427-05",
+          "9b594b00-0307-4b5f-935d-e1e8023e918e": "2022-11-28 00:45:12.427-05",
+          "07522151-449a-4eff-a8dd-c1d7f9a2823a": "2022-11-28 00:45:12.427-05",
+          "b482fdae-4653-436b-bf66-56a2013b304a": "2022-11-28 00:45:12.427-05",
+          "1b285ff4-a8fc-4763-a778-8503c9ccb805": "2022-11-28 00:45:12.427-05",
+        },
         dateBirth: "2022-11-28 00:45:12.427-05",
         blocking: { enable: false },
       },
@@ -450,6 +396,13 @@ async function migrations() {
         avatar: `${env.api.urlAPI}/images/user/default.jpeg`,
         header: `${env.api.urlAPI}/images/profile_banner/default.jpeg`,
         location: { lat: 0, long: 0, locationName: "No street name" },
+        groups: {
+          "0e0a0784-58e8-47d3-939c-56959e36656c": "2022-11-28 00:45:12.427-05",
+          "9b594b00-0307-4b5f-935d-e1e8023e918e": "2022-11-28 00:45:12.427-05",
+          "07522151-449a-4eff-a8dd-c1d7f9a2823a": "2022-11-28 00:45:12.427-05",
+          "b482fdae-4653-436b-bf66-56a2013b304a": "2022-11-28 00:45:12.427-05",
+          "1b285ff4-a8fc-4763-a778-8503c9ccb805": "2022-11-28 00:45:12.427-05",
+        },
         dateBirth: "2022-11-28 00:45:12.427-05",
         blocking: { enable: false },
       },
@@ -475,6 +428,13 @@ async function migrations() {
           locationName:
             "Cra. 8g, Suroccidente, Barranquilla, Atlántico, Colombia",
         },
+        groups: {
+          "0e0a0784-58e8-47d3-939c-56959e36656c": "2022-11-28 00:45:12.427-05",
+          "9b594b00-0307-4b5f-935d-e1e8023e918e": "2022-11-28 00:45:12.427-05",
+          "07522151-449a-4eff-a8dd-c1d7f9a2823a": "2022-11-28 00:45:12.427-05",
+          "b482fdae-4653-436b-bf66-56a2013b304a": "2022-11-28 00:45:12.427-05",
+          "1b285ff4-a8fc-4763-a778-8503c9ccb805": "2022-11-28 00:45:12.427-05",
+        },
         dateBirth: "2022-11-28 00:45:12.427-05",
         blocking: { enable: false },
       },
@@ -491,7 +451,6 @@ async function migrations() {
         interestIds: [
           "a737d9e4-3c99-4e6d-b46d-c1ce7ee91012",
           "8d79c80e-7ca3-4636-9b0f-fe234a035c78",
-          "496e6896-0279-4d59-a9ba-4ea93ac0e1ec",
         ],
         avatar: `${env.api.urlAPI}/images/user/default.jpeg`,
         header: `${env.api.urlAPI}/images/profile_banner/default.jpeg`,
@@ -500,6 +459,13 @@ async function migrations() {
           long: -103.4650834,
           locationName:
             "Av. Del Bajío 5903, El Bajío, 45017 Zapopan, Jal., Mexico",
+        },
+        groups: {
+          "0e0a0784-58e8-47d3-939c-56959e36656c": "2022-11-28 00:45:12.427-05",
+          "9b594b00-0307-4b5f-935d-e1e8023e918e": "2022-11-28 00:45:12.427-05",
+          "07522151-449a-4eff-a8dd-c1d7f9a2823a": "2022-11-28 00:45:12.427-05",
+          "b482fdae-4653-436b-bf66-56a2013b304a": "2022-11-28 00:45:12.427-05",
+          "1b285ff4-a8fc-4763-a778-8503c9ccb805": "2022-11-28 00:45:12.427-05",
         },
         dateBirth: "2022-11-28 00:45:12.427-05",
         blocking: { enable: false },
@@ -522,6 +488,13 @@ async function migrations() {
           long: -103.3510474,
           locationName:
             "Calle Contreras Medellín 518, Centro, 44100 Guadalajara, Jal., Mexico",
+        },
+        groups: {
+          "0e0a0784-58e8-47d3-939c-56959e36656c": "2022-11-28 00:45:12.427-05",
+          "9b594b00-0307-4b5f-935d-e1e8023e918e": "2022-11-28 00:45:12.427-05",
+          "07522151-449a-4eff-a8dd-c1d7f9a2823a": "2022-11-28 00:45:12.427-05",
+          "b482fdae-4653-436b-bf66-56a2013b304a": "2022-11-28 00:45:12.427-05",
+          "1b285ff4-a8fc-4763-a778-8503c9ccb805": "2022-11-28 00:45:12.427-05",
         },
         dateBirth: "2022-11-28 00:45:12.427-05",
         blocking: { enable: false },
@@ -550,6 +523,13 @@ async function migrations() {
           locationName:
             "Colina Galia 2175, Colinas de Atemajac, 45170 Zapopan, Jal., Mexico",
         },
+        groups: {
+          "0e0a0784-58e8-47d3-939c-56959e36656c": "2022-11-28 00:45:12.427-05",
+          "9b594b00-0307-4b5f-935d-e1e8023e918e": "2022-11-28 00:45:12.427-05",
+          "07522151-449a-4eff-a8dd-c1d7f9a2823a": "2022-11-28 00:45:12.427-05",
+          "b482fdae-4653-436b-bf66-56a2013b304a": "2022-11-28 00:45:12.427-05",
+          "1b285ff4-a8fc-4763-a778-8503c9ccb805": "2022-11-28 00:45:12.427-05",
+        },
         dateBirth: "2022-11-28 00:45:12.427-05",
         blocking: { enable: false },
       },
@@ -575,6 +555,13 @@ async function migrations() {
           long: -103.3120695,
           locationName:
             "Torre Administrativa, Calz. Independencia Norte, Huentitán El Bajo, 44250 Guadalajara, Jal., Mexico",
+        },
+        groups: {
+          "0e0a0784-58e8-47d3-939c-56959e36656c": "2022-11-28 00:45:12.427-05",
+          "9b594b00-0307-4b5f-935d-e1e8023e918e": "2022-11-28 00:45:12.427-05",
+          "07522151-449a-4eff-a8dd-c1d7f9a2823a": "2022-11-28 00:45:12.427-05",
+          "b482fdae-4653-436b-bf66-56a2013b304a": "2022-11-28 00:45:12.427-05",
+          "1b285ff4-a8fc-4763-a778-8503c9ccb805": "2022-11-28 00:45:12.427-05",
         },
         dateBirth: "2022-11-28 00:45:12.427-05",
         blocking: { enable: false },
@@ -602,6 +589,13 @@ async function migrations() {
           locationName:
             "Predio Paraíso Escondido s/n, 23450 Cabo San Lucas, B.C.S., México",
         },
+        groups: {
+          "0e0a0784-58e8-47d3-939c-56959e36656c": "2022-11-28 00:45:12.427-05",
+          "9b594b00-0307-4b5f-935d-e1e8023e918e": "2022-11-28 00:45:12.427-05",
+          "07522151-449a-4eff-a8dd-c1d7f9a2823a": "2022-11-28 00:45:12.427-05",
+          "b482fdae-4653-436b-bf66-56a2013b304a": "2022-11-28 00:45:12.427-05",
+          "1b285ff4-a8fc-4763-a778-8503c9ccb805": "2022-11-28 00:45:12.427-05",
+        },
         dateBirth: "2022-11-28 00:45:12.427-05",
         blocking: { enable: false },
       },
@@ -615,6 +609,74 @@ async function migrations() {
     .catch((err) =>
       console.error(
         "Ha ocurrido un error a la hora de insertar el usuario de admin. Error: " +
+          err
+      )
+    );
+
+  await Groups.bulkCreate(
+    [
+      {
+        id: "0e0a0784-58e8-47d3-939c-56959e36656c",
+        name: "Ciclovías",
+        picture:
+          "https://images.pexels.com/photos/386024/pexels-photo-386024.jpeg",
+        header: `${env.api.urlAPI}/images/group_banner/default.jpeg`,
+        ownerID: "dec1b80e-f92e-4a11-a88c-0d58c11bb2e7",
+        membersIDS: ["dec1b80e-f92e-4a11-a88c-0d58c11bb2e7"],
+        membersCount: 8,
+      },
+      {
+        id: "9b594b00-0307-4b5f-935d-e1e8023e918e",
+        name: "Vialidad",
+        picture:
+          "https://images.pexels.com/photos/5835467/pexels-photo-5835467.jpeg",
+        header: `${env.api.urlAPI}/images/group_banner/default.jpeg`,
+        ownerID: "dec1b80e-f92e-4a11-a88c-0d58c11bb2e7",
+        membersIDS: ["dec1b80e-f92e-4a11-a88c-0d58c11bb2e7"],
+        membersCount: 8,
+      },
+      {
+        id: "07522151-449a-4eff-a8dd-c1d7f9a2823a",
+        name: "Pasos peatonales",
+        picture:
+          "https://images.pexels.com/photos/1309687/pexels-photo-1309687.jpeg",
+        header: `${env.api.urlAPI}/images/group_banner/default.jpeg`,
+        ownerID: "dec1b80e-f92e-4a11-a88c-0d58c11bb2e7",
+        membersIDS: ["dec1b80e-f92e-4a11-a88c-0d58c11bb2e7"],
+        membersCount: 8,
+      },
+      {
+        id: "b482fdae-4653-436b-bf66-56a2013b304a",
+        name: "Infraestructura dañada",
+        picture:
+          "https://images.pexels.com/photos/5659371/pexels-photo-5659371.jpeg",
+        header: `${env.api.urlAPI}/images/group_banner/default.jpeg`,
+        ownerID: "dec1b80e-f92e-4a11-a88c-0d58c11bb2e7",
+        membersIDS: ["dec1b80e-f92e-4a11-a88c-0d58c11bb2e7"],
+        membersCount: 8,
+      },
+      {
+        id: "1b285ff4-a8fc-4763-a778-8503c9ccb805",
+        name: "Edificios históricos",
+        picture:
+          "https://images.pexels.com/photos/7692217/pexels-photo-7692217.jpeg",
+        header: `${env.api.urlAPI}/images/group_banner/default.jpeg`,
+        ownerID: "dec1b80e-f92e-4a11-a88c-0d58c11bb2e7",
+        membersIDS: ["dec1b80e-f92e-4a11-a88c-0d58c11bb2e7"],
+        membersCount: 8,
+      },
+    ],
+    {
+      ignoreDuplicates: true,
+      logging: false,
+    }
+  )
+    .then(async () =>
+      console.info("Se ha insertado la información de grupos correctamente.")
+    )
+    .catch((err) =>
+      console.error(
+        "Ha ocurrido un error a la hora de insertar la información de grupos. Error: " +
           err
       )
     );

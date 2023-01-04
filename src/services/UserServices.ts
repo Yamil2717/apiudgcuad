@@ -4,6 +4,7 @@ import { Encrypt } from "../lib/tools";
 import AuthService from "./AuthService";
 import env from "../utils/env";
 import { Requests } from "../models/Requests";
+import GroupsService from "./GroupsService";
 
 class userService {
   async userRegister(
@@ -39,9 +40,44 @@ class userService {
       avatar: avatar || `${env.api.urlAPI}/images/user/default.jpeg`,
       header: `${env.api.urlAPI}/images/profile_banner/default.jpeg`,
       location,
+      groups: {
+        "0e0a0784-58e8-47d3-939c-56959e36656c": "2022-11-28 00:45:12.427-05",
+        "9b594b00-0307-4b5f-935d-e1e8023e918e": "2022-11-28 00:45:12.427-05",
+        "07522151-449a-4eff-a8dd-c1d7f9a2823a": "2022-11-28 00:45:12.427-05",
+        "b482fdae-4653-436b-bf66-56a2013b304a": "2022-11-28 00:45:12.427-05",
+        "1b285ff4-a8fc-4763-a778-8503c9ccb805": "2022-11-28 00:45:12.427-05",
+      },
       dateBirth,
       blocking: { enable: false },
     });
+
+    try {
+      await GroupsService.groupUpdateMembers(
+        "0e0a0784-58e8-47d3-939c-56959e36656c",
+        +1
+      );
+      await GroupsService.groupUpdateMembers(
+        "9b594b00-0307-4b5f-935d-e1e8023e918e",
+        +1
+      );
+      await GroupsService.groupUpdateMembers(
+        "07522151-449a-4eff-a8dd-c1d7f9a2823a",
+        +1
+      );
+      await GroupsService.groupUpdateMembers(
+        "b482fdae-4653-436b-bf66-56a2013b304a",
+        +1
+      );
+      await GroupsService.groupUpdateMembers(
+        "1b285ff4-a8fc-4763-a778-8503c9ccb805",
+        +1
+      );
+      console.info(
+        "Se ha aumento la cantidad de miembros de los grupos por default exitosamente."
+      );
+    } catch (error) {
+      console.log(error);
+    }
     if (!registerUser)
       throw new Error("Ha ocurrido un error y no sé pudo registrar la cuenta");
     return registerUser;
@@ -279,30 +315,6 @@ class userService {
         where: { senderRequestID: idTarget, receiverRequestID: id },
       });
     }
-    if (userOneUpdate[0] === 1 && userTwoUpdate[0] === 1) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  async acceptMessage(id: string, idTarget: string) {
-    let userOne: any = await User.findOne({ where: { id } });
-    let userTwo: any = await User.findOne({ where: { id: idTarget } });
-    if (userOne.friends[idTarget]) {
-      userOne.friends[idTarget].allowMessage = true;
-    }
-    if (userTwo.friends[id]) {
-      userTwo.friends[id].allowMessage = true;
-    }
-    let userOneUpdate: any = await User.update(
-      { friends: userOne.friends },
-      { where: { id } }
-    );
-    let userTwoUpdate: any = await User.update(
-      { friends: userTwo.friends },
-      { where: { id: idTarget } }
-    );
     if (userOneUpdate[0] === 1 && userTwoUpdate[0] === 1) {
       return true;
     } else {

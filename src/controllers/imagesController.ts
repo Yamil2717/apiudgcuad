@@ -101,7 +101,6 @@ function getStorage() {
 function upload() {
   return multer({
     storage: getStorage(),
-    limits: { fileSize: 4 * 1024 * 1024 },
     fileFilter: (req, file, cb) => {
       if (
         file.mimetype == "image/png" ||

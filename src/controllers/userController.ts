@@ -233,23 +233,6 @@ async function deleteFriend(req: Request, res: Response) {
   }
 }
 
-async function acceptMessage(req: Request, res: Response) {
-  try {
-    let { id } = req.params;
-    let authorization: any = req.headers.authorization;
-    let token = authorization.split(" ");
-    let payloadToken: any = JWT.decode(token[1]);
-    if (!payloadToken.id) {
-      resAPI.error(res, "No se ha podido obtener el id del usuario.");
-    }
-    let dataUser = await UserService.acceptMessage(id, payloadToken.id);
-    resAPI.success(res, dataUser);
-  } catch (error) {
-    console.error((error as Error)?.message);
-    return resAPI.error(res, (error as Error)?.message, 500);
-  }
-}
-
 export {
   createUser,
   loginUser,
@@ -263,5 +246,4 @@ export {
   addGroup,
   addFriend,
   deleteFriend,
-  acceptMessage,
 };
