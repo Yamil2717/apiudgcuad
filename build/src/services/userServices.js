@@ -10,6 +10,7 @@ const AuthService_1 = __importDefault(require("./AuthService"));
 const env_1 = __importDefault(require("../utils/env"));
 const Requests_1 = require("../models/Requests");
 const GroupsService_1 = __importDefault(require("./GroupsService"));
+const sequelize_1 = require("sequelize");
 class userService {
     async userRegister(name, email, password, countryIndicator, phone, postalCode, roleId, tagsIds, interestIds, location, dateBirth, avatar) {
         email = email.toLowerCase();
@@ -240,6 +241,25 @@ class userService {
         else {
             return false;
         }
+    }
+    async getAllMyFriends(userID) {
+        let user = await UserService.userGetById(userID);
+        let { friends } = user;
+        let friendsIDs = [];
+        Object.keys(friends).map((key) => {
+            friendsIDs.push({ id: key });
+        });
+        let friendsData = await User_1.User.findAll({
+            attributes: ["id", "avatar", "name"],
+            where: {
+                [sequelize_1.Op.or]: friendsIDs,
+            },
+        });
+        let friendsDataReturn = [];
+        friendsData.map((friend) => {
+            friendsDataReturn.push(friend.get());
+        });
+        return friendsDataReturn;
     }
 }
 let UserService = new userService();

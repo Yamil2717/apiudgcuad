@@ -42,6 +42,9 @@ class groupsService {
             groupsIDs.push({ id: key });
         });
         let groupsData = await Groups_1.Groups.findAll({
+            attributes: {
+                exclude: ["membersIDS"],
+            },
             where: {
                 [sequelize_1.Op.or]: groupsIDs,
             },

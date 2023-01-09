@@ -48,6 +48,9 @@ class groupsService {
       groupsIDs.push({ id: key });
     });
     let groupsData: any = await Groups.findAll({
+      attributes: {
+        exclude: ["membersIDS"],
+      },
       where: {
         [Op.or]: groupsIDs,
       },

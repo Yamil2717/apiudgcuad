@@ -5,6 +5,7 @@ import AuthService from "./AuthService";
 import env from "../utils/env";
 import { Requests } from "../models/Requests";
 import GroupsService from "./GroupsService";
+import { Op } from "sequelize";
 
 class userService {
   async userRegister(
@@ -320,6 +321,26 @@ class userService {
     } else {
       return false;
     }
+  }
+
+  async getAllMyFriends(userID: string) {
+    let user: any = await UserService.userGetById(userID);
+    let { friends } = user;
+    let friendsIDs: any = [];
+    Object.keys(friends).map((key) => {
+      friendsIDs.push({ id: key });
+    });
+    let friendsData: any = await User.findAll({
+      attributes: ["id", "avatar", "name"],
+      where: {
+        [Op.or]: friendsIDs,
+      },
+    });
+    let friendsDataReturn: any = [];
+    friendsData.map((friend: any) => {
+      friendsDataReturn.push(friend.get());
+    });
+    return friendsDataReturn;
   }
 }
 

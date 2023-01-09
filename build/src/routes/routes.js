@@ -24,6 +24,7 @@ const router = (0, express_1.Router)();
 router.post("/user", (0, Validations_1.Validations)(User_1.createUserValidation, response), userController_1.createUser);
 router.put("/user/follow/:id", (0, Auth_1.Auth)("User", response), userController_1.toggleFollow);
 router.get("/user", (0, Auth_1.Auth)("User", response), userController_1.getUserByToken);
+router.get("/user/friends", (0, Auth_1.Auth)("User", response), userController_1.getAllMyFriends);
 router.get("/user/types", userController_1.getTypesUser);
 router.get("/user/:id", (0, Auth_1.Auth)("User", response), userController_1.getUserByID);
 router.put("/user/data", (0, Auth_1.Auth)("User", response), userController_1.updateData);

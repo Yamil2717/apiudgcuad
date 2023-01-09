@@ -15,6 +15,7 @@ import {
   addFriend,
   deleteFriend,
   updateData,
+  getAllMyFriends,
 } from "../controllers/userController";
 import { createUserValidation, userLoginValidation } from "../Validations/User";
 import { getAllInterest } from "../controllers/interestController";
@@ -54,6 +55,7 @@ const router = Router();
 router.post("/user", Validations(createUserValidation, response), createUser);
 router.put("/user/follow/:id", Auth("User", response), toggleFollow);
 router.get("/user", Auth("User", response), getUserByToken);
+router.get("/user/friends", Auth("User", response), getAllMyFriends);
 router.get("/user/types", getTypesUser);
 router.get("/user/:id", Auth("User", response), getUserByID);
 router.put("/user/data", Auth("User", response), updateData);
