@@ -83,24 +83,28 @@ class groupsService {
             return false;
         }
     }
-    async groupUpdateMembers(id, value) {
-        let group;
+    async groupUpdateMembers(id, idUser, value) {
+        let group = await Groups_1.Groups.findOne({ where: { id } });
+        let { membersCount, membersIDS } = group.get();
+        let newMembersIDS = [...membersIDS];
+        newMembersIDS.push(idUser);
+        let newMembersCount = membersCount;
         if (value > 0) {
-            group = await Groups_1.Groups.increment("membersCount", {
-                by: value,
-                where: { id },
-            });
+            newMembersCount += value;
         }
         else {
-            group = await Groups_1.Groups.decrement("membersCount", {
-                by: value,
-                where: { id },
-            });
+            newMembersCount -= value;
         }
-        console.log("Groups Update Members :DDD");
-        console.log(group);
-        console.log("End Groups Update Members :DDD");
-        return group;
+        let groupUpdate = await Groups_1.Groups.update({
+            membersCount: newMembersCount,
+            membersIDS: newMembersIDS,
+        }, { where: { id } });
+        if (groupUpdate[0] === 1) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }
 let GroupsService = new groupsService();

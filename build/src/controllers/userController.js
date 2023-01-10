@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllMyFriends = exports.deleteFriend = exports.addFriend = exports.addGroup = exports.toggleFollow = exports.updateHeader = exports.updateAvatar = exports.updateData = exports.getUserByID = exports.getUserByToken = exports.getTypesUser = exports.loginUser = exports.createUser = void 0;
+exports.searchUserByPartialName = exports.getAllMyFriends = exports.deleteFriend = exports.addFriend = exports.addGroup = exports.toggleFollow = exports.updateHeader = exports.updateAvatar = exports.updateData = exports.getUserByID = exports.getUserByToken = exports.getTypesUser = exports.loginUser = exports.createUser = void 0;
 const tools_1 = require("../lib/tools");
 const UserServices_1 = __importDefault(require("../services/UserServices"));
 const resAPI = new tools_1.Response();
@@ -231,3 +231,15 @@ async function getAllMyFriends(req, res) {
     }
 }
 exports.getAllMyFriends = getAllMyFriends;
+async function searchUserByPartialName(req, res) {
+    try {
+        let { search } = req.body;
+        let dataUser = await UserServices_1.default.searchUserByPartialName(search);
+        resAPI.success(res, dataUser);
+    }
+    catch (error) {
+        console.error(error?.message);
+        return resAPI.error(res, error?.message, 500);
+    }
+}
+exports.searchUserByPartialName = searchUserByPartialName;

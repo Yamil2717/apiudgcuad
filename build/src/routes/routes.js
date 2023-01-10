@@ -21,6 +21,7 @@ const RequestsController_1 = require("../controllers/RequestsController");
 const response = new tools_1.Response();
 const router = (0, express_1.Router)();
 // Users routes
+router.post("/user/search", (0, Auth_1.Auth)("User", response), userController_1.searchUserByPartialName);
 router.post("/user", (0, Validations_1.Validations)(User_1.createUserValidation, response), userController_1.createUser);
 router.put("/user/follow/:id", (0, Auth_1.Auth)("User", response), userController_1.toggleFollow);
 router.get("/user", (0, Auth_1.Auth)("User", response), userController_1.getUserByToken);

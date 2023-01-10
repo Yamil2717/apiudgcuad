@@ -249,6 +249,17 @@ async function getAllMyFriends(req: Request, res: Response) {
   }
 }
 
+async function searchUserByPartialName(req: Request, res: Response) {
+  try {
+    let { search } = req.body;
+    let dataUser = await UserService.searchUserByPartialName(search);
+    resAPI.success(res, dataUser);
+  } catch (error) {
+    console.error((error as Error)?.message);
+    return resAPI.error(res, (error as Error)?.message, 500);
+  }
+}
+
 export {
   createUser,
   loginUser,
@@ -263,4 +274,5 @@ export {
   addFriend,
   deleteFriend,
   getAllMyFriends,
+  searchUserByPartialName,
 };

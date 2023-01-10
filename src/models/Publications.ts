@@ -11,7 +11,7 @@ export const Publication = sequelize.define("publications", {
     defaultValue: DataTypes.UUIDV4,
   },
   title: { type: DataTypes.STRING },
-  description: { type: DataTypes.STRING },
+  description: { type: DataTypes.STRING(5000) },
   pictures: { type: DataTypes.ARRAY(DataTypes.STRING), defaultValue: [] },
   categoryID: {
     type: DataTypes.UUID,

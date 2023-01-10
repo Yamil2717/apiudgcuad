@@ -5,7 +5,7 @@ import AuthService from "./AuthService";
 import env from "../utils/env";
 import { Requests } from "../models/Requests";
 import GroupsService from "./GroupsService";
-import { Op } from "sequelize";
+import { Op, Sequelize } from "sequelize";
 
 class userService {
   async userRegister(
@@ -28,7 +28,7 @@ class userService {
       throw new Error("El correo electrónico ya se encuentra registrado.");
     }
     let hashedPassword = await Encrypt.encryptPassword(password);
-    let registerUser = await User.create({
+    let registerUser: any = await User.create({
       name,
       email,
       password: hashedPassword,
@@ -47,38 +47,45 @@ class userService {
         "07522151-449a-4eff-a8dd-c1d7f9a2823a": "2022-11-28 00:45:12.427-05",
         "b482fdae-4653-436b-bf66-56a2013b304a": "2022-11-28 00:45:12.427-05",
         "1b285ff4-a8fc-4763-a778-8503c9ccb805": "2022-11-28 00:45:12.427-05",
+        "5bd7b04c-23b5-4c59-9a6a-bc41368bce98": "2022-11-28 00:45:12.427-05",
       },
       dateBirth,
       blocking: { enable: false },
     });
 
-    try {
-      await GroupsService.groupUpdateMembers(
-        "0e0a0784-58e8-47d3-939c-56959e36656c",
-        +1
-      );
-      await GroupsService.groupUpdateMembers(
-        "9b594b00-0307-4b5f-935d-e1e8023e918e",
-        +1
-      );
-      await GroupsService.groupUpdateMembers(
-        "07522151-449a-4eff-a8dd-c1d7f9a2823a",
-        +1
-      );
-      await GroupsService.groupUpdateMembers(
-        "b482fdae-4653-436b-bf66-56a2013b304a",
-        +1
-      );
-      await GroupsService.groupUpdateMembers(
-        "1b285ff4-a8fc-4763-a778-8503c9ccb805",
-        +1
-      );
-      console.info(
-        "Se ha aumento la cantidad de miembros de los grupos por default exitosamente."
-      );
-    } catch (error) {
-      console.log(error);
-    }
+    await GroupsService.groupUpdateMembers(
+      "0e0a0784-58e8-47d3-939c-56959e36656c",
+      registerUser.id,
+      +1
+    );
+    await GroupsService.groupUpdateMembers(
+      "9b594b00-0307-4b5f-935d-e1e8023e918e",
+      registerUser.id,
+      +1
+    );
+    await GroupsService.groupUpdateMembers(
+      "07522151-449a-4eff-a8dd-c1d7f9a2823a",
+      registerUser.id,
+      +1
+    );
+    await GroupsService.groupUpdateMembers(
+      "b482fdae-4653-436b-bf66-56a2013b304a",
+      registerUser.id,
+      +1
+    );
+    await GroupsService.groupUpdateMembers(
+      "1b285ff4-a8fc-4763-a778-8503c9ccb805",
+      registerUser.id,
+      +1
+    );
+    await GroupsService.groupUpdateMembers(
+      "5bd7b04c-23b5-4c59-9a6a-bc41368bce98",
+      registerUser.id,
+      +1
+    );
+    console.info(
+      "Se ha aumento la cantidad de miembros de los grupos por default exitosamente."
+    );
     if (!registerUser)
       throw new Error("Ha ocurrido un error y no sé pudo registrar la cuenta");
     return registerUser;
@@ -341,6 +348,26 @@ class userService {
       friendsDataReturn.push(friend.get());
     });
     return friendsDataReturn;
+  }
+
+  async searchUserByPartialName(partialName: string) {
+    let lookupValue = partialName.toLowerCase();
+    let users: any = await User.findAll({
+      limit: 10,
+      where: {
+        name: Sequelize.where(
+          Sequelize.fn("LOWER", Sequelize.col("name")),
+          "LIKE",
+          "%" + lookupValue + "%"
+        ),
+      },
+    });
+    let tempUsersFind: any = [];
+    users.map((user: any) => {
+      let { id, name, avatar } = user.get();
+      tempUsersFind.push({ id, name, avatar });
+    });
+    return tempUsersFind;
   }
 }
 
