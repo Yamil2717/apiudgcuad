@@ -28,6 +28,7 @@ import {
   getGroupById,
   updatePictureGroup,
   updateHeaderGroup,
+  searchGroupsByPartialName,
 } from "../controllers/groupsController";
 import {
   addReactionOnPublication,
@@ -100,6 +101,11 @@ router.get("/myGroups", Auth("User", response), getAllMyGroups);
 router.get("/group/:id", Auth("User", response), getGroupById);
 router.put("/group/picture/:id", Auth("User", response), updatePictureGroup);
 router.put("/group/header/:id", Auth("User", response), updateHeaderGroup);
+router.post(
+  "/groups/search",
+  Auth("User", response),
+  searchGroupsByPartialName
+);
 
 // Publications routes
 

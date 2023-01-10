@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateHeaderGroup = exports.updatePictureGroup = exports.getAllMyGroups = exports.getGroupById = exports.createGroup = void 0;
+exports.searchGroupsByPartialName = exports.updateHeaderGroup = exports.updatePictureGroup = exports.getAllMyGroups = exports.getGroupById = exports.createGroup = void 0;
 const tools_1 = require("../lib/tools");
 const resAPI = new tools_1.Response();
 const GroupsService_1 = __importDefault(require("../services/GroupsService"));
@@ -103,3 +103,15 @@ async function updateHeaderGroup(req, res) {
     }
 }
 exports.updateHeaderGroup = updateHeaderGroup;
+async function searchGroupsByPartialName(req, res) {
+    try {
+        let { search } = req.body;
+        let dataUser = await GroupsService_1.default.searchGroupsByPartialName(search);
+        resAPI.success(res, dataUser);
+    }
+    catch (error) {
+        console.error(error?.message);
+        return resAPI.error(res, error?.message, 500);
+    }
+}
+exports.searchGroupsByPartialName = searchGroupsByPartialName;

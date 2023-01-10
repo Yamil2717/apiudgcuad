@@ -51,6 +51,7 @@ router.get("/myGroups", (0, Auth_1.Auth)("User", response), groupsController_1.g
 router.get("/group/:id", (0, Auth_1.Auth)("User", response), groupsController_1.getGroupById);
 router.put("/group/picture/:id", (0, Auth_1.Auth)("User", response), groupsController_1.updatePictureGroup);
 router.put("/group/header/:id", (0, Auth_1.Auth)("User", response), groupsController_1.updateHeaderGroup);
+router.post("/groups/search", (0, Auth_1.Auth)("User", response), groupsController_1.searchGroupsByPartialName);
 // Publications routes
 router.get("/publication/:id", (0, Auth_1.Auth)("User", response), publicationsController_1.getPublicationByID);
 router.post("/publication", (0, Auth_1.Auth)("User", response), publicationsController_1.createPublication);

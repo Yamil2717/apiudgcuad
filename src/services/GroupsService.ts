@@ -120,6 +120,26 @@ class groupsService {
       return false;
     }
   }
+
+  async searchGroupsByPartialName(partialName: string) {
+    let lookupValue = partialName.toLowerCase();
+    let groups: any = await Groups.findAll({
+      limit: 10,
+      where: {
+        name: Sequelize.where(
+          Sequelize.fn("LOWER", Sequelize.col("name")),
+          "LIKE",
+          "%" + lookupValue + "%"
+        ),
+      },
+    });
+    let tempGroupsFind: any = [];
+    groups.map((group: any) => {
+      let { id, name, picture } = group.get();
+      tempGroupsFind.push({ id, name, picture });
+    });
+    return tempGroupsFind;
+  }
 }
 
 let GroupsService = new groupsService();
