@@ -75,7 +75,9 @@ class publicationsService {
         "Ha ocurrido un error, no se encuentra ningún tipo de post registrado."
       );
     }
-
+    publicationsData.sort((a: any, b: any) =>
+      a.createdAt > b.createdAt ? -1 : a.createdAt > b.createdAt ? 1 : 0
+    );
     return publicationsData;
   }
 
@@ -109,7 +111,9 @@ class publicationsService {
         "Ha ocurrido un error, no se encuentra ningún tipo de post registrado."
       );
     }
-
+    publicationsData.sort((a: any, b: any) =>
+      a.createdAt > b.createdAt ? -1 : a.createdAt > b.createdAt ? 1 : 0
+    );
     return publicationsData;
   }
 
@@ -143,7 +147,9 @@ class publicationsService {
         "Ha ocurrido un error, no se encuentra ningún tipo de post registrado."
       );
     }
-
+    publicationsData.sort((a: any, b: any) =>
+      a.createdAt > b.createdAt ? -1 : a.createdAt > b.createdAt ? 1 : 0
+    );
     return publicationsData;
   }
 }

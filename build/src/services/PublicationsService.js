@@ -58,6 +58,7 @@ class publicationsService {
             publicationsData = [];
             throw new Error("Ha ocurrido un error, no se encuentra ningún tipo de post registrado.");
         }
+        publicationsData.sort((a, b) => a.createdAt > b.createdAt ? -1 : a.createdAt > b.createdAt ? 1 : 0);
         return publicationsData;
     }
     async getAllPublicationsFromUserID(ownerID, userID) {
@@ -83,6 +84,7 @@ class publicationsService {
         if (publicationsData.length <= 0) {
             throw new Error("Ha ocurrido un error, no se encuentra ningún tipo de post registrado.");
         }
+        publicationsData.sort((a, b) => a.createdAt > b.createdAt ? -1 : a.createdAt > b.createdAt ? 1 : 0);
         return publicationsData;
     }
     async getAllPublicationsFromGroupID(groupID, userID) {
@@ -108,6 +110,7 @@ class publicationsService {
         if (publicationsData.length <= 0) {
             throw new Error("Ha ocurrido un error, no se encuentra ningún tipo de post registrado.");
         }
+        publicationsData.sort((a, b) => a.createdAt > b.createdAt ? -1 : a.createdAt > b.createdAt ? 1 : 0);
         return publicationsData;
     }
 }

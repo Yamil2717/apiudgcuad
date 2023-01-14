@@ -10,6 +10,7 @@ import "./src/models/Publications";
 import "./src/models/Interest";
 import "./src/models/Tag";
 import "./src/models/Reactions";
+import "./src/models/ReactionsComments";
 import "./src/models/Notifications";
 import "./src/models/Requests";
 
@@ -18,7 +19,7 @@ import migrations from "./src/migrations";
 (async () => {
   try {
     await sequelize
-      .sync({ force: true, logging: false })
+      .sync({ alter: true, logging: false })
       .then(() => migrations());
     console.info("Se ha conectado correctamente a la base de datos.");
     app.listen(env.api.port);

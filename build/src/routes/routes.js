@@ -61,6 +61,7 @@ router.get("/publications/group/:groupID", (0, Auth_1.Auth)("User", response), p
 router.get("/publications/:ownerID", (0, Auth_1.Auth)("User", response), publicationsController_1.getAllPublicationsFromUserID);
 // Comments routes
 router.post("/comment", (0, Auth_1.Auth)("User", response), commentsController_1.createCommentByID);
+router.post("/comment/reaction", (0, Auth_1.Auth)("User", response), commentsController_1.addReactionOnComment);
 router.get("/comments/:idPost", (0, Auth_1.Auth)("User", response), commentsController_1.getAllCommentsByID);
 router.use("/images", imagesRoutes_1.default);
 exports.default = router;

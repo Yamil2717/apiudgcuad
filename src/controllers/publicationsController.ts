@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { Response as response } from "../lib/tools";
 const resAPI = new response();
 import PublicationsService from "../services/PublicationsService";
-import ReactionsService from "../services/ReactionsService";
+import ReactionsCommentsService from "../services/ReactionsComments";
 import JWT from "jsonwebtoken";
 
 async function createPublication(req: Request, res: Response) {
@@ -112,9 +112,9 @@ async function getAllPublicationsFromUserID(req: Request, res: Response) {
 
 async function addReactionOnPublication(req: Request, res: Response) {
   try {
-    let { idPublication, ownerID, action } = req.body;
-    let reaction = await ReactionsService.addReactionsPublication(
-      idPublication,
+    let { idComment, ownerID, action } = req.body;
+    let reaction = await ReactionsCommentsService.addReactionsComment(
+      idComment,
       ownerID,
       action
     );

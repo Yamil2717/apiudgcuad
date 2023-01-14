@@ -40,6 +40,7 @@ import {
 } from "../controllers/publicationsController";
 const path = require("node:path");
 import {
+  addReactionOnComment,
   createCommentByID,
   getAllCommentsByID,
 } from "../controllers/commentsController";
@@ -131,6 +132,7 @@ router.get(
 // Comments routes
 
 router.post("/comment", Auth("User", response), createCommentByID);
+router.post("/comment/reaction", Auth("User", response), addReactionOnComment);
 router.get("/comments/:idPost", Auth("User", response), getAllCommentsByID);
 
 router.use("/images", imagesRoutes);

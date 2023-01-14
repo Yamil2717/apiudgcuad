@@ -14,13 +14,14 @@ require("./src/models/Publications");
 require("./src/models/Interest");
 require("./src/models/Tag");
 require("./src/models/Reactions");
+require("./src/models/ReactionsComments");
 require("./src/models/Notifications");
 require("./src/models/Requests");
 const migrations_1 = __importDefault(require("./src/migrations"));
 (async () => {
     try {
         await database_1.sequelize
-            .sync({ force: true, logging: false })
+            .sync({ alter: true, logging: false })
             .then(() => (0, migrations_1.default)());
         console.info("Se ha conectado correctamente a la base de datos.");
         app_1.default.listen(env_1.default.api.port);

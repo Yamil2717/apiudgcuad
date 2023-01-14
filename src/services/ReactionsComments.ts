@@ -1,124 +1,124 @@
-import { Reactions } from "../models/Reactions";
-import { Publication } from "../models/Publications";
+import { ReactionsComments } from "../models/ReactionsComments";
+import { Comments } from "../models/Comments";
 
-class reactionsService {
-  async addReactionsPublication(
-    idPublication: string,
+class reactionsCommentsService {
+  async addReactionsComment(
+    idComment: string,
     ownerID: string,
     action: number
   ) {
-    let reactionExist = await Reactions.findOne({
-      where: { idPublication, ownerID },
+    let reactionExist = await ReactionsComments.findOne({
+      where: { idComment, ownerID },
     });
     if (reactionExist) {
       let reactionDB = reactionExist.get();
-      let publication = await Publication.findOne({
-        where: { id: idPublication },
+      let comment = await Comments.findOne({
+        where: { id: idComment },
       });
       if (reactionDB.action === action) {
-        await Reactions.update(
+        await ReactionsComments.update(
           {
             action: 0,
           },
           {
             where: {
-              idPublication,
+              idComment,
               ownerID,
             },
           }
         );
         switch (action) {
           case 1:
-            decrementReaction(publication, "likePositive", 2);
+            decrementReaction(comment, "likePositive", 2);
             break;
           case 2:
-            decrementReaction(publication, "likeNeutral", 1);
+            decrementReaction(comment, "likeNeutral", 1);
             break;
           case 3:
-            decrementReaction(publication, "likeNegative", 1);
+            decrementReaction(comment, "likeNegative", 1);
             break;
           default:
             return false;
         }
         return true;
       } else if (reactionDB.action === 0) {
-        await Reactions.update(
+        await ReactionsComments.update(
           {
             action,
           },
           {
             where: {
-              idPublication,
+              idComment,
               ownerID,
             },
           }
         );
         switch (action) {
           case 1:
-            incrementReaction(publication, "likePositive", 2);
+            incrementReaction(comment, "likePositive", 2);
             break;
           case 2:
-            incrementReaction(publication, "likeNeutral", 1);
+            incrementReaction(comment, "likeNeutral", 1);
             break;
           case 3:
-            incrementReaction(publication, "likeNegative", 1);
+            incrementReaction(comment, "likeNegative", 1);
             break;
           default:
             return false;
         }
         return true;
       } else {
-        await Reactions.update(
+        await ReactionsComments.update(
           {
             action,
           },
           {
             where: {
-              idPublication,
+              idComment,
               ownerID,
             },
           }
         );
         switch (action) {
           case 1:
-            incrementReaction(publication, "likePositive", 2);
+            incrementReaction(comment, "likePositive", 2);
             switch (reactionDB.action) {
               case 1:
-                decrementReaction(publication, "likePositive", 2);
+                decrementReaction(comment, "likePositive", 2);
                 break;
               case 2:
-                decrementReaction(publication, "likeNeutral", 1);
+                decrementReaction(comment, "likeNeutral", 1);
                 break;
               case 3:
-                decrementReaction(publication, "likeNegative", 1);
+                decrementReaction(comment, "likeNegative", 1);
                 break;
             }
             break;
           case 2:
-            incrementReaction(publication, "likeNeutral", 1);
+            incrementReaction(comment, "likeNeutral", 1);
             switch (reactionDB.action) {
               case 1:
-                decrementReaction(publication, "likePositive", 2);
+                decrementReaction(comment, "likePositive", 2);
                 break;
               case 2:
-                decrementReaction(publication, "likeNeutral", 1);
+                decrementReaction(comment, "likeNeutral", 1);
                 break;
               case 3:
-                decrementReaction(publication, "likeNegative", 1);
+                decrementReaction(comment, "likeNegative", 1);
                 break;
             }
             break;
           case 3:
-            incrementReaction(publication, "likeNegative", 1);
+            incrementReaction(comment, "likeNegative", 1);
             switch (reactionDB.action) {
               case 1:
-                decrementReaction(publication, "likePositive", 2);
+                decrementReaction(comment, "likePositive", 2);
                 break;
               case 2:
-                decrementReaction(publication, "likeNeutral", 1);
+                decrementReaction(comment, "likeNeutral", 1);
                 break;
               case 3:
-                decrementReaction(publication, "likeNegative", 1);
+                decrementReaction(comment, "likeNegative", 1);
                 break;
             }
             break;
@@ -127,23 +127,23 @@ class reactionsService {
         }
       }
     } else {
-      let publication = await Publication.findOne({
-        where: { id: idPublication },
+      let comment = await Comments.findOne({
+        where: { id: idComment },
       });
-      await Reactions.create({
-        idPublication,
+      await ReactionsComments.create({
+        idComment,
         ownerID,
         action,
       });
       switch (action) {
         case 1:
-          incrementReaction(publication, "likePositive", 2);
+          incrementReaction(comment, "likePositive", 2);
           break;
         case 2:
-          incrementReaction(publication, "likeNeutral", 1);
+          incrementReaction(comment, "likeNeutral", 1);
           break;
         case 3:
-          incrementReaction(publication, "likeNegative", 1);
+          incrementReaction(comment, "likeNegative", 1);
           break;
         default:
           return false;
@@ -151,9 +151,9 @@ class reactionsService {
       return true;
     }
   }
-  async getReactionPublication(idPublication: string, ownerID: string) {
-    let reaction = await Reactions.findOne({
-      where: { idPublication, ownerID },
+  async getReactionComment(idComment: string, ownerID: string) {
+    let reaction = await ReactionsComments.findOne({
+      where: { idComment, ownerID },
     });
     if (!reaction) {
       return { liked: false, action: 0 };
@@ -166,21 +166,21 @@ class reactionsService {
 }
 
 function incrementReaction(
-  publication: any,
+  comment: any,
   typeReaction: string,
   increment: number
 ) {
-  publication?.increment(typeReaction, { by: increment });
+  comment?.increment(typeReaction, { by: increment });
 }
 
 function decrementReaction(
-  publication: any,
+  comment: any,
   typeReaction: string,
   increment: number
 ) {
-  publication?.decrement(typeReaction, { by: increment });
+  comment?.decrement(typeReaction, { by: increment });
 }
 
-let ReactionsService = new reactionsService();
+let ReactionsCommentsService = new reactionsCommentsService();
 
-export default ReactionsService;
+export default ReactionsCommentsService;
