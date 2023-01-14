@@ -78,6 +78,5 @@ class commentsService {
         return commentsData;
     }
 }
-async function getAllCommentsOrganized(idPublication) { }
 let CommentsService = new commentsService();
 exports.default = CommentsService;

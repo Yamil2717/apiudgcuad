@@ -98,8 +98,6 @@ class commentsService {
   }
 }
 
-async function getAllCommentsOrganized(idPublication: string) {}
-
 let CommentsService = new commentsService();
 
 export default CommentsService;

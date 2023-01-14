@@ -7,8 +7,8 @@ exports.addReactionOnPublication = exports.getAllPublicationsFromUserID = export
 const tools_1 = require("../lib/tools");
 const resAPI = new tools_1.Response();
 const PublicationsService_1 = __importDefault(require("../services/PublicationsService"));
-const ReactionsComments_1 = __importDefault(require("../services/ReactionsComments"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const ReactionsService_1 = __importDefault(require("../services/ReactionsService"));
 async function createPublication(req, res) {
     try {
         let { title, description, pictures, groupID, categoryID, ownerID } = req.body;
@@ -101,8 +101,8 @@ async function getAllPublicationsFromUserID(req, res) {
 exports.getAllPublicationsFromUserID = getAllPublicationsFromUserID;
 async function addReactionOnPublication(req, res) {
     try {
-        let { idComment, ownerID, action } = req.body;
-        let reaction = await ReactionsComments_1.default.addReactionsComment(idComment, ownerID, action);
+        let { idPublication, ownerID, action } = req.body;
+        let reaction = await ReactionsService_1.default.addReactionsPublication(idPublication, ownerID, action);
         console.info(`USER ID: ${ownerID} ADD A REACTION`);
         resAPI.success(res, reaction);
     }
