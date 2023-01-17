@@ -26,7 +26,11 @@ class publicationsService {
             where: { id: idPublication },
             include: [
                 { model: User_1.User, attributes: ["name"], required: true },
-                { model: Groups_1.Groups, required: true },
+                {
+                    model: Groups_1.Groups,
+                    attributes: ["id", "name", "picture"],
+                    required: true,
+                },
             ],
         });
         let reaction = await ReactionsService_1.default.getReactionPublication(publication.id, idOwner);

@@ -30,7 +30,11 @@ class publicationsService {
       where: { id: idPublication },
       include: [
         { model: User, attributes: ["name"], required: true },
-        { model: Groups, required: true },
+        {
+          model: Groups,
+          attributes: ["id", "name", "picture"],
+          required: true,
+        },
       ],
     });
     let reaction = await ReactionsService.getReactionPublication(
