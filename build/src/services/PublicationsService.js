@@ -39,9 +39,8 @@ class publicationsService {
             throw new Error("Ha ocurrido un error y no sé encontró el post solicitado.");
         return publication.get();
     }
-    async getAllPublications(userID) {
+    async getAllPublicationsHome(userID, page) {
         let publications = await Publications_1.Publication.findAll({
-            limit: 15,
             order: [["createdAt", "DESC"]],
             include: [
                 {
@@ -53,7 +52,7 @@ class publicationsService {
             ],
         });
         let publicationsData = [];
-        await Promise.all(publications.map(async (publication) => {
+        await Promise.all(publications.slice(page, page + 15).map(async (publication) => {
             let reaction = await ReactionsService_1.default.getReactionPublication(publication.id, userID);
             publication.setDataValue("reaction", reaction);
             await publicationsData.push(publication.get());
@@ -62,11 +61,11 @@ class publicationsService {
             publicationsData = [];
             throw new Error("Ha ocurrido un error, no se encuentra ningún tipo de post registrado.");
         }
-        publicationsData.sort((a, b) => a.createdAt > b.createdAt ? -1 : a.createdAt > b.createdAt ? 1 : 0);
-        return publicationsData;
+        return await SortPublications(publicationsData);
     }
-    async getAllPublicationsFromUserID(ownerID, userID) {
+    async getAllPublicationsFromUserID(ownerID, userID, page) {
         let publications = await Publications_1.Publication.findAll({
+            offset: page,
             limit: 15,
             order: [["createdAt", "DESC"]],
             include: [
@@ -75,7 +74,11 @@ class publicationsService {
                     attributes: ["name"],
                     required: true,
                 },
-                { model: Groups_1.Groups, required: true },
+                {
+                    model: Groups_1.Groups,
+                    attributes: ["id", "name", "picture"],
+                    required: true,
+                },
             ],
             where: { ownerID },
         });
@@ -91,8 +94,9 @@ class publicationsService {
         publicationsData.sort((a, b) => a.createdAt > b.createdAt ? -1 : a.createdAt > b.createdAt ? 1 : 0);
         return publicationsData;
     }
-    async getAllPublicationsFromGroupID(groupID, userID) {
+    async getAllPublicationsFromGroupID(groupID, userID, page) {
         let publications = await Publications_1.Publication.findAll({
+            offset: page,
             limit: 15,
             order: [["createdAt", "DESC"]],
             include: [
@@ -101,7 +105,11 @@ class publicationsService {
                     attributes: ["name"],
                     required: true,
                 },
-                { model: Groups_1.Groups, required: true },
+                {
+                    model: Groups_1.Groups,
+                    attributes: ["id", "name", "picture"],
+                    required: true,
+                },
             ],
             where: { groupID },
         });
@@ -117,6 +125,42 @@ class publicationsService {
         publicationsData.sort((a, b) => a.createdAt > b.createdAt ? -1 : a.createdAt > b.createdAt ? 1 : 0);
         return publicationsData;
     }
+}
+async function SortPublications(data) {
+    data.sort((a, b) => {
+        let totalCountLikesA = a.likePositive + a.likeNeutral - a.likeNegative;
+        let totalCountLikesB = b.likePositive + b.likeNeutral - b.likeNegative;
+        let averageLikesAndCommentsA = a.commentCount + totalCountLikesA / 2;
+        let averageLikesAndCommentsB = b.commentCount + totalCountLikesB / 2;
+        if (a.createdAt < b.createdAt) {
+            return 1;
+        }
+        else if (a.createdAt > b.createdAt) {
+            return -1;
+        }
+        else if (averageLikesAndCommentsA < averageLikesAndCommentsB) {
+            return 1;
+        }
+        else if (averageLikesAndCommentsA > averageLikesAndCommentsB) {
+            return -1;
+        }
+        else if (a.commentCount < b.commentCount) {
+            return 1;
+        }
+        else if (a.commentCount > b.commentCount) {
+            return -1;
+        }
+        else if (totalCountLikesA < totalCountLikesB) {
+            return 1;
+        }
+        else if (totalCountLikesA > totalCountLikesB) {
+            return -1;
+        }
+        else {
+            return 0;
+        }
+    });
+    return data;
 }
 let PublicationsService = new publicationsService();
 exports.default = PublicationsService;

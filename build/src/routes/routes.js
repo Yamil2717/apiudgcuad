@@ -55,10 +55,10 @@ router.post("/groups/search", (0, Auth_1.Auth)("User", response), groupsControll
 // Publications routes
 router.get("/publication/:id", (0, Auth_1.Auth)("User", response), publicationsController_1.getPublicationByID);
 router.post("/publication", (0, Auth_1.Auth)("User", response), publicationsController_1.createPublication);
-router.get("/publications", (0, Auth_1.Auth)("User", response), publicationsController_1.getAllPublications);
+router.get("/publications/home/:page", (0, Auth_1.Auth)("User", response), publicationsController_1.getAllPublicationsHome);
 router.post("/publication/reaction", (0, Auth_1.Auth)("User", response), publicationsController_1.addReactionOnPublication);
-router.get("/publications/group/:groupID", (0, Auth_1.Auth)("User", response), publicationsController_1.getAllPublicationsFromGroupID);
-router.get("/publications/:ownerID", (0, Auth_1.Auth)("User", response), publicationsController_1.getAllPublicationsFromUserID);
+router.get("/publications/group/:groupID/:page", (0, Auth_1.Auth)("User", response), publicationsController_1.getAllPublicationsFromGroupID);
+router.get("/publications/:ownerID/:page", (0, Auth_1.Auth)("User", response), publicationsController_1.getAllPublicationsFromUserID);
 // Comments routes
 router.post("/comment", (0, Auth_1.Auth)("User", response), commentsController_1.createCommentByID);
 router.post("/comment/reaction", (0, Auth_1.Auth)("User", response), commentsController_1.addReactionOnComment);

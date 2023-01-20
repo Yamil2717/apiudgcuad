@@ -49,9 +49,8 @@ class publicationsService {
     return publication.get();
   }
 
-  async getAllPublications(userID: string) {
+  async getAllPublicationsHome(userID: string, page: number) {
     let publications: any = await Publication.findAll({
-      limit: 15,
       order: [["createdAt", "DESC"]],
       include: [
         {
@@ -64,7 +63,7 @@ class publicationsService {
     });
     let publicationsData: any = [];
     await Promise.all(
-      publications.map(async (publication: any) => {
+      publications.slice(page, page + 15).map(async (publication: any) => {
         let reaction = await ReactionsService.getReactionPublication(
           publication.id,
           userID
@@ -79,14 +78,16 @@ class publicationsService {
         "Ha ocurrido un error, no se encuentra ningún tipo de post registrado."
       );
     }
-    publicationsData.sort((a: any, b: any) =>
-      a.createdAt > b.createdAt ? -1 : a.createdAt > b.createdAt ? 1 : 0
-    );
-    return publicationsData;
+    return await SortPublications(publicationsData);
   }
 
-  async getAllPublicationsFromUserID(ownerID: string, userID: string) {
+  async getAllPublicationsFromUserID(
+    ownerID: string,
+    userID: string,
+    page: number
+  ) {
     let publications: any = await Publication.findAll({
+      offset: page,
       limit: 15,
       order: [["createdAt", "DESC"]],
       include: [
@@ -95,7 +96,11 @@ class publicationsService {
           attributes: ["name"],
           required: true,
         },
-        { model: Groups, required: true },
+        {
+          model: Groups,
+          attributes: ["id", "name", "picture"],
+          required: true,
+        },
       ],
       where: { ownerID },
     });
@@ -121,8 +126,13 @@ class publicationsService {
     return publicationsData;
   }
 
-  async getAllPublicationsFromGroupID(groupID: string, userID: string) {
+  async getAllPublicationsFromGroupID(
+    groupID: string,
+    userID: string,
+    page: number
+  ) {
     let publications: any = await Publication.findAll({
+      offset: page,
       limit: 15,
       order: [["createdAt", "DESC"]],
       include: [
@@ -131,7 +141,11 @@ class publicationsService {
           attributes: ["name"],
           required: true,
         },
-        { model: Groups, required: true },
+        {
+          model: Groups,
+          attributes: ["id", "name", "picture"],
+          required: true,
+        },
       ],
       where: { groupID },
     });
@@ -156,6 +170,35 @@ class publicationsService {
     );
     return publicationsData;
   }
+}
+
+async function SortPublications(data: Array<any>): Promise<Array<any>> {
+  data.sort((a: any, b: any) => {
+    let totalCountLikesA = a.likePositive + a.likeNeutral - a.likeNegative;
+    let totalCountLikesB = b.likePositive + b.likeNeutral - b.likeNegative;
+    let averageLikesAndCommentsA = a.commentCount + totalCountLikesA / 2;
+    let averageLikesAndCommentsB = b.commentCount + totalCountLikesB / 2;
+    if (a.createdAt < b.createdAt) {
+      return 1;
+    } else if (a.createdAt > b.createdAt) {
+      return -1;
+    } else if (averageLikesAndCommentsA < averageLikesAndCommentsB) {
+      return 1;
+    } else if (averageLikesAndCommentsA > averageLikesAndCommentsB) {
+      return -1;
+    } else if (a.commentCount < b.commentCount) {
+      return 1;
+    } else if (a.commentCount > b.commentCount) {
+      return -1;
+    } else if (totalCountLikesA < totalCountLikesB) {
+      return 1;
+    } else if (totalCountLikesA > totalCountLikesB) {
+      return -1;
+    } else {
+      return 0;
+    }
+  });
+  return data;
 }
 
 let PublicationsService = new publicationsService();

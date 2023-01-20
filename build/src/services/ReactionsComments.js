@@ -156,10 +156,10 @@ class reactionsCommentsService {
         }
     }
 }
-function incrementReaction(comment, typeReaction, increment) {
+async function incrementReaction(comment, typeReaction, increment) {
     comment?.increment(typeReaction, { by: increment });
 }
-function decrementReaction(comment, typeReaction, increment) {
+async function decrementReaction(comment, typeReaction, increment) {
     comment?.decrement(typeReaction, { by: increment });
 }
 let ReactionsCommentsService = new reactionsCommentsService();

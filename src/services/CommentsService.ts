@@ -78,12 +78,12 @@ class commentsService {
             tempArray =
               commentsData[
                 tempArrayIndex[dataComment.idFatherComment.toString()]
-              ].subComments;
+              ].subComments || [];
           }
           tempArray.push(dataComment);
           commentsData[
             tempArrayIndex[dataComment.idFatherComment.toString()]
-          ].subComments = tempArray;
+          ].subComments = await SortComments(tempArray);
         }
       })
     );
@@ -91,11 +91,23 @@ class commentsService {
       throw new Error(
         "Ha ocurrido un error, no se encuentra ningún tipo de comentario registrado para ese post."
       );
-    commentsData.sort((a: any, b: any) =>
-      a.createdAt < b.createdAt ? -1 : a.createdAt > b.createdAt ? 1 : 0
-    );
-    return commentsData;
+    return await SortComments(commentsData);
   }
+}
+
+async function SortComments(data: Array<any>): Promise<Array<any>> {
+  data.sort((a: any, b: any) => {
+    let totalCountLikesA = a.likePositive + a.likeNeutral - a.likeNegative;
+    let totalCountLikesB = b.likePositive + b.likeNeutral - b.likeNegative;
+    if (totalCountLikesA > totalCountLikesB) {
+      return -1;
+    } else if (totalCountLikesA < totalCountLikesB) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
+  return data;
 }
 
 let CommentsService = new commentsService();

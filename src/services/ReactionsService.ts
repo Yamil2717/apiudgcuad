@@ -165,7 +165,7 @@ class reactionsService {
   }
 }
 
-function incrementReaction(
+async function incrementReaction(
   publication: any,
   typeReaction: string,
   increment: number
@@ -173,7 +173,7 @@ function incrementReaction(
   publication?.increment(typeReaction, { by: increment });
 }
 
-function decrementReaction(
+async function decrementReaction(
   publication: any,
   typeReaction: string,
   increment: number

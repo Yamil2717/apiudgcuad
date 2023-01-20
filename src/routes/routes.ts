@@ -33,7 +33,7 @@ import {
 import {
   addReactionOnPublication,
   createPublication,
-  getAllPublications,
+  getAllPublicationsHome,
   getAllPublicationsFromGroupID,
   getAllPublicationsFromUserID,
   getPublicationByID,
@@ -112,19 +112,23 @@ router.post(
 
 router.get("/publication/:id", Auth("User", response), getPublicationByID);
 router.post("/publication", Auth("User", response), createPublication);
-router.get("/publications", Auth("User", response), getAllPublications);
+router.get(
+  "/publications/home/:page",
+  Auth("User", response),
+  getAllPublicationsHome
+);
 router.post(
   "/publication/reaction",
   Auth("User", response),
   addReactionOnPublication
 );
 router.get(
-  "/publications/group/:groupID",
+  "/publications/group/:groupID/:page",
   Auth("User", response),
   getAllPublicationsFromGroupID
 );
 router.get(
-  "/publications/:ownerID",
+  "/publications/:ownerID/:page",
   Auth("User", response),
   getAllPublicationsFromUserID
 );

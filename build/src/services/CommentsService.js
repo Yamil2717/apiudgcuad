@@ -66,17 +66,32 @@ class commentsService {
                 if (commentsData[tempArrayIndex[dataComment.idFatherComment.toString()]]
                     .subComments) {
                     tempArray =
-                        commentsData[tempArrayIndex[dataComment.idFatherComment.toString()]].subComments;
+                        commentsData[tempArrayIndex[dataComment.idFatherComment.toString()]].subComments || [];
                 }
                 tempArray.push(dataComment);
-                commentsData[tempArrayIndex[dataComment.idFatherComment.toString()]].subComments = tempArray;
+                commentsData[tempArrayIndex[dataComment.idFatherComment.toString()]].subComments = await SortComments(tempArray);
             }
         }));
         if (commentsData.length <= 0)
             throw new Error("Ha ocurrido un error, no se encuentra ningún tipo de comentario registrado para ese post.");
-        commentsData.sort((a, b) => a.createdAt < b.createdAt ? -1 : a.createdAt > b.createdAt ? 1 : 0);
-        return commentsData;
+        return await SortComments(commentsData);
     }
+}
+async function SortComments(data) {
+    data.sort((a, b) => {
+        let totalCountLikesA = a.likePositive + a.likeNeutral - a.likeNegative;
+        let totalCountLikesB = b.likePositive + b.likeNeutral - b.likeNegative;
+        if (totalCountLikesA > totalCountLikesB) {
+            return -1;
+        }
+        else if (totalCountLikesA < totalCountLikesB) {
+            return 1;
+        }
+        else {
+            return 0;
+        }
+    });
+    return data;
 }
 let CommentsService = new commentsService();
 exports.default = CommentsService;

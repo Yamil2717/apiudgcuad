@@ -47,16 +47,18 @@ async function getPublicationByID(req: Request, res: Response) {
   }
 }
 
-async function getAllPublications(req: Request, res: Response) {
+async function getAllPublicationsHome(req: Request, res: Response) {
   try {
+    let { page } = req.params;
     let authorization: any = req.headers.authorization;
     let token = authorization.split(" ");
     let payloadToken: any = JWT.decode(token[1]);
     if (!payloadToken.id) {
       resAPI.error(res, "No se ha podido obtener el id del usuario.");
     }
-    let publications: any = await PublicationsService.getAllPublications(
-      payloadToken.id
+    let publications: any = await PublicationsService.getAllPublicationsHome(
+      payloadToken.id,
+      Number(page)
     );
     console.info(`SOMEONE GOT ALL THE PUBLICATIONS`);
     resAPI.success(res, publications);
@@ -68,7 +70,7 @@ async function getAllPublications(req: Request, res: Response) {
 
 async function getAllPublicationsFromGroupID(req: Request, res: Response) {
   try {
-    let { groupID } = req.params;
+    let { groupID, page } = req.params;
     let authorization: any = req.headers.authorization;
     let token = authorization.split(" ");
     let payloadToken: any = JWT.decode(token[1]);
@@ -78,7 +80,8 @@ async function getAllPublicationsFromGroupID(req: Request, res: Response) {
     let publications: any =
       await PublicationsService.getAllPublicationsFromGroupID(
         groupID,
-        payloadToken.id
+        payloadToken.id,
+        Number(page)
       );
     console.info(`SOMEONE GOT ALL THE PUBLICATIONS OF GROUP ID: ${groupID}`);
     resAPI.success(res, publications);
@@ -90,7 +93,7 @@ async function getAllPublicationsFromGroupID(req: Request, res: Response) {
 
 async function getAllPublicationsFromUserID(req: Request, res: Response) {
   try {
-    let { ownerID } = req.params;
+    let { ownerID, page } = req.params;
     let authorization: any = req.headers.authorization;
     let token = authorization.split(" ");
     let payloadToken: any = JWT.decode(token[1]);
@@ -100,7 +103,8 @@ async function getAllPublicationsFromUserID(req: Request, res: Response) {
     let publications: any =
       await PublicationsService.getAllPublicationsFromUserID(
         ownerID,
-        payloadToken.id
+        payloadToken.id,
+        Number(page)
       );
     console.info(`SOMEONE GOT ALL THE PUBLICATIONS OF USER ID: ${ownerID}`);
     resAPI.success(res, publications);
@@ -129,7 +133,7 @@ async function addReactionOnPublication(req: Request, res: Response) {
 export {
   createPublication,
   getPublicationByID,
-  getAllPublications,
+  getAllPublicationsHome,
   getAllPublicationsFromGroupID,
   getAllPublicationsFromUserID,
   addReactionOnPublication,

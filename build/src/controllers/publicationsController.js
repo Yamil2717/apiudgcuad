@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addReactionOnPublication = exports.getAllPublicationsFromUserID = exports.getAllPublicationsFromGroupID = exports.getAllPublications = exports.getPublicationByID = exports.createPublication = void 0;
+exports.addReactionOnPublication = exports.getAllPublicationsFromUserID = exports.getAllPublicationsFromGroupID = exports.getAllPublicationsHome = exports.getPublicationByID = exports.createPublication = void 0;
 const tools_1 = require("../lib/tools");
 const resAPI = new tools_1.Response();
 const PublicationsService_1 = __importDefault(require("../services/PublicationsService"));
@@ -43,15 +43,16 @@ async function getPublicationByID(req, res) {
     }
 }
 exports.getPublicationByID = getPublicationByID;
-async function getAllPublications(req, res) {
+async function getAllPublicationsHome(req, res) {
     try {
+        let { page } = req.params;
         let authorization = req.headers.authorization;
         let token = authorization.split(" ");
         let payloadToken = jsonwebtoken_1.default.decode(token[1]);
         if (!payloadToken.id) {
             resAPI.error(res, "No se ha podido obtener el id del usuario.");
         }
-        let publications = await PublicationsService_1.default.getAllPublications(payloadToken.id);
+        let publications = await PublicationsService_1.default.getAllPublicationsHome(payloadToken.id, Number(page));
         console.info(`SOMEONE GOT ALL THE PUBLICATIONS`);
         resAPI.success(res, publications);
     }
@@ -60,17 +61,17 @@ async function getAllPublications(req, res) {
         return resAPI.error(res, error?.message, 500);
     }
 }
-exports.getAllPublications = getAllPublications;
+exports.getAllPublicationsHome = getAllPublicationsHome;
 async function getAllPublicationsFromGroupID(req, res) {
     try {
-        let { groupID } = req.params;
+        let { groupID, page } = req.params;
         let authorization = req.headers.authorization;
         let token = authorization.split(" ");
         let payloadToken = jsonwebtoken_1.default.decode(token[1]);
         if (!payloadToken.id) {
             resAPI.error(res, "No se ha podido obtener el id del usuario.");
         }
-        let publications = await PublicationsService_1.default.getAllPublicationsFromGroupID(groupID, payloadToken.id);
+        let publications = await PublicationsService_1.default.getAllPublicationsFromGroupID(groupID, payloadToken.id, Number(page));
         console.info(`SOMEONE GOT ALL THE PUBLICATIONS OF GROUP ID: ${groupID}`);
         resAPI.success(res, publications);
     }
@@ -82,14 +83,14 @@ async function getAllPublicationsFromGroupID(req, res) {
 exports.getAllPublicationsFromGroupID = getAllPublicationsFromGroupID;
 async function getAllPublicationsFromUserID(req, res) {
     try {
-        let { ownerID } = req.params;
+        let { ownerID, page } = req.params;
         let authorization = req.headers.authorization;
         let token = authorization.split(" ");
         let payloadToken = jsonwebtoken_1.default.decode(token[1]);
         if (!payloadToken.id) {
             resAPI.error(res, "No se ha podido obtener el id del usuario.");
         }
-        let publications = await PublicationsService_1.default.getAllPublicationsFromUserID(ownerID, payloadToken.id);
+        let publications = await PublicationsService_1.default.getAllPublicationsFromUserID(ownerID, payloadToken.id, Number(page));
         console.info(`SOMEONE GOT ALL THE PUBLICATIONS OF USER ID: ${ownerID}`);
         resAPI.success(res, publications);
     }
