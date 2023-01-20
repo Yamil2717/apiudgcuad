@@ -178,13 +178,13 @@ async function SortPublications(data: Array<any>): Promise<Array<any>> {
     let totalCountLikesB = b.likePositive + b.likeNeutral - b.likeNegative;
     let averageLikesAndCommentsA = a.commentCount + totalCountLikesA / 2;
     let averageLikesAndCommentsB = b.commentCount + totalCountLikesB / 2;
-    if (a.createdAt < b.createdAt) {
-      return 1;
-    } else if (a.createdAt > b.createdAt) {
-      return -1;
-    } else if (averageLikesAndCommentsA < averageLikesAndCommentsB) {
+    if (averageLikesAndCommentsA < averageLikesAndCommentsB) {
       return 1;
     } else if (averageLikesAndCommentsA > averageLikesAndCommentsB) {
+      return -1;
+    } else if (a.createdAt < b.createdAt) {
+      return 1;
+    } else if (a.createdAt > b.createdAt) {
       return -1;
     } else if (a.commentCount < b.commentCount) {
       return 1;
